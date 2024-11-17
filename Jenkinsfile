@@ -6,14 +6,14 @@ pipeline {
             DB_PASSWORD = credentials('DB_USER') // Password is automatically part of DB_USER
         }
     stages {
-//         stage("Build Frontend Docker Image") {
-//             steps {
-//                 script {
-//                     sh 'docker build -t ascendantwikifrontend -f src/main/www/Dockerfile .'
-//                 }
-//                 echo "Frontend Docker image built successfully"
-//             }
-//         }
+        stage("Build Frontend Docker Image") {
+            steps {
+                script {
+                    sh 'docker build -t ascendantwikifrontend -f src/main/www/Dockerfile src/main/www'
+                }
+                echo "Frontend Docker image built successfully"
+            }
+        }
         stage("Build Backend Docker Image") {
             steps {
                 script {
