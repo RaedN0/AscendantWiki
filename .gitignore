@@ -46,11 +46,11 @@ build/
 /coverage
 
 # next.js
-/.next/
-/out/
+/src/main/www/.next/
+/src/main/www/out/
 
 # production
-/build
+/src/main/www/build
 
 # misc
 .DS_Store
