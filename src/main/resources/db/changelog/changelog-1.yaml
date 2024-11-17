@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: RaedN0
+      changes:
+        - createTable:
+            tableName: weapons
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: base_damage
+                  type: double
+                  constraints:
+                    nullable: false
+              - column:
+                  name: fire_rate
+                  type: double
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reload_speed
+                  type: double
+                  constraints:
+                    nullable: false
