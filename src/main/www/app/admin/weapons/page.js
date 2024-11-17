@@ -8,7 +8,7 @@ export default function AuthCheck() {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const res = await fetch('http://192.168.1.208:8181/auth-status', {
+                const res = await fetch('https://ascendant.raedn.net/auth-status', {
                     credentials: 'include', // Send cookies for session authentication
                 });
 
