@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    environment {
+            DB_URL = credentials('DB_URL')  // Inject DB_URL from Jenkins credentials
+            DB_USER = credentials('DB_USER') // Inject username from DB_USER
+            DB_PASSWORD = credentials('DB_USER') // Password is automatically part of DB_USER
+        }
     stages {
 //         stage("Build Frontend Docker Image") {
 //             steps {
@@ -22,14 +27,19 @@ pipeline {
             steps {
                 script {
                     // Stop and remove existing containers if they exist
-                    sh 'docker rm -f nextjs-container || true'
-                    sh 'docker rm -f springboot-container || true'
+                    sh 'docker rm -f frontend || true'
+                    sh 'docker rm -f backend || true'
 
                     // Run the Next.js frontend container
-                    sh 'docker run -d -p 3000:3000 --name nextjs-container ascendantwikifrontend'
+                    sh 'docker run -d -p 3000:3000 --name frontend ascendantwikifrontend'
 
                     // Run the Spring Boot backend container
-                    sh 'docker run -d -p 8181:8080 --name springboot-container ascendantwikibackend'
+                    sh 'docker run -d -p 8181:8080 \
+                                                    -e SPRING_DATASOURCE_URL=${DB_URL} \
+                                                    -e SPRING_DATASOURCE_USERNAME=${DB_USER_USR} \
+                                                    -e SPRING_DATASOURCE_PASSWORD=${DB_USER_PSW} \
+                                                    --name backend \
+                                                    ascendantwikibackend'
                 }
                 echo "Frontend and Backend are running in Docker"
             }
