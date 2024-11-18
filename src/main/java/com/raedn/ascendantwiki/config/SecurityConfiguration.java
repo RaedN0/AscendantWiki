@@ -34,8 +34,8 @@ public class SecurityConfiguration {
 						authorizationManagerRequestMatcherRegistry ->
 								authorizationManagerRequestMatcherRegistry
 										.requestMatchers("/login").permitAll()
-										.requestMatchers("/auth-status").permitAll()
-										.anyRequest().authenticated()
+										.requestMatchers("/api/**").permitAll()
+										.anyRequest().permitAll()
 				)
 				.httpBasic(Customizer.withDefaults())
 				.httpBasic(Customizer.withDefaults())
