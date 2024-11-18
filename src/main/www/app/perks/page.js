@@ -72,6 +72,7 @@ const PerksPage = () => {
                         sx={{
                             color: '#ffffff',
                             border: '2px solid #00ff00',
+                            boxShadow: '0 0 10px 1px #00ff00',
                             backgroundColor: selectedCategory === 'COMBAT' ? 'rgba(0,0,0,0.95)' : 'transparent',
                             '&:hover': {
                                 backgroundColor: '#2d5a2d',
@@ -86,6 +87,7 @@ const PerksPage = () => {
                         sx={{
                             color: '#ffffff',
                             border: '2px solid #00ff00',
+                            boxShadow: '0 0 10px 1px #00ff00',
                             backgroundColor: selectedCategory === 'UTILITY' ? 'rgba(0,0,0,0.95)' : 'transparent',
                             '&:hover': {
                                 backgroundColor: '#2d5a2d',
@@ -107,6 +109,7 @@ const PerksPage = () => {
                     sx={{
                         flex: 1,
                         border: '2px solid #00ff00',
+                        boxShadow: '0 0 10px 1px #00ff00',
                         borderRadius: 2,
                         backgroundColor: 'rgba(0,0,0,0.95)',
                         padding: 2,
@@ -130,6 +133,7 @@ const PerksPage = () => {
                                 sx={{
                                     backgroundColor: selectedPerk?.id === perk.id ? '#2d5a2d' : 'transparent',
                                     border: '1px solid #00ff00',
+                                    boxShadow: '0 0 10px 1px #00ff00',
                                     borderRadius: '5px',
                                     marginBottom: 1,
                                     '&:hover': {
@@ -180,7 +184,7 @@ const PerksPage = () => {
                             sx={{
                                 backgroundColor: 'rgba(0,0,0,0.95)',
                                 border: '2px solid #00ff00',
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                                boxShadow: '0 0 10px 1px #00ff00',
                                 textAlign: 'center',
                                 height: '100%',
                             }}
