@@ -16,7 +16,7 @@ const Navbar = () => {
         { text: 'Leaderboard', href: '/leaderboard' },
     ];
 
-    const adminItem = { text: 'Admin', href: '/admin/weapons' };
+    const adminItem = { text: 'Admin', href: '/admin' };
 
     return (
         <AppBar position="sticky" sx={{ height: '5vh', backgroundColor: '#333' }}>
