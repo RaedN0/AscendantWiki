@@ -7,13 +7,12 @@ class AuthenticationService {
 
     async checkAuthStatus() {
         try {
-            const res = await axios.get(`${API_URL}/auth-status`, {
+            const res = await axios.get(`${API_URL}/api/auth-status`, {
                 withCredentials: true,
             });
 
             if (res.status === 200) {
                 const { roles } = res.data;
-                console.log(res);
                 return roles.includes('ROLE_ADMIN');
             }
 
