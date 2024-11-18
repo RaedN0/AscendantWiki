@@ -4,6 +4,7 @@ pipeline {
             DB_URL = credentials('DB_URL')  // Inject DB_URL from Jenkins credentials
             DB_USER = credentials('DB_USER') // Inject username from DB_USER
             DB_PASSWORD = credentials('DB_USER') // Password is automatically part of DB_USER
+            NEXT_PUBLIC_API_URL = "https://ascendant.raedn.net"
         }
     stages {
         stage("Build Frontend Docker Image") {
@@ -31,7 +32,10 @@ pipeline {
                     sh 'docker rm -f backend || true'
 
                     // Run the Next.js frontend container
-                    sh 'docker run -d -p 3000:3000 --name frontend ascendantwikifrontend'
+                   sh 'docker run -d -p 3000:3000 \
+                       -e NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL} \
+                       --name frontend \
+                       ascendantwikifrontend'
 
                     // Run the Spring Boot backend container
                     sh 'docker run -d -p 8181:8080 \
