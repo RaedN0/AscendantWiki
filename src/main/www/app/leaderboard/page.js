@@ -18,10 +18,10 @@ import LeaderboardService from '@/app/services/LeaderboardService'; // Mocked se
 
 const LeaderboardPage = () => {
     const [players, setPlayers] = useState([]);
-    const [order, setOrder] = useState('asc'); // Sorting order
-    const [orderBy, setOrderBy] = useState('kills'); // Column to sort by
-    const [page, setPage] = useState(0); // Current page
-    const [rowsPerPage, setRowsPerPage] = useState(10); // Rows per page
+    const [order, setOrder] = useState('desc');
+    const [orderBy, setOrderBy] = useState('biocores');
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     useEffect(() => {
         // Fetch leaderboard data
