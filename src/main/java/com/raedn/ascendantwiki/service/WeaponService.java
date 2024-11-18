@@ -21,7 +21,7 @@ public class WeaponService {
 		return weaponRepository.save(weapon);
 	}
 
-	public void deleteWeapon(Weapon weapon) {
-		weaponRepository.delete(weapon);
+	public void deleteWeapon(Long id) {
+		weaponRepository.deleteById(id);
 	}
 }
