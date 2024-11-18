@@ -27,13 +27,13 @@ export default function AttachmentSelection({
   useEffect(() => {
     if (!isInternalUpdate.current) {
       AttachmentService.getAttachmentByType("OPTIC").then((data) => {
-        setOptics(data);
+        setOptics([{ name: "None", multiplier: 1 }, ...data]);
       });
       AttachmentService.getAttachmentByType("BARREL").then((data) => {
-        setBarrels(data);
+        setBarrels([{ name: "None", multiplier: 1 }, ...data]);
       });
       AttachmentService.getAttachmentByType("GRIP").then((data) => {
-        setGrips(data);
+        setGrips([{ name: "None", multiplier: 1 }, ...data]);
       });
       if (selectedAttachments.length === 3) {
         setSelectedOptic(selectedAttachments[0]);
