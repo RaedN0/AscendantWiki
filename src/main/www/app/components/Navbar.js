@@ -19,27 +19,18 @@ const Navbar = () => {
     const adminItem = { text: 'Admin', href: '/admin/weapons' };
 
     return (
-        <AppBar position="sticky" sx={{ height: '5vh' }}>
+        <AppBar position="sticky" sx={{ height: '5vh', backgroundColor: '#333' }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                <Box sx={{ flex: 1 }}>
-                    <Typography variant="h6" component="div">
-                        Ascendant Wiki
-                    </Typography>
-                </Box>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    Ascendant Wiki
+                </Typography>
 
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        gap: '20px',
-                        flex: 1,
-                    }}
-                >
+                <Box sx={{ display: 'flex', gap: 2 }}>
                     {navItems.map((item) => (
                         <Link key={item.href} href={item.href} passHref>
                             <Button
                                 color={pathname === item.href ? 'secondary' : 'inherit'}
-                                sx={{ textTransform: 'none' }}
+                                sx={{ textTransform: 'none'}}
                             >
                                 {item.text}
                             </Button>
@@ -47,11 +38,10 @@ const Navbar = () => {
                     ))}
                 </Box>
 
-                <Box sx={{ flex: 1, textAlign: 'right' }}>
+                <Box sx={{ flexGrow: 1, textAlign: 'right' }}>
                     <Link href={adminItem.href} passHref>
                         <Button
                             color={pathname === adminItem.href ? 'secondary' : 'inherit'}
-                            sx={{ textTransform: 'none' }}
                         >
                             {adminItem.text}
                         </Button>
