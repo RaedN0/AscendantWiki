@@ -82,7 +82,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: username
-                  value: raedn
+                  value: RaedN
               - column:
                   name: password
                   value: $2a$12$jy9JWAGJ4dWPehGjqRx7rOlYUSgCE9kAr330L.4YyFk6yikQi8vRO
@@ -103,6 +103,31 @@ databaseChangeLog:
               - column:
                   name: user_id
                   valueNumeric: 1
+              - column:
+                  name: role_id
+                  valueNumeric: 1
+  - changeSet:
+      id: 3
+      author: RaedN0
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: CuzSai
+              - column:
+                  name: password
+                  value: $2a$12$p7cXECJnz2cXAYe.uxnPFucD/xYVbzcLvJ66jthAIf/98aj9uRrX6
+              - column:
+                  name: enabled
+                  valueBoolean: true
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 2
               - column:
                   name: role_id
                   valueNumeric: 1
