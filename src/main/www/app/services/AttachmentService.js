@@ -14,6 +14,15 @@ class AttachmentService {
         }
     }
 
+    async getAttachmentByType(type) {
+        try {
+            const response = await axios.get(`${API_URL}/api/attachments?type=${type}`);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async addAttachment(attachment) {
         try {
             const response = await axios.post(`${API_URL}/api/attachments`, attachment, {

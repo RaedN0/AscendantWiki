@@ -3,6 +3,7 @@ package com.raedn.ascendantwiki.controller;
 import java.util.List;
 
 import com.raedn.ascendantwiki.model.Attachment;
+import com.raedn.ascendantwiki.model.AttachmentTypes;
 import com.raedn.ascendantwiki.service.AttachmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,8 +25,11 @@ public class AttachmentController {
 	private final AttachmentService attachmentService;
 
 	@GetMapping
-	public List<Attachment> getAttachments() {
-		return attachmentService.getAllAttachments();
+	public List<Attachment> getAttachments(@RequestParam(value = "type", required = false) AttachmentTypes type) {
+		if (type == null) {
+			return attachmentService.getAllAttachments();
+		}
+		return attachmentService.getAllAttachmentsByType(type);
 	}
 
 	@PostMapping

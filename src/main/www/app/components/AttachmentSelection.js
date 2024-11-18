@@ -1,23 +1,24 @@
-import { optics } from "../entities/Optics";
-import { barrels } from "../entities/Barrels";
-import { grips } from "../entities/Grips";
-
 import { useEffect, useState, useRef } from "react";
+import AttachmentService from "@/app/services/AttachmentService";
 
 export default function AttachmentSelection({
   selectedAttachments,
   setSelectedAttachments,
 }) {
+  const [optics, setOptics] = useState([]);
+  const [barrels, setBarrels] = useState([]);
+  const [grips, setGrips] = useState([]);
+
   const [selectedOptic, setSelectedOptic] = useState({
-    displayName: "None",
+    name: "None",
     multiplier: 1,
   });
   const [selectedBarrel, setSelectedBarrel] = useState({
-    displayName: "None",
+    name: "None",
     multiplier: 1,
   });
   const [selectedGrip, setSelectedGrip] = useState({
-    displayName: "None",
+    name: "None",
     multiplier: 1,
   });
 
@@ -25,6 +26,15 @@ export default function AttachmentSelection({
 
   useEffect(() => {
     if (!isInternalUpdate.current) {
+      AttachmentService.getAttachmentByType("OPTIC").then((data) => {
+        setOptics(data);
+      });
+      AttachmentService.getAttachmentByType("BARREL").then((data) => {
+        setBarrels(data);
+      });
+      AttachmentService.getAttachmentByType("GRIP").then((data) => {
+        setGrips(data);
+      });
       if (selectedAttachments.length === 3) {
         setSelectedOptic(selectedAttachments[0]);
         setSelectedBarrel(selectedAttachments[1]);
@@ -52,7 +62,7 @@ export default function AttachmentSelection({
             Optic
             <br />
             <span className="selected-attachment">
-              {selectedOptic.displayName}
+              {selectedOptic.name}
             </span>
           </h3>
           <div className="attachment-buttons">
@@ -60,13 +70,13 @@ export default function AttachmentSelection({
               <button
                 key={index}
                 className={`attachment-button ${
-                  selectedOptic?.displayName === optic.displayName
+                  selectedOptic?.name === optic.name
                     ? "selected"
                     : ""
                 }`}
                 onClick={() => setSelectedOptic(optic)}
               >
-                {optic.displayName}
+                {optic.name}
               </button>
             ))}
           </div>
@@ -77,7 +87,7 @@ export default function AttachmentSelection({
             Barrel
             <br />
             <span className="selected-attachment">
-              {selectedBarrel.displayName}
+              {selectedBarrel.name}
             </span>
           </h3>
           <div className="attachment-buttons">
@@ -85,13 +95,13 @@ export default function AttachmentSelection({
               <button
                 key={index}
                 className={`attachment-button ${
-                  selectedBarrel?.displayName === barrel.displayName
+                  selectedBarrel?.name === barrel.name
                     ? "selected"
                     : ""
                 }`}
                 onClick={() => setSelectedBarrel(barrel)}
               >
-                {barrel.displayName}
+                {barrel.name}
               </button>
             ))}
           </div>
@@ -102,7 +112,7 @@ export default function AttachmentSelection({
             Grip
             <br />
             <span className="selected-attachment">
-              {selectedGrip.displayName}
+              {selectedGrip.name}
             </span>
           </h3>
           <div className="attachment-buttons">
@@ -110,13 +120,13 @@ export default function AttachmentSelection({
               <button
                 key={index}
                 className={`attachment-button ${
-                  selectedGrip?.displayName === grip.displayName
+                  selectedGrip?.name === grip.name
                     ? "selected"
                     : ""
                 }`}
                 onClick={() => setSelectedGrip(grip)}
               >
-                {grip.displayName}
+                {grip.name}
               </button>
             ))}
           </div>

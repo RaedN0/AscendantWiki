@@ -3,6 +3,7 @@ package com.raedn.ascendantwiki.service;
 import java.util.List;
 
 import com.raedn.ascendantwiki.model.Attachment;
+import com.raedn.ascendantwiki.model.AttachmentTypes;
 import com.raedn.ascendantwiki.repository.AttachmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,10 @@ public class AttachmentService {
 
 	public List<Attachment> getAllAttachments() {
 		return attachmentRepository.findAll();
+	}
+
+	public List<Attachment> getAllAttachmentsByType(AttachmentTypes type) {
+		return attachmentRepository.findAttachmentByType(type);
 	}
 
 	public Attachment saveAttachment(Attachment attachment) {
