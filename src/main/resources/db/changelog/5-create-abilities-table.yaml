@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: RaedN0
+      changes:
+        - createTable:
+            tableName: abilities
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cooldown
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: activation_time
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image
+                  type: BLOB
