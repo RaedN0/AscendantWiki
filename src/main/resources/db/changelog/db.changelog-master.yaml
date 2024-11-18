@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/changelog-1.yaml
   - include:
       file: db/changelog/2-create-user-and-role-table.yaml
+  - include:
+      file: db/changelog/3-create-attachments-table.yaml
