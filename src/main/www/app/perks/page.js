@@ -1,117 +1,220 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Container, Card, CardContent, CardMedia, Typography, Box, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {useEffect, useState} from 'react';
+import {
+    Container,
+    Box,
+    Typography,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon,
+    Card,
+    CardContent,
+    CardMedia,
+    Button,
+} from '@mui/material';
 import PerkService from "@/app/services/PerkService";
 
 const PerksPage = () => {
     const [perks, setPerks] = useState([]);
-    const [combatPerks, setCombatPerks] = useState([]);
-    const [utilityPerks, setUtilityPerks] = useState([]);
+    const [filteredPerks, setFilteredPerks] = useState([]);
+    const [selectedPerk, setSelectedPerk] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState('COMBAT');
 
     useEffect(() => {
         PerkService.getAllPerks()
             .then((data) => {
                 setPerks(data);
-                filterPerksByType(data);
+                filterPerks('COMBAT', data);
             })
             .catch((err) => {
                 console.error('Failed to fetch perks:', err);
             });
     }, []);
 
-    const filterPerksByType = (perks) => {
-        setCombatPerks(perks.filter((perk) => perk.type === 'COMBAT'));
-        setUtilityPerks(perks.filter((perk) => perk.type === 'UTILITY'));
+    const filterPerks = (category, perksList = perks) => {
+        const filtered = perksList.filter((perk) => perk.type === category);
+        setFilteredPerks(filtered);
+        setSelectedPerk(filtered[0]);
     };
 
-    const renderPerkCards = (perks) => {
-        return perks.map((perk) => (
-            <Card
-                key={perk.id}
-                sx={{
-                    display: 'flex',
-                    backgroundColor: '#333',
-                    color: '#e0e0e0',
-                    marginBottom: 2,
-                    borderRadius: '10px',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-                    overflow: 'hidden',
-                }}
-            >
-                {perk.image && (
-                    <CardMedia
-                        component="img"
-                        sx={{
-                            width: 140,
-                            objectFit: 'cover',
-                            borderRight: '1px solid #444',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                        image={`data:image/png;base64,${perk.image}`}
-                        alt={`${perk.name} image`}
-                    />
-                )}
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        flex: 1,
-                    }}
-                >
-                    <CardContent>
-                        <Typography variant="h5" component="div" gutterBottom sx={{ fontWeight: 'bold' }}>
-                            {perk.name}
-                        </Typography>
-                        <Typography variant="body2" color="#c0c0c0" gutterBottom>
-                            {perk.description}
-                        </Typography>
-                        <Typography variant="body2" color="#c0c0c0">
-                            Type: {perk.type}
-                        </Typography>
-                    </CardContent>
-                </Box>
-            </Card>
-        ));
+    const handleSelectPerk = (perk) => {
+        setSelectedPerk(perk);
+    };
+
+    const handleCategoryChange = (category) => {
+        setSelectedCategory(category);
+        filterPerks(category);
     };
 
     return (
-        <Container maxWidth="lg" sx={{ marginTop: '20px' }}>
-            <Typography variant="h4" component="h1" gutterBottom sx={{ textAlign: 'center', color: '#aad1e6' }}>
-                Perks
-            </Typography>
+        <Container
+            maxWidth="lg"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundImage: 'url(/background.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                padding: 2,
+            }}
+        >
+            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2}}>
+                <Typography variant="h5" sx={{color: '#ffffff', marginLeft: '1%'}}>
+                    Perks
+                </Typography>
 
-            <Accordion defaultExpanded sx={{ backgroundColor: '#2a2a2a', color: '#e0e0e0', marginBottom: 2, borderRadius: '10px' }}>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon sx={{ color: '#aad1e6' }} />}
-                    sx={{ backgroundColor: '#333', borderBottom: '1px solid #444', padding: '10px 20px', borderRadius: '10px 10px 0 0' }}
-                >
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                <Box sx={{display: 'flex', gap: 2, margin: 'auto'}}>
+                    <Button
+                        variant={selectedCategory === 'COMBAT' ? 'contained' : 'outlined'}
+                        onClick={() => handleCategoryChange('COMBAT')}
+                        sx={{
+                            color: '#ffffff',
+                            border: '2px solid #00ff00',
+                            backgroundColor: selectedCategory === 'COMBAT' ? 'rgba(0,0,0,0.95)' : 'transparent',
+                            '&:hover': {
+                                backgroundColor: '#2d5a2d',
+                            },
+                        }}
+                    >
                         Combat Perks
-                    </Typography>
-                </AccordionSummary>
-                <AccordionDetails sx={{ padding: '20px', backgroundColor: '#1e1e1e', borderRadius: '0 0 10px 10px' }}>
-                    {renderPerkCards(combatPerks)}
-                </AccordionDetails>
-            </Accordion>
-
-            <Accordion defaultExpanded sx={{ backgroundColor: '#2a2a2a', color: '#e0e0e0', borderRadius: '10px' }}>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon sx={{ color: '#aad1e6' }} />}
-                    sx={{ backgroundColor: '#333', borderBottom: '1px solid #444', padding: '10px 20px', borderRadius: '10px 10px 0 0' }}
-                >
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    </Button>
+                    <Button
+                        variant={selectedCategory === 'UTILITY' ? 'contained' : 'outlined'}
+                        onClick={() => handleCategoryChange('UTILITY')}
+                        sx={{
+                            color: '#ffffff',
+                            border: '2px solid #00ff00',
+                            backgroundColor: selectedCategory === 'UTILITY' ? 'rgba(0,0,0,0.95)' : 'transparent',
+                            '&:hover': {
+                                backgroundColor: '#2d5a2d',
+                            },
+                        }}
+                    >
                         Utility Perks
-                    </Typography>
-                </AccordionSummary>
-                <AccordionDetails sx={{ padding: '20px', backgroundColor: '#1e1e1e', borderRadius: '0 0 10px 10px' }}>
-                    {renderPerkCards(utilityPerks)}
-                </AccordionDetails>
-            </Accordion>
+                    </Button>
+                </Box>
+            </Box>
+
+            <Box
+                sx={{
+                    display: 'flex',
+                    gap: 2,
+                }}
+            >
+                <Box
+                    sx={{
+                        flex: 1,
+                        border: '2px solid #00ff00',
+                        borderRadius: 2,
+                        backgroundColor: 'rgba(0,0,0,0.95)',
+                        padding: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        maxHeight: 'calc(100vh - 150px)',
+                        overflow: 'auto',
+                    }}
+                >
+                    <List
+                        sx={{
+                            padding: 0,
+                            width: '100%',
+                        }}
+                    >
+                        {filteredPerks.map((perk) => (
+                            <ListItem
+                                key={perk.id}
+                                onClick={() => handleSelectPerk(perk)}
+                                sx={{
+                                    backgroundColor: selectedPerk?.id === perk.id ? '#2d5a2d' : 'transparent',
+                                    border: '1px solid #00ff00',
+                                    borderRadius: '5px',
+                                    marginBottom: 1,
+                                    '&:hover': {
+                                        backgroundColor: '#2d5a2d',
+                                    },
+                                }}
+                            >
+                                <ListItemIcon>
+                                    {perk.image && (
+                                        <CardMedia
+                                            component="img"
+                                            image={`data:image/png;base64,${perk.image}`}
+                                            alt={perk.name}
+                                            sx={{
+                                                width: 70,
+                                                height: 70,
+                                                backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                                            }}
+                                        />
+                                    )}
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={
+                                        <Typography
+                                            variant="body1"
+                                            sx={{
+                                                color: '#ffffff',
+                                                fontWeight: 'bold',
+                                                marginLeft: '10%',
+                                            }}
+                                        >
+                                            {perk.name}
+                                        </Typography>
+                                    }
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Box>
+
+                {selectedPerk && (
+                    <Box
+                        sx={{
+                            flex: 2,
+                        }}
+                    >
+                        <Card
+                            sx={{
+                                backgroundColor: 'rgba(0,0,0,0.95)',
+                                border: '2px solid #00ff00',
+                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                                textAlign: 'center',
+                                height: '100%',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifySelf: 'baseline',
+                                    alignItems: 'center',
+                                    marginLeft: '5%',
+                                    marginTop: '5%',
+                                }}
+                            >
+                                <CardMedia
+                                    component="img"
+                                    image={`data:image/png;base64,${selectedPerk.image}`}
+                                    alt={selectedPerk.name}
+                                    sx={{width: 120, height: 120, margin: 'auto', paddingTop: 2}}
+                                />
+                                <CardContent>
+                                    <Typography variant="h5" sx={{fontWeight: 'bold', color: '#ffffff'}}>
+                                        {selectedPerk.name}
+                                    </Typography>
+                                </CardContent>
+                            </Box>
+                            <CardContent>
+                                <Typography variant="body1" sx={{color: '#ffffff', marginTop: 2}}>
+                                    {selectedPerk.description}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Box>
+                )}
+            </Box>
         </Container>
     );
 };
