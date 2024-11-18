@@ -20,4 +20,8 @@ public class WeaponService {
 	public Weapon saveWeapon(Weapon weapon) {
 		return weaponRepository.save(weapon);
 	}
+
+	public void deleteWeapon(Weapon weapon) {
+		weaponRepository.delete(weapon);
+	}
 }
