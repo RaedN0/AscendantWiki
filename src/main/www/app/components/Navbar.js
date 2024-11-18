@@ -10,6 +10,8 @@ const Navbar = () => {
     const navItems = [
         { text: 'Home', href: '/' },
         { text: 'Weapon Calculator', href: '/weapon-calculator' },
+        { text: 'Weapons', href: '/weapons' },
+        { text: 'Leaderboard', href: '/leaderboard' },
     ];
 
     const adminItem = { text: 'Admin', href: '/admin/weapons' };
