@@ -38,6 +38,11 @@ export default function AdminDashboard() {
                         Manage Perks
                     </Button>
                 </Link>
+                <Link href="/admin/abilities" passHref>
+                    <Button variant="contained" color="primary">
+                        Manage Abilities
+                    </Button>
+                </Link>
             </Box>
         </Container>
     );
