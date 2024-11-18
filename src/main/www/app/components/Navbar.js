@@ -11,6 +11,8 @@ const Navbar = () => {
         { text: 'Home', href: '/' },
         { text: 'Weapon Calculator', href: '/weapon-calculator' },
         { text: 'Weapons', href: '/weapons' },
+        { text: 'Perks', href: '/perks' },
+        { text: 'Abilities', href: '/abilities' },
         { text: 'Leaderboard', href: '/leaderboard' },
     ];
 
