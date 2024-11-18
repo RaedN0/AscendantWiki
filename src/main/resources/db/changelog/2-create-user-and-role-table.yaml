@@ -131,3 +131,29 @@ databaseChangeLog:
               - column:
                   name: role_id
                   valueNumeric: 1
+
+  - changeSet:
+      id: 4
+      author: RaedN0
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: AscendantAdmin
+              - column:
+                  name: password
+                  value: $2a$12$HFk9KDGwtO/bwlWLC/4mZuXMiRohhuDb/KwTDVrmX322eDdT1djPO
+              - column:
+                  name: enabled
+                  valueBoolean: true
+        - insert:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 3
+              - column:
+                  name: role_id
+                  valueNumeric: 1
