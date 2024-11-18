@@ -38,7 +38,6 @@ public class SecurityConfiguration {
 										.anyRequest().permitAll()
 				)
 				.httpBasic(Customizer.withDefaults())
-				.httpBasic(Customizer.withDefaults())
 				.formLogin(
 						formLogin -> formLogin
 								.permitAll()

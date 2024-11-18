@@ -15,7 +15,6 @@ import {
 import { Delete, Edit, Add } from '@mui/icons-material';
 import { Fab } from '@mui/material';
 
-import AuthenticationService from "../../services/AuthenticationService"
 import WeaponService from "@/app/services/WeaponService";
 
 const WeaponsPage = () => {
@@ -34,17 +33,6 @@ const WeaponsPage = () => {
     };
 
     useEffect(() => {
-        const checkAdmin = async () => {
-            const isAdmin = await AuthenticationService.checkAuthStatus();
-            if (isAdmin) {
-                console.log('User has ADMIN role');
-            } else {
-                console.log('User is not an admin');
-            }
-        };
-
-        checkAdmin();
-
         fetchWeapons();
     }, []);
 
