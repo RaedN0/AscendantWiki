@@ -207,7 +207,7 @@ const PerksPage = () => {
                                 </CardContent>
                             </Box>
                             <CardContent>
-                                <Typography variant="body1" sx={{color: '#ffffff', marginTop: 2}}>
+                                <Typography variant="body1" sx={{color: '#ffffff', marginTop: 2, marginLeft: 4, justifySelf: 'flex-start'}}>
                                     {selectedPerk.description}
                                 </Typography>
                             </CardContent>
