@@ -24,13 +24,18 @@ export default function AdminDashboard() {
             </Typography>
             <Box sx={{ marginTop: '30px', display: 'flex', gap: 2 }}>
                 <Link href="/admin/weapons" passHref>
-                    <Button variant="contained" color="secondary">
+                    <Button variant="contained" color="primary">
                         Manage Weapons
                     </Button>
                 </Link>
                 <Link href="/admin/attachments" passHref>
                     <Button variant="contained" color="primary">
                         Manage Attachments
+                    </Button>
+                </Link>
+                <Link href="/admin/perks" passHref>
+                    <Button variant="contained" color="primary">
+                        Manage Perks
                     </Button>
                 </Link>
             </Box>
