@@ -9,8 +9,8 @@ pipeline {
     stages {
         stage("Build Frontend Docker Image") {
             steps {
-                script {
-                    sh 'docker build -t ascendantwikifrontend -f src/main/www/Dockerfile src/main/www'
+               script {
+                    sh 'docker build -t ascendantwikifrontend --build-arg NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL} -f src/main/www/Dockerfile src/main/www'
                 }
                 echo "Frontend Docker image built successfully"
             }
