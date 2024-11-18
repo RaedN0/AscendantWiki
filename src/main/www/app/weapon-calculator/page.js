@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import InfoModal from './components/InfoModal';
-import Sidebar from './components/Sidebar';
-import WeaponSelection from './components/WeaponSelection';
-import Comparison from './components/Comparison';
-import AttachmentSelection from './components/AttachmentSelection';
-import ShieldSelection from './components/ShieldSelection';
+import InfoModal from '../components/InfoModal';
+import Sidebar from '../components/Sidebar';
+import WeaponSelection from '../components/WeaponSelection';
+import Comparison from '../components/Comparison';
+import AttachmentSelection from '../components/AttachmentSelection';
+import ShieldSelection from '../components/ShieldSelection';
 import { Box } from '@mui/material';
-import './styles/weapon-calculator.css';
+import '../styles/weapon-calculator.css';
 
 export default function WeaponCalculator() {
     const [selectedWeapon, setSelectedWeapon] = useState();
