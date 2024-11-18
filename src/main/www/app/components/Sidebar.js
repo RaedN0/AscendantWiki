@@ -33,7 +33,7 @@ export default function Sidebar({ weapon, shield, attachments }) {
     const finalDamageHeadshot = weapon?.baseDamage * multiplier * 1.5;
     const finalDamageBodyshot = weapon?.baseDamage * multiplier;
 
-    const totalHealth = 100 + shield?.shieldHp;
+    const totalHealth = shield?.shieldHp ? 100 + shield.shieldHp : 100;
     const shotsToKill = Math.ceil(totalHealth / finalDamageBodyshot);
     const ttkHeadshot = ((shotsToKill / (weapon?.fireRate / 60)) * 0.7).toFixed(
       2,
