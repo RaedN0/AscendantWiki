@@ -4,6 +4,7 @@ import com.raedn.ascendantwiki.model.Perk;
 import com.raedn.ascendantwiki.model.PerkTypes;
 import com.raedn.ascendantwiki.service.PerkService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,7 @@ public class PerkController {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('ADMIN')")
 	public Perk createPerk(
 			@RequestParam("name") String name,
 			@RequestParam("description") String description,
@@ -39,6 +41,7 @@ public class PerkController {
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public Perk updatePerk(
 			@PathVariable Long id,
 			@RequestParam("name") String name,
@@ -59,6 +62,7 @@ public class PerkController {
 	}
 
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public void deletePerk(@PathVariable Long id) {
 		perkService.deletePerk(id);
 	}
