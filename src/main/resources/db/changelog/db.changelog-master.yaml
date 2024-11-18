@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/3-create-attachments-table.yaml
   - include:
       file: db/changelog/4-create-perks-table.yaml
+  - include:
+      file: db/changelog/5-create-abilities-table.yaml
