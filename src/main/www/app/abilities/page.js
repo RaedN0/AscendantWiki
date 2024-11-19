@@ -1,85 +1,187 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {Container, Card, CardContent, CardMedia, Typography, Box, Accordion, AccordionSummary, AccordionDetails} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {
+    Container,
+    Box,
+    Typography,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon,
+    Card,
+    CardContent,
+    CardMedia,
+    Button,
+} from '@mui/material';
+import PerkService from "@/app/services/PerkService";
+import {keyframes} from '@emotion/react';
 import AbilityService from "@/app/services/AbilityService";
 
 const AbilitiesPage = () => {
     const [abilities, setAbilities] = useState([]);
+    const [selectedAbility, setSelectedAbility] = useState(null);
 
     useEffect(() => {
         AbilityService.getAllAbilities()
             .then((data) => {
                 setAbilities(data);
+                setSelectedAbility(data[0]);
             })
             .catch((err) => {
                 console.error('Failed to fetch abilities:', err);
             });
     }, []);
 
-    const renderAbilityCards = (abilities) => {
-        return abilities.map((ability) => (
-            <Card
-                key={ability.id}
-                sx={{
-                    display: 'flex',
-                    backgroundColor: '#333',
-                    color: '#e0e0e0',
-                    marginBottom: 2,
-                    borderRadius: '10px',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-                    overflow: 'hidden',
-                }}
-            >
-                {ability.image && (
-                    <CardMedia
-                        component="img"
-                        sx={{
-                            width: 160,
-                            objectFit: 'cover',
-                            borderRight: '1px solid #444',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                        image={`data:image/png;base64,${ability.image}`}
-                        alt={`${ability.name} image`}
-                    />
-                )}
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        flex: 1,
-                    }}
-                >
-                    <CardContent>
-                        <Typography variant="h5" component="div" gutterBottom sx={{fontWeight: 'bold'}}>
-                            {ability.name}
-                        </Typography>
-                        <Typography variant="body2" color="#c0c0c0" gutterBottom>
-                            {ability.description}
-                        </Typography>
-                        <Typography variant="body2" color="#c0c0c0">
-                            Cooldown: {ability.cooldown}s
-                        </Typography>
-                        <Typography variant="body2" color="#c0c0c0">
-                            Activation Time: {ability.activationTime}s
-                        </Typography>
-                    </CardContent>
-                </Box>
-            </Card>
-        ));
+    const handleSelectAbility = (ability) => {
+        setSelectedAbility(ability);
     };
 
+    const hoverToGreen = keyframes`
+        0% {
+            background-color: #000000;
+        }
+        100% {
+            background-color: #00ff00;
+        }
+    `;
+
     return (
-        <Container maxWidth="lg" sx={{marginTop: '20px'}}>
-            <Typography variant="h4" component="h1" gutterBottom sx={{textAlign: 'center', color: '#aad1e6'}}>
-                Abilities
-            </Typography>
-            {renderAbilityCards(abilities)}
+        <Container
+            maxWidth="lg"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundImage: 'url(/background.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                padding: 2,
+            }}
+        >
+            <Box
+                sx={{
+                    display: 'flex',
+                    gap: 2,
+                }}
+            >
+                <Box
+                    sx={{
+                        flex: 1,
+                        border: '2px solid #00ff00',
+                        boxShadow: '0 0 10px 1px #00ff00',
+                        borderRadius: 2,
+                        backgroundColor: 'rgba(0,0,0,0.95)',
+                        padding: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        maxHeight: 'calc(100vh - 150px)',
+                        overflow: 'auto',
+                    }}
+                >
+                    <List
+                        sx={{
+                            padding: 0,
+                            width: '100%',
+                        }}
+                    >
+                        {abilities.map((ability) => (
+                            <ListItem
+                                key={ability.id}
+                                onClick={() => handleSelectAbility(ability)}
+                                sx={{
+                                    backgroundColor: selectedAbility?.id === ability.id ? '#00ff00' : '#000000',
+                                    border: '1px solid #00ff00',
+                                    boxShadow: '0 0 10px 1px #00ff00',
+                                    borderRadius: '5px',
+                                    marginBottom: 1,
+                                    transition: 'background-color 0.5s ease-in-out, color 0.5s ease-in-out',
+                                    '&:hover': {
+                                        animation: selectedAbility?.id !== ability.id ? `${hoverToGreen} 0.5s forwards` : 'none',
+                                        '& .MuiTypography-root': {
+                                            color: 'black',
+                                        },
+                                    },
+                                }}
+                            >
+                                <ListItemIcon>
+                                    {ability.image && (
+                                        <CardMedia
+                                            component="img"
+                                            image={`data:image/png;base64,${ability.image}`}
+                                            alt={ability.name}
+                                            sx={{
+                                                width: 70,
+                                                height: 70,
+                                                backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                                            }}
+                                        />
+                                    )}
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={
+                                        <Typography
+                                            variant="body1"
+                                            sx={{
+                                                color: selectedAbility?.id === ability.id ? 'rgb(0, 0, 0)' : '#ffffff',
+                                                fontWeight: 'bold',
+                                                marginLeft: '10%',
+                                            }}
+                                        >
+                                            {ability.name}
+                                        </Typography>
+                                    }
+                                />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Box>
+
+                {selectedAbility && (
+                    <Box
+                        sx={{
+                            flex: 2,
+                        }}
+                    >
+                        <Card
+                            sx={{
+                                backgroundColor: 'rgba(0,0,0,0.95)',
+                                border: '2px solid #00ff00',
+                                boxShadow: '0 0 10px 1px #00ff00',
+                                textAlign: 'center',
+                                height: '100%',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifySelf: 'baseline',
+                                    alignItems: 'center',
+                                    marginLeft: '5%',
+                                    marginTop: '5%',
+                                }}
+                            >
+                                <CardMedia
+                                    component="img"
+                                    image={`data:image/png;base64,${selectedAbility.image}`}
+                                    alt={selectedAbility.name}
+                                    sx={{width: 120, height: 120, margin: 'auto', paddingTop: 2}}
+                                />
+                                <CardContent>
+                                    <Typography variant="h5" sx={{fontWeight: 'bold', color: '#ffffff'}}>
+                                        {selectedAbility.name}
+                                    </Typography>
+                                </CardContent>
+                            </Box>
+                            <CardContent>
+                                <Typography variant="body1" sx={{color: '#ffffff', marginTop: 2, marginLeft: 4, justifySelf: 'flex-start'}}>
+                                    {selectedAbility.description}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Box>
+                )}
+            </Box>
         </Container>
     );
 };
