@@ -227,7 +227,7 @@ const PerksPage = () => {
                                     <Box
                                         sx={{
                                             display: 'flex',
-                                            justifySelf: 'baseline',
+                                            justifySelf: 'flex-start',
                                             alignItems: 'center',
                                             marginLeft: '5%',
                                             marginTop: '5%',
