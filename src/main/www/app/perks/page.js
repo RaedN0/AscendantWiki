@@ -15,6 +15,7 @@ import {
     Button,
 } from '@mui/material';
 import PerkService from "@/app/services/PerkService";
+import {keyframes} from '@emotion/react';
 
 const PerksPage = () => {
     const [perks, setPerks] = useState([]);
@@ -48,6 +49,15 @@ const PerksPage = () => {
         filterPerks(category);
     };
 
+    const hoverToGreen = keyframes`
+        0% {
+            background-color: #000000;
+        }
+        100% {
+            background-color: #00ff00;
+        }
+    `;
+
     return (
         <Container
             maxWidth="lg"
@@ -60,43 +70,45 @@ const PerksPage = () => {
                 padding: 2,
             }}
         >
-            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2}}>
-                <Typography variant="h5" sx={{color: '#ffffff', marginLeft: '1%'}}>
-                    Perks
-                </Typography>
-
-                <Box sx={{display: 'flex', gap: 2, margin: 'auto'}}>
-                    <Button
-                        variant={selectedCategory === 'COMBAT' ? 'contained' : 'outlined'}
-                        onClick={() => handleCategoryChange('COMBAT')}
-                        sx={{
-                            color: '#ffffff',
-                            border: '2px solid #00ff00',
-                            boxShadow: '0 0 10px 1px #00ff00',
-                            backgroundColor: selectedCategory === 'COMBAT' ? 'rgba(0,0,0,0.95)' : 'transparent',
-                            '&:hover': {
-                                backgroundColor: '#2d5a2d',
-                            },
-                        }}
-                    >
-                        Combat Perks
-                    </Button>
-                    <Button
-                        variant={selectedCategory === 'UTILITY' ? 'contained' : 'outlined'}
-                        onClick={() => handleCategoryChange('UTILITY')}
-                        sx={{
-                            color: '#ffffff',
-                            border: '2px solid #00ff00',
-                            boxShadow: '0 0 10px 1px #00ff00',
-                            backgroundColor: selectedCategory === 'UTILITY' ? 'rgba(0,0,0,0.95)' : 'transparent',
-                            '&:hover': {
-                                backgroundColor: '#2d5a2d',
-                            },
-                        }}
-                    >
-                        Utility Perks
-                    </Button>
-                </Box>
+            <Box sx={{display: 'flex', justifyContent: 'flex-start', gap: 2, alignItems: 'center', marginBottom: 2}}>
+                <Button
+                    variant={selectedCategory === 'COMBAT' ? 'contained' : 'outlined'}
+                    onClick={() => handleCategoryChange('COMBAT')}
+                    sx={{
+                        color: selectedCategory === 'COMBAT' ? '#000000' : '#ffffff',
+                        border: '2px solid #00ff00',
+                        boxShadow: '0 0 10px 1px #00ff00',
+                        backgroundColor: selectedCategory === 'COMBAT' ? 'rgba(0,250,0,0.95)' : '#000000',
+                        borderRadius: '5px',
+                        marginBottom: 1,
+                        transition: 'background-color 0.5s ease-in-out',
+                        '&:hover': {
+                            animation: selectedCategory !== 'COMBAT' ? `${hoverToGreen} 0.5s forwards` : 'none',
+                            color: 'black',
+                        },
+                    }}
+                >
+                    Combat Perks
+                </Button>
+                <Button
+                    variant={selectedCategory === 'UTILITY' ? 'contained' : 'outlined'}
+                    onClick={() => handleCategoryChange('UTILITY')}
+                    sx={{
+                        color: selectedCategory === 'UTILITY' ? '#000000' : '#ffffff',
+                        border: '2px solid #00ff00',
+                        boxShadow: '0 0 10px 1px #00ff00',
+                        backgroundColor: selectedCategory === 'UTILITY' ? 'rgba(0,250,0,0.95)' : '#000000',
+                        borderRadius: '5px',
+                        marginBottom: 1,
+                        transition: 'background-color 0.5s ease-in-out',
+                        '&:hover': {
+                            animation: selectedCategory !== 'UTILITY' ? `${hoverToGreen} 0.5s forwards` : 'none',
+                            color: 'black',
+                        },
+                    }}
+                >
+                    Utility Perks
+                </Button>
             </Box>
 
             <Box
@@ -131,13 +143,17 @@ const PerksPage = () => {
                                 key={perk.id}
                                 onClick={() => handleSelectPerk(perk)}
                                 sx={{
-                                    backgroundColor: selectedPerk?.id === perk.id ? '#2d5a2d' : 'transparent',
+                                    backgroundColor: selectedPerk?.id === perk.id ? '#00ff00' : '#000000',
                                     border: '1px solid #00ff00',
                                     boxShadow: '0 0 10px 1px #00ff00',
                                     borderRadius: '5px',
                                     marginBottom: 1,
+                                    transition: 'background-color 0.5s ease-in-out, color 0.5s ease-in-out',
                                     '&:hover': {
-                                        backgroundColor: '#2d5a2d',
+                                        animation: selectedPerk?.id !== perk.id ? `${hoverToGreen} 0.5s forwards` : 'none',
+                                        '& .MuiTypography-root': {
+                                            color: 'black',
+                                        },
                                     },
                                 }}
                             >
@@ -160,7 +176,7 @@ const PerksPage = () => {
                                         <Typography
                                             variant="body1"
                                             sx={{
-                                                color: '#ffffff',
+                                                color: selectedPerk?.id === perk.id ? 'rgb(0, 0, 0)' : '#ffffff',
                                                 fontWeight: 'bold',
                                                 marginLeft: '10%',
                                             }}
