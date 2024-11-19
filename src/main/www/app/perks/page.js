@@ -26,8 +26,9 @@ const PerksPage = () => {
     useEffect(() => {
         PerkService.getAllPerks()
             .then((data) => {
-                setPerks(data);
-                filterPerks('COMBAT', data);
+                const sortedPerks = data.sort((a, b) => a.name.localeCompare(b.name));
+                setPerks(sortedPerks);
+                filterPerks('COMBAT', sortedPerks);
             })
             .catch((err) => {
                 console.error('Failed to fetch perks:', err);

@@ -25,8 +25,9 @@ const AbilitiesPage = () => {
     useEffect(() => {
         AbilityService.getAllAbilities()
             .then((data) => {
-                setAbilities(data);
-                setSelectedAbility(data[0]);
+                const sortedAbilities = data.sort((a, b) => a.name.localeCompare(b.name));
+                setAbilities(sortedAbilities);
+                setSelectedAbility(sortedAbilities[0]);
             })
             .catch((err) => {
                 console.error('Failed to fetch abilities:', err);
