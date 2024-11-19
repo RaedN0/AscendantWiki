@@ -116,6 +116,7 @@ const PerksPage = () => {
                 sx={{
                     display: 'flex',
                     gap: 2,
+                    height: 'calc(100vh - 150px)',
                 }}
             >
                 <Box
@@ -129,7 +130,7 @@ const PerksPage = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        maxHeight: 'calc(100vh - 150px)',
+                        height: '100%',
                         overflow: 'auto',
                     }}
                 >
@@ -195,6 +196,7 @@ const PerksPage = () => {
                     <Box
                         sx={{
                             flex: 2,
+                            height: '100%',
                         }}
                     >
                         <Card
@@ -228,7 +230,12 @@ const PerksPage = () => {
                                 </CardContent>
                             </Box>
                             <CardContent>
-                                <Typography variant="body1" sx={{color: '#ffffff', marginTop: 2, marginLeft: 4, justifySelf: 'flex-start'}}>
+                                <Typography variant="body1" sx={{
+                                    color: '#ffffff',
+                                    margin: '5%',
+                                    justifySelf: 'flex-start',
+                                    textAlign: 'left'
+                                }}>
                                     {selectedPerk.description}
                                 </Typography>
                             </CardContent>

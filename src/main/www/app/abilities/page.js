@@ -63,6 +63,7 @@ const AbilitiesPage = () => {
                 sx={{
                     display: 'flex',
                     gap: 2,
+                    height: 'calc(100vh - 85px)',
                 }}
             >
                 <Box
@@ -76,8 +77,8 @@ const AbilitiesPage = () => {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        maxHeight: 'calc(100vh - 150px)',
                         overflow: 'auto',
+                        height: '100%'
                     }}
                 >
                     <List
@@ -175,7 +176,12 @@ const AbilitiesPage = () => {
                                 </CardContent>
                             </Box>
                             <CardContent>
-                                <Typography variant="body1" sx={{color: '#ffffff', marginTop: 2, marginLeft: 4, justifySelf: 'flex-start'}}>
+                                <Typography variant="body1" sx={{
+                                    color: '#ffffff',
+                                    margin: '5%',
+                                    textAlign: 'left',
+                                    justifySelf: 'flex-start'
+                                }}>
                                     {selectedAbility.description}
                                 </Typography>
                             </CardContent>
