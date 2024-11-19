@@ -4,7 +4,7 @@ pipeline {
             DB_URL = credentials('DB_URL')  // Inject DB_URL from Jenkins credentials
             DB_USER = credentials('DB_USER') // Inject username from DB_USER
             DB_PASSWORD = credentials('DB_USER') // Password is automatically part of DB_USER
-            NEXT_PUBLIC_API_URL = "https://ascendant.raedn.net"
+            NEXT_PUBLIC_API_URL = "http://172.17.0.1:8181"
         }
     stages {
         stage("Build Frontend Docker Image") {

@@ -1,13 +1,10 @@
 import axios from 'axios'
-import process from "next/dist/build/webpack/loaders/resolve-url-loader/lib/postcss";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 class AttachmentService {
 
     async getAttachments() {
         try {
-            const response = await axios.get(`${API_URL}/api/attachments`);
+            const response = await axios.get(`/api/attachments`);
             return response.data;
         } catch (error) {
             console.error(error);
@@ -16,7 +13,7 @@ class AttachmentService {
 
     async getAttachmentByType(type) {
         try {
-            const response = await axios.get(`${API_URL}/api/attachments?type=${type}`);
+            const response = await axios.get(`/api/attachments?type=${type}`);
             return response.data;
         } catch (error) {
             console.error(error);
@@ -25,7 +22,7 @@ class AttachmentService {
 
     async addAttachment(attachment) {
         try {
-            const response = await axios.post(`${API_URL}/api/attachments`, attachment, {
+            const response = await axios.post(`/api/attachments`, attachment, {
                 withCredentials: true,
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,7 +36,7 @@ class AttachmentService {
 
     async updateAttachment(updatedAttachment) {
         try {
-            const response = await axios.put(`${API_URL}/api/attachments`, updatedAttachment, {
+            const response = await axios.put(`/api/attachments`, updatedAttachment, {
                 withCredentials: true,
                 headers: {
                     'Content-Type': 'application/json',
@@ -53,7 +50,7 @@ class AttachmentService {
 
     async deleteAttachment(id) {
         try {
-            await axios.delete(`${API_URL}/api/attachment/${id}`, {
+            await axios.delete(`/api/attachment/${id}`, {
                 withCredentials: true,
             });
         } catch (error) {

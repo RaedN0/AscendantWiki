@@ -1,12 +1,10 @@
 import axios from 'axios';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 class AbilityService {
 
     async getAllAbilities() {
         try {
-            const response = await axios.get(`${API_URL}/api/abilities`);
+            const response = await axios.get(`/api/abilities`);
             return response.data;
         } catch (error) {
             console.error('Error fetching abilities:', error);
@@ -15,7 +13,7 @@ class AbilityService {
 
     async getAbilityById(id) {
         try {
-            const response = await axios.get(`${API_URL}/api/ability/${id}`);
+            const response = await axios.get(`/api/ability/${id}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching ability by ID:', error);
@@ -31,7 +29,7 @@ class AbilityService {
             formData.append('activationTime', activationTime);
             formData.append('image', image);
 
-            const response = await axios.post(`${API_URL}/api/abilities`, formData, {
+            const response = await axios.post(`/api/abilities`, formData, {
                 withCredentials: true,
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -54,7 +52,7 @@ class AbilityService {
                 formData.append('image', image);
             }
 
-            const response = await axios.put(`${API_URL}/api/abilities/${id}`, formData, {
+            const response = await axios.put(`/api/abilities/${id}`, formData, {
                 withCredentials: true,
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -68,7 +66,7 @@ class AbilityService {
 
     async deleteAbility(id) {
         try {
-            await axios.delete(`${API_URL}/api/abilities/${id}`, {
+            await axios.delete(`/api/abilities/${id}`, {
                 withCredentials: true,
             });
         } catch (error) {
