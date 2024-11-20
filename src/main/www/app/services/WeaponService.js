@@ -24,7 +24,6 @@ class WeaponService {
             formData.append('cost', cost);
             formData.append('image', image);
 
-            console.log(formData);
             const response = await axios.post(`/api/weapons`, formData, {
                 withCredentials: true,
                 headers: {
