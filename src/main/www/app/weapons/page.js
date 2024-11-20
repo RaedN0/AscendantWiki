@@ -1,12 +1,15 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {Box, Button, CardMedia, Container, Typography,} from '@mui/material';
+import {Box, Button, CardMedia, Container, Typography, useTheme,} from '@mui/material';
 import WeaponService from '@/app/services/WeaponService';
 import {keyframes} from "@emotion/react";
 import ListSection from "@/app/components/ListSection";
+import {gradientBackground} from "@/app/styles/gradient";
 
 const WeaponsPage = () => {
+    const theme = useTheme();
+
     const [weapons, setWeapons] = useState([]);
     const [filteredWeapons, setFilteredWeapons] = useState([]);
     const [selectedWeapon, setSelectedWeapon] = useState(null);
@@ -65,10 +68,10 @@ const WeaponsPage = () => {
                     gap: 2,
                     marginBottom: 2,
                     padding: 1,
-                    border: '2px solid #00ff00',
+                    border: `2px solid ${theme.palette.custom.main}`,
+                    boxShadow: `0 0 10px ${theme.palette.custom.main}`,
                     backgroundColor: 'rgba(0, 0, 0, 0.95)',
                     borderRadius: 2,
-                    boxShadow: '0 0 10px #00ff00',
                 }}
             >
                 {['Battle Rifle', 'Beam Gloves', 'Plasma Rifle', 'Shotgun', 'Sniper Rifle'].map(
@@ -77,17 +80,13 @@ const WeaponsPage = () => {
                             key={category}
                             onClick={() => handleCategoryChange(category)}
                             sx={{
+                                ...gradientBackground,
                                 color: weaponCategory === category ? '#000000' : '#ffffff',
-                                backgroundColor:
+                                background:
                                     weaponCategory === category
-                                        ? 'rgba(0,255,0,0.9)'
-                                        : 'transparent',
+                                        ? theme.palette.custom.main
+                                        : gradientBackground.background,
                                 padding: '5px 15px',
-                                transition: 'background-color 0.5s ease-in-out',
-                                '&:hover': {
-                                    animation: selectedWeapon?.category !== category ? `${hoverToGreen} 0.5s forwards` : 'none',
-                                    color: 'black',
-                                },
                             }}
                         >
                             {category}
@@ -139,8 +138,8 @@ const WeaponsPage = () => {
                         <Box
                             sx={{
                                 flex: 1,
-                                border: '2px solid #00ff00',
-                                boxShadow: '0 0 10px #00ff00',
+                                border: `2px solid ${theme.palette.custom.main}`,
+                                boxShadow: `0 0 10px ${theme.palette.custom.main}`,
                                 borderRadius: 2,
                                 backgroundColor: 'rgba(0,0,0,0.9)',
                                 padding: 3,
@@ -154,7 +153,7 @@ const WeaponsPage = () => {
                                     display: 'flex',
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
-                                    borderBottom: '1px solid #00ff00',
+                                    borderBottom: `1px solid ${theme.palette.custom.main}`,
                                     paddingBottom: 1,
                                     marginBottom: 3,
                                 }}
@@ -162,7 +161,7 @@ const WeaponsPage = () => {
                                 <Typography
                                     variant="h6"
                                     sx={{
-                                        color: '#00ff00',
+                                        color: theme.palette.custom.main,
                                         fontWeight: 'bold',
                                     }}
                                 >
@@ -171,7 +170,7 @@ const WeaponsPage = () => {
                                 <Typography
                                     variant="h6"
                                     sx={{
-                                        color: '#00ff00',
+                                        color: theme.palette.custom.main,
                                         fontWeight: 'bold',
                                         textAlign: 'right',
                                     }}
@@ -188,23 +187,23 @@ const WeaponsPage = () => {
                                 }}
                             >
                                 <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: '#00ff00'}}>Base Damage:</strong> {selectedWeapon.baseDamage}
+                                    <strong style={{color: theme.palette.custom.main}}>Base Damage:</strong> {selectedWeapon.baseDamage}
                                 </Typography>
                                 <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: '#00ff00'}}>Fire Rate:</strong> {selectedWeapon.fireRate} RPM
+                                    <strong style={{color: theme.palette.custom.main}}>Fire Rate:</strong> {selectedWeapon.fireRate} RPM
                                 </Typography>
                                 <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: '#00ff00'}}>Reload Speed:</strong> {selectedWeapon.reloadSpeed} seconds
+                                    <strong style={{color: theme.palette.custom.main}}>Reload
+                                        Speed:</strong> {selectedWeapon.reloadSpeed} seconds
                                 </Typography>
                                 <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: '#00ff00'}}>Rarity:</strong> {selectedWeapon.rarity}
+                                    <strong style={{color: theme.palette.custom.main}}>Rarity:</strong> {selectedWeapon.rarity}
                                 </Typography>
                                 <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: '#00ff00'}}>Ammo:</strong> {selectedWeapon.ammo}
+                                    <strong style={{color: theme.palette.custom.main}}>Ammo:</strong> {selectedWeapon.ammo}
                                 </Typography>
                             </Box>
                         </Box>
-
                     )}
                 </Box>
             </Box>

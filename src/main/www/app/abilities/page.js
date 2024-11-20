@@ -1,11 +1,13 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {Box, Card, CardContent, CardMedia, CircularProgress, Container, Typography,} from '@mui/material';
+import {Box, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useTheme,} from '@mui/material';
 import AbilityService from "@/app/services/AbilityService";
 import ListSection from "@/app/components/ListSection";
 
 const AbilitiesPage = () => {
+    const theme = useTheme();
+
     const [abilities, setAbilities] = useState([]);
     const [selectedAbility, setSelectedAbility] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -38,7 +40,7 @@ const AbilitiesPage = () => {
             }}
         >
             {loading ? (
-                <CircularProgress sx={{color: '#00ff00'}}/>
+                <CircularProgress sx={{color: theme.palette.custom.main}}/>
             ) : (
                 <Box
                     sx={{
@@ -59,8 +61,8 @@ const AbilitiesPage = () => {
                             <Card
                                 sx={{
                                     backgroundColor: 'rgba(0,0,0,0.95)',
-                                    border: '2px solid #00ff00',
-                                    boxShadow: '0 0 10px 1px #00ff00',
+                                    border: `2px solid ${theme.palette.custom.main}`,
+                                    boxShadow: `0 0 10px 1px ${theme.palette.custom.main}`,
                                     textAlign: 'center',
                                     height: '100%',
                                 }}

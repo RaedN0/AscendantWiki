@@ -1,12 +1,14 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Typography,} from '@mui/material';
-import {keyframes} from '@emotion/react';
+import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useTheme,} from '@mui/material';
 import PerkService from "@/app/services/PerkService";
 import ListSection from "@/app/components/ListSection";
+import {gradientBackground} from "@/app/styles/gradient";
 
 const PerksPage = () => {
+    const theme = useTheme();
+
     const [perks, setPerks] = useState([]);
     const [filteredPerks, setFilteredPerks] = useState([]);
     const [selectedPerk, setSelectedPerk] = useState(null);
@@ -39,15 +41,6 @@ const PerksPage = () => {
         filterPerks(category);
     };
 
-    const hoverToGreen = keyframes`
-        0% {
-            background-color: #000000;
-        }
-        100% {
-            background-color: #00ff00;
-        }
-    `;
-
     return (
         <Container
             maxWidth="lg"
@@ -61,7 +54,7 @@ const PerksPage = () => {
             }}
         >
             {loading ? (
-                <CircularProgress sx={{color: '#00ff00'}}/>
+                <CircularProgress sx={{color: theme.palette.custom.main}}/>
             ) : (
                 <>
                     <Box sx={{display: 'flex', justifyContent: 'flex-start', gap: 2, alignItems: 'center', marginBottom: 2}}>
@@ -69,16 +62,9 @@ const PerksPage = () => {
                             variant={selectedCategory === 'COMBAT' ? 'contained' : 'outlined'}
                             onClick={() => handleCategoryChange('COMBAT')}
                             sx={{
+                                ...gradientBackground,
+                                background: selectedCategory === 'COMBAT' ? theme.palette.custom.main : gradientBackground.background,
                                 color: selectedCategory === 'COMBAT' ? '#000000' : '#ffffff',
-                                border: '2px solid #00ff00',
-                                boxShadow: '0 0 10px 1px #00ff00',
-                                backgroundColor: selectedCategory === 'COMBAT' ? 'rgba(0,250,0,0.95)' : '#000000',
-                                borderRadius: '5px',
-                                transition: 'background-color 0.5s ease-in-out',
-                                '&:hover': {
-                                    animation: selectedCategory !== 'COMBAT' ? `${hoverToGreen} 0.5s forwards` : 'none',
-                                    color: 'black',
-                                },
                             }}
                         >
                             Combat Perks
@@ -87,16 +73,9 @@ const PerksPage = () => {
                             variant={selectedCategory === 'UTILITY' ? 'contained' : 'outlined'}
                             onClick={() => handleCategoryChange('UTILITY')}
                             sx={{
+                                ...gradientBackground,
+                                background: selectedCategory === 'UTILITY' ? theme.palette.custom.main : gradientBackground.background,
                                 color: selectedCategory === 'UTILITY' ? '#000000' : '#ffffff',
-                                border: '2px solid #00ff00',
-                                boxShadow: '0 0 10px 1px #00ff00',
-                                backgroundColor: selectedCategory === 'UTILITY' ? 'rgba(0,250,0,0.95)' : '#000000',
-                                borderRadius: '5px',
-                                transition: 'background-color 0.5s ease-in-out',
-                                '&:hover': {
-                                    animation: selectedCategory !== 'UTILITY' ? `${hoverToGreen} 0.5s forwards` : 'none',
-                                    color: 'black',
-                                },
                             }}
                         >
                             Utility Perks
@@ -122,9 +101,9 @@ const PerksPage = () => {
                             >
                                 <Card
                                     sx={{
-                                        backgroundColor: 'rgba(0,0,0,0.95)',
-                                        border: '2px solid #00ff00',
-                                        boxShadow: '0 0 10px 1px #00ff00',
+                                        background: 'rgba(0,0,0,0.95)',
+                                        border: `2px solid ${theme.palette.custom.main}`,
+                                        boxShadow: `0 0 10px 1px ${theme.palette.custom.main}`,
                                         textAlign: 'center',
                                         height: '100%',
                                     }}

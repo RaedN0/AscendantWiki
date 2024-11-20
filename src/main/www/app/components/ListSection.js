@@ -1,14 +1,5 @@
-import {Box, List, ListItem, ListItemIcon, ListItemText, Typography, CardMedia} from '@mui/material';
-import {keyframes} from "@emotion/react";
-
-const hoverToGreen = keyframes`
-    0% {
-        background-color: #000000;
-    }
-    100% {
-        background-color: #00ff00;
-    }
-`;
+import {Box, CardMedia, List, ListItem, ListItemIcon, ListItemText, Typography, useTheme} from '@mui/material';
+import {gradientBackground} from "@/app/styles/gradient";
 
 const ListSection = ({
                          items,
@@ -21,12 +12,15 @@ const ListSection = ({
                          },
                          textStyle = {marginLeft: '10%',}
                      }) => {
+
+    const theme = useTheme();
+
     return (
         <Box
             sx={{
                 flex: 1,
-                border: '2px solid #00ff00',
-                boxShadow: '0 0 10px 1px #00ff00',
+                border: `2px solid ${theme.palette.custom.main}`,
+                boxShadow: `0 0 10px 1px ${theme.palette.custom.main}`,
                 borderRadius: 2,
                 backgroundColor: 'rgba(0,0,0,0.95)',
                 padding: 2,
@@ -48,20 +42,10 @@ const ListSection = ({
                         key={item.id}
                         onClick={() => setSelectedItem(item)}
                         sx={{
-                            display: 'flex',
+                            ...gradientBackground,
+                            marginBottom: '15px',
                             flexDirection: flexDirection,
-                            backgroundColor: selectedItem?.id === item.id ? '#00ff00' : '#000000',
-                            border: '1px solid #00ff00',
-                            boxShadow: '0 0 10px 1px #00ff00',
-                            borderRadius: '5px',
-                            marginBottom: 1,
-                            transition: 'background-color 0.5s ease-in-out, color 0.5s ease-in-out',
-                            '&:hover': {
-                                animation: selectedItem?.id !== item.id ? `${hoverToGreen} 0.5s forwards` : 'none',
-                                '& .MuiTypography-root': {
-                                    color: 'black',
-                                },
-                            },
+                            background: selectedItem?.id === item?.id ? theme.palette.custom.main : gradientBackground.background,
                         }}
                     >
                         <ListItemIcon>
