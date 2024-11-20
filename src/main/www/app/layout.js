@@ -19,6 +19,14 @@ export const metadata = {
     description: "Wiki page for the game Ascendant",
 };
 
+export const viewport = {
+    themeColor: 'black',
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+}
+
 export default function RootLayout({children}) {
     return (
         <html lang="en">
