@@ -2,8 +2,23 @@
 
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import '@fontsource/orbitron'; // Defaults to weight 400
 
 const theme = createTheme({
+    typography: {
+        fontFamily: 'Orbitron, Arial, sans-serif', // Default font family
+        body1: {
+            fontSize: '1rem',
+            fontWeight: 400,
+            color: '#ffffff',
+        },
+        h6: {
+            fontSize: '1.25rem',
+            fontWeight: 700,
+            color: 'rgba(0,255,120,0.9)',
+            textShadow: '0 0 5px rgba(0,255,120,0.9)',
+        },
+    },
     palette: {
         mode: 'dark',
         primary: {main: '#1976d2'},

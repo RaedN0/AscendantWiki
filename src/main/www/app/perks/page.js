@@ -113,15 +113,15 @@ const PerksPage = () => {
                                             display: 'flex',
                                             justifySelf: 'flex-start',
                                             alignItems: 'center',
-                                            marginLeft: '5%',
-                                            marginTop: '5%',
+                                            marginLeft: '10px',
+                                            marginTop: '10px',
                                         }}
                                     >
                                         <CardMedia
                                             component="img"
                                             image={`data:image/png;base64,${selectedPerk.image}`}
                                             alt={selectedPerk.name}
-                                            sx={{width: 120, height: 120, margin: 'auto', paddingTop: 2}}
+                                            sx={{width: 200, height: 200, margin: 'auto'}}
                                         />
                                         <CardContent>
                                             <Typography variant="h5" sx={{fontWeight: 'bold', color: '#ffffff'}}>

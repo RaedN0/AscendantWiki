@@ -60,7 +60,7 @@ const AbilitiesPage = () => {
                         >
                             <Card
                                 sx={{
-                                    backgroundColor: 'rgba(0,0,0,0.95)',
+                                    background: 'rgba(0,0,0,0.95)',
                                     border: `2px solid ${theme.palette.custom.main}`,
                                     boxShadow: `0 0 10px 1px ${theme.palette.custom.main}`,
                                     textAlign: 'center',
@@ -72,15 +72,15 @@ const AbilitiesPage = () => {
                                         display: 'flex',
                                         justifySelf: 'flex-start',
                                         alignItems: 'center',
-                                        marginLeft: '5%',
-                                        marginTop: '5%',
+                                        marginLeft: '10px',
+                                        marginTop: '10px',
                                     }}
                                 >
                                     <CardMedia
                                         component="img"
                                         image={`data:image/png;base64,${selectedAbility.image}`}
                                         alt={selectedAbility.name}
-                                        sx={{width: 120, height: 120, margin: 'auto', paddingTop: 2}}
+                                        sx={{width: 200, height: 200, margin: 'auto'}}
                                     />
                                     <CardContent>
                                         <Typography variant="h5" sx={{fontWeight: 'bold', color: '#ffffff'}}>

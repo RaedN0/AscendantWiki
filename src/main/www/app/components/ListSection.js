@@ -7,10 +7,10 @@ const ListSection = ({
                          setSelectedItem,
                          flexDirection = 'row',
                          imageStyle = {
-                             width: 70,
-                             height: 70,
+                             width: 40,
+                             height: 40,
                          },
-                         textStyle = {marginLeft: '10%',}
+                         textStyle = {marginLeft: '8px',}
                      }) => {
 
     const theme = useTheme();
@@ -48,7 +48,7 @@ const ListSection = ({
                             background: selectedItem?.id === item?.id ? theme.palette.custom.main : gradientBackground.background,
                         }}
                     >
-                        <ListItemIcon>
+                        <ListItemIcon sx={{ minWidth: '10px' }}>
                             {item.image && (
                                 <CardMedia
                                     component="img"
