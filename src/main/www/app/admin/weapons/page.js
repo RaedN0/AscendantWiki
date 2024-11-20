@@ -2,7 +2,20 @@
 
 import React, {useEffect, useState} from 'react';
 import {DataGrid} from '@mui/x-data-grid';
-import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Fab, IconButton, MenuItem, Select, TextField,} from '@mui/material';
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Fab,
+    IconButton,
+    MenuItem,
+    Select,
+    TextField,
+    Typography,
+} from '@mui/material';
 import {Add, Delete, Edit} from '@mui/icons-material';
 
 import WeaponService from "@/app/services/WeaponService";
@@ -19,7 +32,8 @@ const WeaponsPage = () => {
         category: 'BATTLE_RIFLE',
         rarity: 'GREY',
         ammo: 'LIGHT',
-        cost: 0
+        cost: 0,
+        image: null
     });
     const [isEdit, setIsEdit] = useState(false);
 
@@ -45,7 +59,8 @@ const WeaponsPage = () => {
         category: 'BATTLE_RIFLE',
         rarity: 'GREY',
         ammo: 'LIGHT',
-        cost: 0
+        cost: 0,
+        image: null
     }) => {
         setIsEdit(!!weapon.id);
         setFormData(weapon);
@@ -57,6 +72,10 @@ const WeaponsPage = () => {
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData({...formData, [name]: value});
+    };
+
+    const handleImageChange = (e) => {
+        setFormData({ ...formData, image: e.target.files[0] });
     };
 
     const handleSubmit = () => {
@@ -88,6 +107,7 @@ const WeaponsPage = () => {
         {field: 'rarity', headerName: 'Rarity', flex: 1},
         {field: 'ammo', headerName: 'Ammo', flex: 1},
         {field: 'cost', headerName: 'Cost', flex: 1},
+        {field: 'image', headerName: 'Image', flex: 1},
         {
             field: 'actions',
             headerName: 'Actions',
@@ -202,6 +222,23 @@ const WeaponsPage = () => {
                         onChange={handleChange}
                         fullWidth
                     />
+                    <Button
+                        variant="contained"
+                        component="label"
+                        sx={{ mt: 2 }}
+                    >
+                        Upload Image
+                        <input
+                            type="file"
+                            hidden
+                            onChange={handleImageChange}
+                        />
+                    </Button>
+                    {formData.image && (
+                        <Typography sx={{ mt: 1 }} variant="body2">
+                            Selected file: {formData.image.name}
+                        </Typography>
+                    )}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>

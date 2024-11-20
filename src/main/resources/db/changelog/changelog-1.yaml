@@ -60,3 +60,6 @@ databaseChangeLog:
                   type: int
                   constraints:
                     nullable: false
+              - column:
+                  name: image
+                  type: BLOB
