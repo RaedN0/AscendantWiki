@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import {keyframes} from '@emotion/react';
 import PerkService from "@/app/services/PerkService";
+import ListSection from "@/app/components/ListSection";
 
 const PerksPage = () => {
     const [perks, setPerks] = useState([]);
@@ -135,78 +136,8 @@ const PerksPage = () => {
                             height: 'calc(100vh - 150px)',
                         }}
                     >
-                        <Box
-                            sx={{
-                                flex: 1,
-                                border: '2px solid #00ff00',
-                                boxShadow: '0 0 10px 1px #00ff00',
-                                borderRadius: 2,
-                                backgroundColor: 'rgba(0,0,0,0.95)',
-                                padding: 2,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                height: '100%',
-                                overflow: 'auto',
-                            }}
-                        >
-                            <List
-                                sx={{
-                                    padding: 0,
-                                    width: '100%',
-                                }}
-                            >
-                                {filteredPerks.map((perk) => (
-                                    <ListItem
-                                        key={perk.id}
-                                        onClick={() => handleSelectPerk(perk)}
-                                        sx={{
-                                            backgroundColor: selectedPerk?.id === perk.id ? '#00ff00' : '#000000',
-                                            border: '1px solid #00ff00',
-                                            boxShadow: '0 0 10px 1px #00ff00',
-                                            borderRadius: '5px',
-                                            marginBottom: 1,
-                                            transition: 'background-color 0.5s ease-in-out, color 0.5s ease-in-out',
-                                            '&:hover': {
-                                                animation: selectedPerk?.id !== perk.id ? `${hoverToGreen} 0.5s forwards` : 'none',
-                                                '& .MuiTypography-root': {
-                                                    color: 'black',
-                                                },
-                                            },
-                                        }}
-                                    >
-                                        <ListItemIcon>
-                                            {perk.image && (
-                                                <CardMedia
-                                                    component="img"
-                                                    image={`data:image/png;base64,${perk.image}`}
-                                                    alt={perk.name}
-                                                    sx={{
-                                                        width: 70,
-                                                        height: 70,
-                                                        backgroundColor: 'rgba(0, 0, 0, 0.95)',
-                                                    }}
-                                                />
-                                            )}
-                                        </ListItemIcon>
-                                        <ListItemText
-                                            primary={
-                                                <Typography
-                                                    variant="body1"
-                                                    sx={{
-                                                        color: selectedPerk?.id === perk.id ? 'rgb(0, 0, 0)' : '#ffffff',
-                                                        fontWeight: 'bold',
-                                                        marginLeft: '10%',
-                                                    }}
-                                                >
-                                                    {perk.name}
-                                                </Typography>
-                                            }
-                                        />
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Box>
+
+                        <ListSection items={filteredPerks} selectedItem={selectedPerk} setSelectedItem={setSelectedPerk} />
 
                         {selectedPerk && (
                             <Box

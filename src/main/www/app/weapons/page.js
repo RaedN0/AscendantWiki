@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import WeaponService from '@/app/services/WeaponService';
 import {keyframes} from "@emotion/react";
+import ListSection from "@/app/components/ListSection";
 
 const WeaponsPage = () => {
     const [weapons, setWeapons] = useState([]);
@@ -115,78 +116,19 @@ const WeaponsPage = () => {
                     gap: 2,
                 }}
             >
-                <Box
-                    sx={{
-                        flex: 1,
-                        border: '2px solid #00ff00',
-                        boxShadow: '0 0 10px #00ff00',
-                        borderRadius: 2,
-                        backgroundColor: 'rgba(0,0,0,0.9)',
-                        overflowY: 'auto',
-                        width: '30vw',
-                        padding: 2,
+                <ListSection
+                    items={filteredWeapons}
+                    selectedItem={selectedWeapon}
+                    setSelectedItem={setSelectedWeapon}
+                    flexDirection={'column'}
+                    imageStyle={{
+                        width: '100%',
+                        paddingX: '20%',
                     }}
-                >
-                    <List
-                        sx={{
-                            padding: 0,
-                            width: '100%',
-                        }}
-                    >
-                        {filteredWeapons.map((weapon) => (
-                            <ListItem
-                                key={weapon.id}
-                                onClick={() => handleSelectWeapon(weapon)}
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    backgroundColor: selectedWeapon?.id === weapon.id ? '#00ff00' : '#000000',
-                                    border: '1px solid #00ff00',
-                                    boxShadow: '0 0 10px 1px #00ff00',
-                                    borderRadius: '5px',
-                                    marginBottom: 1,
-                                    transition: 'background-color 0.5s ease-in-out, color 0.5s ease-in-out',
-                                    '&:hover': {
-                                        animation: selectedWeapon?.id !== weapon.id ? `${hoverToGreen} 0.5s forwards` : 'none',
-                                        '& .MuiTypography-root': {
-                                            color: 'black',
-                                        },
-                                    },
-                                }}
-                            >
-                                <ListItemIcon sx={{justifyContent: 'center'}}>
-                                    {weapon.image && (
-                                        <CardMedia
-                                            component="img"
-                                            image={`data:image/png;base64,${weapon.image}`}
-                                            alt={weapon.name}
-                                            sx={{
-                                                width: '100%',
-                                                paddingX: '20%',
-                                                backgroundColor: 'rgba(0, 0, 0, 0.95)',
-                                            }}
-                                        />
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText sx={{alignSelf: 'flex-start'}}
-                                              primary={
-                                                  <Typography
-                                                      variant="body1"
-                                                      sx={{
-                                                          color: selectedWeapon?.id === weapon.id ? 'rgb(0, 0, 0)' : '#ffffff',
-                                                          fontWeight: 'bold',
-                                                          width: '100%',
-                                                          marginBottom: '-10%'
-                                                      }}
-                                                  >
-                                                      {weapon.name}
-                                                  </Typography>
-                                              }
-                                />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Box>
+                    textStyle={{
+                        marginBottom: '-10%'
+                    }}
+                />
 
                 <Box sx={{
                     flex: 2,
