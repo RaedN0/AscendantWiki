@@ -33,3 +33,30 @@ databaseChangeLog:
                   type: double
                   constraints:
                     nullable: false
+  - changeSet:
+      id: 2
+      author: RaedN0
+      changes:
+        - addColumn:
+            tableName: weapons
+            columns:
+              - column:
+                  name: category
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rarity
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ammo
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cost
+                  type: int
+                  constraints:
+                    nullable: false

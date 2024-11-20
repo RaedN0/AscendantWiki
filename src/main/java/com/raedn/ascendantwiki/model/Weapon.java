@@ -1,6 +1,8 @@
 package com.raedn.ascendantwiki.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,4 +23,11 @@ public class Weapon {
 	private double baseDamage;
 	private double fireRate;
 	private double reloadSpeed;
+	@Enumerated(value = EnumType.STRING)
+	private WeaponCategory category;
+	@Enumerated(value = EnumType.STRING)
+	private Rarity rarity;
+	@Enumerated(value = EnumType.STRING)
+	private Ammo ammo;
+	private int cost;
 }
