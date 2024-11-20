@@ -50,7 +50,7 @@ class AttachmentService {
 
     async deleteAttachment(id) {
         try {
-            await axios.delete(`/api/attachment/${id}`, {
+            await axios.delete(`/api/attachments/${id}`, {
                 withCredentials: true,
             });
         } catch (error) {
