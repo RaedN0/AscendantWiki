@@ -1,26 +1,26 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
-import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    TextField,
-    IconButton,
-} from '@mui/material';
-import { Delete, Edit, Add } from '@mui/icons-material';
-import { Fab } from '@mui/material';
+import React, {useEffect, useState} from 'react';
+import {DataGrid} from '@mui/x-data-grid';
+import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Fab, IconButton, MenuItem, Select, TextField,} from '@mui/material';
+import {Add, Delete, Edit} from '@mui/icons-material';
 
 import WeaponService from "@/app/services/WeaponService";
 
 const WeaponsPage = () => {
     const [weapons, setWeapons] = useState([]);
     const [open, setOpen] = useState(false);
-    const [formData, setFormData] = useState({ id: '', name: '', baseDamage: 0, fireRate: 0, reloadSpeed: 0 });
+    const [formData, setFormData] = useState({
+        id: '',
+        name: '',
+        baseDamage: 0,
+        fireRate: 0,
+        reloadSpeed: 0,
+        category: 'BATTLE_RIFLE',
+        rarity: 'GREY',
+        ammo: 'LIGHT',
+        cost: 0
+    });
     const [isEdit, setIsEdit] = useState(false);
 
     const fetchWeapons = async () => {
@@ -36,7 +36,17 @@ const WeaponsPage = () => {
         fetchWeapons();
     }, []);
 
-    const handleOpen = (weapon = { id: '', name: '', baseDamage: 0, fireRate: 0, reloadSpeed: 0}) => {
+    const handleOpen = (weapon = {
+        id: '',
+        name: '',
+        baseDamage: 0,
+        fireRate: 0,
+        reloadSpeed: 0,
+        category: 'BATTLE_RIFLE',
+        rarity: 'GREY',
+        ammo: 'LIGHT',
+        cost: 0
+    }) => {
         setIsEdit(!!weapon.id);
         setFormData(weapon);
         setOpen(true);
@@ -45,12 +55,12 @@ const WeaponsPage = () => {
     const handleClose = () => setOpen(false);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const {name, value} = e.target;
+        setFormData({...formData, [name]: value});
     };
 
     const handleSubmit = () => {
-        if(isEdit) {
+        if (isEdit) {
             WeaponService.updateWeapon(formData).then(r => {
                 fetchWeapons();
             })
@@ -69,11 +79,15 @@ const WeaponsPage = () => {
     };
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 90 },
-        { field: 'name', headerName: 'Name', flex: 1 },
-        { field: 'baseDamage', headerName: 'Base Damage', flex: 1 },
-        { field: 'fireRate', headerName: 'Fire Rate', flex: 1 },
-        { field: 'reloadSpeed', headerName: 'Reload Speed', flex: 1 },
+        {field: 'id', headerName: 'ID', width: 90},
+        {field: 'name', headerName: 'Name', flex: 1},
+        {field: 'baseDamage', headerName: 'Base Damage', flex: 1},
+        {field: 'fireRate', headerName: 'Fire Rate', flex: 1},
+        {field: 'reloadSpeed', headerName: 'Reload Speed', flex: 1},
+        {field: 'category', headerName: 'Category', flex: 1},
+        {field: 'rarity', headerName: 'Rarity', flex: 1},
+        {field: 'ammo', headerName: 'Ammo', flex: 1},
+        {field: 'cost', headerName: 'Cost', flex: 1},
         {
             field: 'actions',
             headerName: 'Actions',
@@ -81,10 +95,10 @@ const WeaponsPage = () => {
             renderCell: (params) => (
                 <>
                     <IconButton onClick={() => handleOpen(params.row)} color="primary">
-                        <Edit />
+                        <Edit/>
                     </IconButton>
                     <IconButton onClick={() => handleDelete(params.row.id)} color="error">
-                        <Delete />
+                        <Delete/>
                     </IconButton>
                 </>
             ),
@@ -92,7 +106,7 @@ const WeaponsPage = () => {
     ];
 
     return (
-        <Box sx={{ height: 600, width: '100%', mt: 4 }}>
+        <Box sx={{height: 600, width: '100%', mt: 4}}>
             <Fab
                 color="primary"
                 aria-label="add"
@@ -103,10 +117,10 @@ const WeaponsPage = () => {
                     right: 16,
                 }}
             >
-                <Add />
+                <Add/>
             </Fab>
 
-            <DataGrid rows={weapons} columns={columns} pageSize={10} checkboxSelection={false} />
+            <DataGrid rows={weapons} columns={columns} pageSize={10} checkboxSelection={false}/>
 
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{isEdit ? 'Edit Weapon' : 'Add Weapon'}</DialogTitle>
@@ -140,6 +154,51 @@ const WeaponsPage = () => {
                         name="reloadSpeed"
                         label="Reload Speed"
                         value={formData.reloadSpeed}
+                        onChange={handleChange}
+                        fullWidth
+                    />
+                    <Select
+                        margin="dense"
+                        name="type"
+                        value={formData.category}
+                        onChange={handleChange}
+                        fullWidth
+                    >
+                        <MenuItem value="BATTLE_RIFLE">Battle Rifle</MenuItem>
+                        <MenuItem value="PLASMA_RIFLE">Plasma Rifle</MenuItem>
+                        <MenuItem value="BEAM_GLOVES">Beam Gloves</MenuItem>
+                        <MenuItem value="SHOTGUN">Shotgun</MenuItem>
+                        <MenuItem value="BOMBER">Bomber</MenuItem>
+                        <MenuItem value="SNIPER_RIFLE">Sniper Rifle</MenuItem>
+                    </Select>
+                    <Select
+                        margin="dense"
+                        name="type"
+                        value={formData.rarity}
+                        onChange={handleChange}
+                        fullWidth
+                    >
+                        <MenuItem value="GREY">Grey</MenuItem>
+                        <MenuItem value="BLUE">Blue</MenuItem>
+                        <MenuItem value="PURPLE">Purple</MenuItem>
+                        <MenuItem value="GOLDEN">Golden</MenuItem>
+                    </Select>
+                    <Select
+                        margin="dense"
+                        name="type"
+                        value={formData.ammo}
+                        onChange={handleChange}
+                        fullWidth
+                    >
+                        <MenuItem value="LIGHT">Light</MenuItem>
+                        <MenuItem value="HEAVY">Heavy</MenuItem>
+                        <MenuItem value="ENERGY">Energy</MenuItem>
+                    </Select>
+                    <TextField
+                        margin="dense"
+                        name="cost"
+                        label="Cost"
+                        value={formData.cost}
                         onChange={handleChange}
                         fullWidth
                     />
