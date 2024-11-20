@@ -95,8 +95,10 @@ const WeaponsPage = () => {
                                         ? 'rgba(0,255,0,0.9)'
                                         : 'transparent',
                                 padding: '5px 15px',
+                                transition: 'background-color 0.5s ease-in-out',
                                 '&:hover': {
-                                    backgroundColor: 'rgba(0,255,0,0.7)',
+                                    animation: selectedWeapon?.category !== category ? `${hoverToGreen} 0.5s forwards` : 'none',
+                                    color: 'black',
                                 },
                             }}
                         >
