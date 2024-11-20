@@ -1,20 +1,7 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {
-    Box,
-    Card,
-    CardContent,
-    CardMedia,
-    CircularProgress,
-    Container,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Typography,
-} from '@mui/material';
-import {keyframes} from '@emotion/react';
+import {Box, Card, CardContent, CardMedia, CircularProgress, Container, Typography,} from '@mui/material';
 import AbilityService from "@/app/services/AbilityService";
 import ListSection from "@/app/components/ListSection";
 
@@ -37,19 +24,6 @@ const AbilitiesPage = () => {
                 setLoading(false);
             });
     }, []);
-
-    const handleSelectAbility = (ability) => {
-        setSelectedAbility(ability);
-    };
-
-    const hoverToGreen = keyframes`
-        0% {
-            background-color: #000000;
-        }
-        100% {
-            background-color: #00ff00;
-        }
-    `;
 
     return (
         <Container

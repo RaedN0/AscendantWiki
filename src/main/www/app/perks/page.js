@@ -1,20 +1,7 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CardMedia,
-    CircularProgress,
-    Container,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Typography,
-} from '@mui/material';
+import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Typography,} from '@mui/material';
 import {keyframes} from '@emotion/react';
 import PerkService from "@/app/services/PerkService";
 import ListSection from "@/app/components/ListSection";
@@ -45,10 +32,6 @@ const PerksPage = () => {
         const filtered = perksList.filter((perk) => perk.type === category);
         setFilteredPerks(filtered);
         setSelectedPerk(filtered[0]);
-    };
-
-    const handleSelectPerk = (perk) => {
-        setSelectedPerk(perk);
     };
 
     const handleCategoryChange = (category) => {
@@ -128,7 +111,7 @@ const PerksPage = () => {
                         }}
                     >
 
-                        <ListSection items={filteredPerks} selectedItem={selectedPerk} setSelectedItem={setSelectedPerk} />
+                        <ListSection items={filteredPerks} selectedItem={selectedPerk} setSelectedItem={setSelectedPerk}/>
 
                         {selectedPerk && (
                             <Box

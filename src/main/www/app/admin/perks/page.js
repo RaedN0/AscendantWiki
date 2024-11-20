@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import React, {useEffect, useState} from "react";
+import {DataGrid} from "@mui/x-data-grid";
 import {
     Box,
     Button,
@@ -9,14 +9,14 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    TextField,
-    Select,
-    MenuItem,
-    IconButton,
     Fab,
+    IconButton,
+    MenuItem,
+    Select,
+    TextField,
     Typography
 } from "@mui/material";
-import { Delete, Edit, Add } from "@mui/icons-material";
+import {Add, Delete, Edit} from "@mui/icons-material";
 
 import PerkService from "@/app/services/PerkService";
 

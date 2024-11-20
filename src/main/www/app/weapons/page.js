@@ -1,16 +1,7 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {
-    Container,
-    Box,
-    Typography,
-    List,
-    ListItem,
-    CardMedia,
-    Button,
-    Slider, ListItemIcon, ListItemText,
-} from '@mui/material';
+import {Box, Button, CardMedia, Container, Typography,} from '@mui/material';
 import WeaponService from '@/app/services/WeaponService';
 import {keyframes} from "@emotion/react";
 import ListSection from "@/app/components/ListSection";
@@ -43,10 +34,6 @@ const WeaponsPage = () => {
     const handleCategoryChange = (category) => {
         setWeaponCategory(category);
         filterWeaponsByCategory(category.toUpperCase().replace(' ', '_'));
-    };
-
-    const handleSelectWeapon = (weapon) => {
-        setSelectedWeapon(weapon);
     };
 
     const hoverToGreen = keyframes`
