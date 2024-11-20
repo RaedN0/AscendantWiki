@@ -78,16 +78,7 @@ const PerksPage = () => {
             }}
         >
             {loading ? (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: 'calc(100vh - 85px)',
-                    }}
-                >
-                    <CircularProgress sx={{color: '#00ff00'}}/>
-                </Box>
+                <CircularProgress sx={{color: '#00ff00'}}/>
             ) : (
                 <>
                     <Box sx={{display: 'flex', justifyContent: 'flex-start', gap: 2, alignItems: 'center', marginBottom: 2}}>
