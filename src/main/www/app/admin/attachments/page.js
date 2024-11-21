@@ -25,7 +25,7 @@ const AttachmentsPage = () => {
     const [formData, setFormData] = useState({
         id: "",
         name: "",
-        type: "OPTIC", // Default to a valid enum value
+        type: "OPTIC",
         multiplier: 0,
     });
     const [isEdit, setIsEdit] = useState(false);
