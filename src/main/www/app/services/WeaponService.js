@@ -11,12 +11,23 @@ class WeaponService {
         }
     }
 
-    async addWeapon(weapon) {
+    async addWeapon({name, baseDamage, fireRate, reloadSpeed, category, rarity, ammo, cost, image}) {
         try {
-            const response = await axios.post(`/api/weapons`, weapon, {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('baseDamage', baseDamage);
+            formData.append('fireRate', fireRate);
+            formData.append('reloadSpeed', reloadSpeed);
+            formData.append('category', category);
+            formData.append('rarity', rarity);
+            formData.append('ammo', ammo);
+            formData.append('cost', cost);
+            formData.append('image', image);
+
+            const response = await axios.post(`/api/weapons`, formData, {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
                 },
             });
             return response.data;
@@ -25,12 +36,25 @@ class WeaponService {
         }
     }
 
-    async updateWeapon(updatedWeapon) {
+    async updateWeapon(id, {name, baseDamage, fireRate, reloadSpeed, category, rarity, ammo, cost, image}) {
         try {
-            const response = await axios.put(`/api/weapons`, updatedWeapon, {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('baseDamage', baseDamage);
+            formData.append('fireRate', fireRate);
+            formData.append('reloadSpeed', reloadSpeed);
+            formData.append('category', category);
+            formData.append('rarity', rarity);
+            formData.append('ammo', ammo);
+            formData.append('cost', cost);
+            if (image) {
+                formData.append('image', image);
+            }
+
+            const response = await axios.put(`/api/weapons/${id}`, formData, {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',
                 },
             });
             return response.data;
