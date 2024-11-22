@@ -1,5 +1,6 @@
 package com.raedn.ascendantwiki.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.raedn.ascendantwiki.model.Weapon;
@@ -17,11 +18,7 @@ public class WeaponService {
 		return weaponRepository.findAll();
 	}
 
-	public Weapon getWeaponById(Long id) {
-		return weaponRepository.findById(id).orElseThrow(() -> new RuntimeException("Weapon not found!"));
-	}
-
-	public Weapon saveWeapon(Weapon weapon) {
+	public Weapon saveWeapon(Weapon weapon) throws IOException {
 		return weaponRepository.save(weapon);
 	}
 
