@@ -1,15 +1,19 @@
 package com.raedn.ascendantwiki.controller;
 
+import java.util.List;
+
 import com.raedn.ascendantwiki.model.Perk;
-import com.raedn.ascendantwiki.model.PerkTypes;
 import com.raedn.ascendantwiki.service.PerkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,46 +23,20 @@ public class PerkController {
 	private final PerkService perkService;
 
 	@GetMapping
-	public List<Perk> getAllPerks() {
-		return perkService.getAllPerks();
+	public List<Perk> getPerks() {
+		return perkService.getPerks();
 	}
 
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")
-	public Perk createPerk(
-			@RequestParam("name") String name,
-			@RequestParam("description") String description,
-			@RequestParam("type") String type,
-			@RequestParam("image") MultipartFile image) throws IOException {
-
-		Perk perk = new Perk();
-		perk.setName(name);
-		perk.setDescription(description);
-		perk.setType(PerkTypes.valueOf(type.toUpperCase()));
-		perk.setImage(image.getBytes());
-
+	public Perk createPerk(@RequestBody Perk perk) {
 		return perkService.savePerk(perk);
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping
 	@PreAuthorize("hasRole('ADMIN')")
-	public Perk updatePerk(
-			@PathVariable Long id,
-			@RequestParam("name") String name,
-			@RequestParam("description") String description,
-			@RequestParam("type") String type,
-			@RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
-
-		Perk existingPerk = perkService.getPerkById(id);
-		existingPerk.setName(name);
-		existingPerk.setDescription(description);
-		existingPerk.setType(PerkTypes.valueOf(type.toUpperCase()));
-
-		if (image != null && !image.isEmpty()) {
-			existingPerk.setImage(image.getBytes());
-		}
-
-		return perkService.savePerk(existingPerk);
+	public Perk updatePerk(@RequestBody Perk perk) {
+		return perkService.savePerk(perk);
 	}
 
 	@DeleteMapping("/{id}")

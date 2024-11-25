@@ -16,7 +16,7 @@ const PerksPage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        PerkService.getAllPerks()
+        PerkService.getPerks()
             .then((data) => {
                 const sortedPerks = data.sort((a, b) => a.name.localeCompare(b.name));
                 setPerks(sortedPerks);
