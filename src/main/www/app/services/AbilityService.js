@@ -1,8 +1,9 @@
 import axios from 'axios';
+import {fileToByteArray} from "@/app/util/fileToByteArray";
 
 class AbilityService {
 
-    async getAllAbilities() {
+    async getAbilities() {
         try {
             const response = await axios.get(`/api/abilities`);
             return response.data;
@@ -11,28 +12,14 @@ class AbilityService {
         }
     }
 
-    async getAbilityById(id) {
+    async addAbility(ability) {
         try {
-            const response = await axios.get(`/api/ability/${id}`);
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching ability by ID:', error);
-        }
-    }
+            ability.image = await fileToByteArray(ability.image);
 
-    async createAbility({ name, description, cooldown, activationTime, image }) {
-        try {
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('description', description);
-            formData.append('cooldown', cooldown);
-            formData.append('activationTime', activationTime);
-            formData.append('image', image);
-
-            const response = await axios.post(`/api/abilities`, formData, {
+            const response = await axios.post(`/api/abilities`, ability, {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                 },
             });
             return response.data;
@@ -41,21 +28,14 @@ class AbilityService {
         }
     }
 
-    async updateAbility(id, { name, description, cooldown, activationTime, image }) {
+    async updateAbility(ability) {
         try {
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('description', description);
-            formData.append('cooldown', cooldown);
-            formData.append('activationTime', activationTime);
-            if (image) {
-                formData.append('image', image);
-            }
+            ability.image = await fileToByteArray(ability.image);
 
-            const response = await axios.put(`/api/abilities/${id}`, formData, {
+            const response = await axios.put(`/api/abilities`, ability, {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                 },
             });
             return response.data;

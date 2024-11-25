@@ -1,8 +1,9 @@
 import axios from 'axios';
+import {fileToByteArray} from "@/app/util/fileToByteArray";
 
 class PerkService {
 
-    async getAllPerks() {
+    async getPerks() {
         try {
             const response = await axios.get(`/api/perks`);
             return response.data;
@@ -11,27 +12,14 @@ class PerkService {
         }
     }
 
-    async getPerkById(id) {
+    async addPerk(perk) {
         try {
-            const response = await axios.get(`/api/perks/${id}`);
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching perk by ID:', error);
-        }
-    }
+            perk.image = await fileToByteArray(perk.image);
 
-    async createPerk({ name, description, type, image }) {
-        try {
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('description', description);
-            formData.append('type', type);
-            formData.append('image', image);
-
-            const response = await axios.post(`/api/perks`, formData, {
+            const response = await axios.post(`/api/perks`, perk, {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                 },
             });
             return response.data;
@@ -40,20 +28,14 @@ class PerkService {
         }
     }
 
-    async updatePerk(id, { name, description, type, image }) {
+    async updatePerk(perk) {
         try {
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('description', description);
-            formData.append('type', type);
-            if (image) {
-                formData.append('image', image);
-            }
+            perk.image = await fileToByteArray(perk.image);
 
-            const response = await axios.put(`/api/perks/${id}`, formData, {
+            const response = await axios.put(`/api/perks`, perk, {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                 },
             });
             return response.data;

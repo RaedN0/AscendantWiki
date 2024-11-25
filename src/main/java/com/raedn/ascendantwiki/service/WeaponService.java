@@ -17,10 +17,6 @@ public class WeaponService {
 		return weaponRepository.findAll();
 	}
 
-	public Weapon getWeaponById(Long id) {
-		return weaponRepository.findById(id).orElseThrow(() -> new RuntimeException("Weapon not found!"));
-	}
-
 	public Weapon saveWeapon(Weapon weapon) {
 		return weaponRepository.save(weapon);
 	}

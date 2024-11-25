@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import React, {useEffect, useState} from "react";
+import {DataGrid} from "@mui/x-data-grid";
 import {
     Box,
     Button,
@@ -9,14 +9,14 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    TextField,
-    Select,
-    MenuItem,
-    IconButton,
     Fab,
+    IconButton,
+    MenuItem,
+    Select,
+    TextField,
     Typography
 } from "@mui/material";
-import { Delete, Edit, Add } from "@mui/icons-material";
+import {Add, Delete, Edit} from "@mui/icons-material";
 
 import PerkService from "@/app/services/PerkService";
 
@@ -34,7 +34,7 @@ const PerksPage = () => {
 
     const fetchPerks = async () => {
         try {
-            const data = await PerkService.getAllPerks();
+            const data = await PerkService.getPerks();
             setPerks(data);
         } catch (err) {
             console.error("Failed to fetch perks:", err);
@@ -45,7 +45,7 @@ const PerksPage = () => {
         fetchPerks();
     }, []);
 
-    const handleOpen = (perk = { id: "", name: "", description: "", type: "COMBAT", image: null }) => {
+    const handleOpen = (perk = {id: "", name: "", description: "", type: "COMBAT", image: null}) => {
         setIsEdit(!!perk.id);
         setFormData(perk);
         setOpen(true);
@@ -54,42 +54,46 @@ const PerksPage = () => {
     const handleClose = () => setOpen(false);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const {name, value} = e.target;
+        setFormData({...formData, [name]: value});
     };
 
     const handleImageChange = (e) => {
-        setFormData({ ...formData, image: e.target.files[0] });
+        setFormData({...formData, image: e.target.files[0]});
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         try {
             if (isEdit) {
-                await PerkService.updatePerk(formData.id, formData);
+                PerkService.updatePerk(formData).then(r => {
+                    fetchPerks();
+                });
             } else {
-                await PerkService.createPerk(formData);
+                PerkService.addPerk(formData).then(r => {
+                    fetchPerks();
+                });
             }
-            fetchPerks();
             handleClose();
         } catch (err) {
             console.error("Failed to save perk:", err);
         }
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = (id) => {
         try {
-            await PerkService.deletePerk(id);
-            fetchPerks();
+            PerkService.deletePerk(id).then(r => {
+                fetchPerks();
+            });
         } catch (err) {
             console.error("Failed to delete perk:", err);
         }
     };
 
     const columns = [
-        { field: "id", headerName: "ID", width: 90 },
-        { field: "name", headerName: "Name", flex: 1 },
-        { field: "description", headerName: "Description", flex: 2 },
-        { field: "type", headerName: "Type", flex: 1 },
+        {field: "id", headerName: "ID", width: 90},
+        {field: "name", headerName: "Name", flex: 1},
+        {field: "description", headerName: "Description", flex: 2},
+        {field: "type", headerName: "Type", flex: 1},
         {
             field: "actions",
             headerName: "Actions",
@@ -97,10 +101,10 @@ const PerksPage = () => {
             renderCell: (params) => (
                 <>
                     <IconButton onClick={() => handleOpen(params.row)} color="primary">
-                        <Edit />
+                        <Edit/>
                     </IconButton>
                     <IconButton onClick={() => handleDelete(params.row.id)} color="error">
-                        <Delete />
+                        <Delete/>
                     </IconButton>
                 </>
             ),
@@ -108,7 +112,7 @@ const PerksPage = () => {
     ];
 
     return (
-        <Box sx={{ height: 600, width: "100%", mt: 4 }}>
+        <Box sx={{height: 600, width: "100%", mt: 4}}>
             <Fab
                 color="primary"
                 aria-label="add"
@@ -119,10 +123,10 @@ const PerksPage = () => {
                     right: 16,
                 }}
             >
-                <Add />
+                <Add/>
             </Fab>
 
-            <DataGrid rows={perks} columns={columns} pageSize={10} checkboxSelection={false} />
+            <DataGrid rows={perks} columns={columns} pageSize={10} checkboxSelection={false}/>
 
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{isEdit ? "Edit Perk" : "Add Perk"}</DialogTitle>
@@ -158,7 +162,7 @@ const PerksPage = () => {
                     <Button
                         variant="contained"
                         component="label"
-                        sx={{ mt: 2 }}
+                        sx={{mt: 2}}
                     >
                         Upload Image
                         <input
@@ -168,7 +172,7 @@ const PerksPage = () => {
                         />
                     </Button>
                     {formData.image && (
-                        <Typography sx={{ mt: 1 }} variant="body2">
+                        <Typography sx={{mt: 1}} variant="body2">
                             Selected file: {formData.image.name}
                         </Typography>
                     )}

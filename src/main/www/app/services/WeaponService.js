@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {fileToByteArray} from "@/app/util/fileToByteArray";
 
 class WeaponService {
 
@@ -11,23 +12,14 @@ class WeaponService {
         }
     }
 
-    async addWeapon({name, baseDamage, fireRate, reloadSpeed, category, rarity, ammo, cost, image}) {
+    async addWeapon(weapon) {
         try {
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('baseDamage', baseDamage);
-            formData.append('fireRate', fireRate);
-            formData.append('reloadSpeed', reloadSpeed);
-            formData.append('category', category);
-            formData.append('rarity', rarity);
-            formData.append('ammo', ammo);
-            formData.append('cost', cost);
-            formData.append('image', image);
+            weapon.image = await fileToByteArray(weapon.image);
 
-            const response = await axios.post(`/api/weapons`, formData, {
+            const response = await axios.post(`/api/weapons`, weapon, {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                 },
             });
             return response.data;
@@ -36,25 +28,14 @@ class WeaponService {
         }
     }
 
-    async updateWeapon(id, {name, baseDamage, fireRate, reloadSpeed, category, rarity, ammo, cost, image}) {
+    async updateWeapon(weapon) {
         try {
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('baseDamage', baseDamage);
-            formData.append('fireRate', fireRate);
-            formData.append('reloadSpeed', reloadSpeed);
-            formData.append('category', category);
-            formData.append('rarity', rarity);
-            formData.append('ammo', ammo);
-            formData.append('cost', cost);
-            if (image) {
-                formData.append('image', image);
-            }
+            weapon.image = await fileToByteArray(weapon.image);
 
-            const response = await axios.put(`/api/weapons/${id}`, formData, {
+            const response = await axios.put(`/api/weapons`, weapon, {
                 withCredentials: true,
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                 },
             });
             return response.data;

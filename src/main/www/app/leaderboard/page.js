@@ -68,16 +68,7 @@ const LeaderboardPage = () => {
             </Typography>
 
             {loading ? (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: 'calc(100vh - 200px)',
-                    }}
-                >
-                    <CircularProgress sx={{color: '#00ff00'}}/>
-                </Box>
+                <CircularProgress sx={{color: '#00ff00'}}/>
             ) : (
                 <TableContainer component={Paper} sx={{backgroundColor: '#2a2a2a'}}>
                     <Table>

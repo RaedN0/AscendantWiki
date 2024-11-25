@@ -1,20 +1,15 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {
-    Container,
-    Box,
-    Typography,
-    List,
-    ListItem,
-    CardMedia,
-    Button,
-    Slider, ListItemIcon, ListItemText,
-} from '@mui/material';
+import {Box, Button, CardMedia, Container, Typography, useTheme,} from '@mui/material';
 import WeaponService from '@/app/services/WeaponService';
 import {keyframes} from "@emotion/react";
+import ListSection from "@/app/components/ListSection";
+import {gradientBackground} from "@/app/styles/gradient";
 
 const WeaponsPage = () => {
+    const theme = useTheme();
+
     const [weapons, setWeapons] = useState([]);
     const [filteredWeapons, setFilteredWeapons] = useState([]);
     const [selectedWeapon, setSelectedWeapon] = useState(null);
@@ -44,10 +39,6 @@ const WeaponsPage = () => {
         filterWeaponsByCategory(category.toUpperCase().replace(' ', '_'));
     };
 
-    const handleSelectWeapon = (weapon) => {
-        setSelectedWeapon(weapon);
-    };
-
     const hoverToGreen = keyframes`
         0% {
             background-color: #000000;
@@ -64,7 +55,7 @@ const WeaponsPage = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100vh',
-                backgroundImage: 'url(/background.png)',
+                backgroundImage: 'url(/background.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 padding: 2,
@@ -77,10 +68,10 @@ const WeaponsPage = () => {
                     gap: 2,
                     marginBottom: 2,
                     padding: 1,
-                    border: '2px solid #00ff00',
-                    backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                    border: `2px solid ${theme.palette.custom.main}`,
+                    boxShadow: `0 0 10px ${theme.palette.custom.main}`,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
                     borderRadius: 2,
-                    boxShadow: '0 0 10px #00ff00',
                 }}
             >
                 {['Battle Rifle', 'Beam Gloves', 'Plasma Rifle', 'Shotgun', 'Sniper Rifle'].map(
@@ -89,17 +80,13 @@ const WeaponsPage = () => {
                             key={category}
                             onClick={() => handleCategoryChange(category)}
                             sx={{
+                                ...gradientBackground,
                                 color: weaponCategory === category ? '#000000' : '#ffffff',
-                                backgroundColor:
+                                background:
                                     weaponCategory === category
-                                        ? 'rgba(0,255,0,0.9)'
-                                        : 'transparent',
+                                        ? theme.palette.custom.main
+                                        : gradientBackground.background,
                                 padding: '5px 15px',
-                                transition: 'background-color 0.5s ease-in-out',
-                                '&:hover': {
-                                    animation: selectedWeapon?.category !== category ? `${hoverToGreen} 0.5s forwards` : 'none',
-                                    color: 'black',
-                                },
                             }}
                         >
                             {category}
@@ -115,78 +102,19 @@ const WeaponsPage = () => {
                     gap: 2,
                 }}
             >
-                <Box
-                    sx={{
-                        flex: 1,
-                        border: '2px solid #00ff00',
-                        boxShadow: '0 0 10px #00ff00',
-                        borderRadius: 2,
-                        backgroundColor: 'rgba(0,0,0,0.9)',
-                        overflowY: 'auto',
-                        width: '30vw',
-                        padding: 2,
+                <ListSection
+                    items={filteredWeapons}
+                    selectedItem={selectedWeapon}
+                    setSelectedItem={setSelectedWeapon}
+                    flexDirection={'column'}
+                    imageStyle={{
+                        width: '100%',
+                        paddingX: '20%',
                     }}
-                >
-                    <List
-                        sx={{
-                            padding: 0,
-                            width: '100%',
-                        }}
-                    >
-                        {filteredWeapons.map((weapon) => (
-                            <ListItem
-                                key={weapon.id}
-                                onClick={() => handleSelectWeapon(weapon)}
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    backgroundColor: selectedWeapon?.id === weapon.id ? '#00ff00' : '#000000',
-                                    border: '1px solid #00ff00',
-                                    boxShadow: '0 0 10px 1px #00ff00',
-                                    borderRadius: '5px',
-                                    marginBottom: 1,
-                                    transition: 'background-color 0.5s ease-in-out, color 0.5s ease-in-out',
-                                    '&:hover': {
-                                        animation: selectedWeapon?.id !== weapon.id ? `${hoverToGreen} 0.5s forwards` : 'none',
-                                        '& .MuiTypography-root': {
-                                            color: 'black',
-                                        },
-                                    },
-                                }}
-                            >
-                                <ListItemIcon sx={{justifyContent: 'center'}}>
-                                    {weapon.image && (
-                                        <CardMedia
-                                            component="img"
-                                            image={`data:image/png;base64,${weapon.image}`}
-                                            alt={weapon.name}
-                                            sx={{
-                                                width: '100%',
-                                                paddingX: '20%',
-                                                backgroundColor: 'rgba(0, 0, 0, 0.95)',
-                                            }}
-                                        />
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText sx={{alignSelf: 'flex-start'}}
-                                              primary={
-                                                  <Typography
-                                                      variant="body1"
-                                                      sx={{
-                                                          color: selectedWeapon?.id === weapon.id ? 'rgb(0, 0, 0)' : '#ffffff',
-                                                          fontWeight: 'bold',
-                                                          width: '100%',
-                                                          marginBottom: '-10%'
-                                                      }}
-                                                  >
-                                                      {weapon.name}
-                                                  </Typography>
-                                              }
-                                />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Box>
+                    textStyle={{
+                        marginBottom: '-10%'
+                    }}
+                />
 
                 <Box sx={{
                     flex: 2,
@@ -210,8 +138,8 @@ const WeaponsPage = () => {
                         <Box
                             sx={{
                                 flex: 1,
-                                border: '2px solid #00ff00',
-                                boxShadow: '0 0 10px #00ff00',
+                                border: `2px solid ${theme.palette.custom.main}`,
+                                boxShadow: `0 0 10px ${theme.palette.custom.main}`,
                                 borderRadius: 2,
                                 backgroundColor: 'rgba(0,0,0,0.9)',
                                 padding: 3,
@@ -225,7 +153,7 @@ const WeaponsPage = () => {
                                     display: 'flex',
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
-                                    borderBottom: '1px solid #00ff00',
+                                    borderBottom: `1px solid ${theme.palette.custom.main}`,
                                     paddingBottom: 1,
                                     marginBottom: 3,
                                 }}
@@ -233,7 +161,7 @@ const WeaponsPage = () => {
                                 <Typography
                                     variant="h6"
                                     sx={{
-                                        color: '#00ff00',
+                                        color: theme.palette.custom.main,
                                         fontWeight: 'bold',
                                     }}
                                 >
@@ -242,7 +170,7 @@ const WeaponsPage = () => {
                                 <Typography
                                     variant="h6"
                                     sx={{
-                                        color: '#00ff00',
+                                        color: theme.palette.custom.main,
                                         fontWeight: 'bold',
                                         textAlign: 'right',
                                     }}
@@ -259,23 +187,23 @@ const WeaponsPage = () => {
                                 }}
                             >
                                 <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: '#00ff00'}}>Base Damage:</strong> {selectedWeapon.baseDamage}
+                                    <strong style={{color: theme.palette.custom.main}}>Base Damage:</strong> {selectedWeapon.baseDamage}
                                 </Typography>
                                 <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: '#00ff00'}}>Fire Rate:</strong> {selectedWeapon.fireRate} RPM
+                                    <strong style={{color: theme.palette.custom.main}}>Fire Rate:</strong> {selectedWeapon.fireRate} RPM
                                 </Typography>
                                 <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: '#00ff00'}}>Reload Speed:</strong> {selectedWeapon.reloadSpeed} seconds
+                                    <strong style={{color: theme.palette.custom.main}}>Reload
+                                        Speed:</strong> {selectedWeapon.reloadSpeed} seconds
                                 </Typography>
                                 <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: '#00ff00'}}>Rarity:</strong> {selectedWeapon.rarity}
+                                    <strong style={{color: theme.palette.custom.main}}>Rarity:</strong> {selectedWeapon.rarity}
                                 </Typography>
                                 <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: '#00ff00'}}>Ammo:</strong> {selectedWeapon.ammo}
+                                    <strong style={{color: theme.palette.custom.main}}>Ammo:</strong> {selectedWeapon.ammo}
                                 </Typography>
                             </Box>
                         </Box>
-
                     )}
                 </Box>
             </Box>

@@ -1,21 +1,21 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import React, {useEffect, useState} from 'react';
+import {DataGrid} from '@mui/x-data-grid';
 import {
     Box,
     Button,
+    CardMedia,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
-    TextField,
-    IconButton,
     Fab,
-    CardMedia,
+    IconButton,
+    TextField,
     Typography
 } from '@mui/material';
-import { Delete, Edit, Add } from '@mui/icons-material';
+import {Add, Delete, Edit} from '@mui/icons-material';
 
 import AbilityService from '@/app/services/AbilityService';
 
@@ -34,7 +34,7 @@ const AbilitiesPage = () => {
 
     const fetchAbilities = async () => {
         try {
-            const data = await AbilityService.getAllAbilities();
+            const data = await AbilityService.getAbilities();
             setAbilities(data);
         } catch (err) {
             console.error('Failed to fetch abilities:', err);
@@ -45,7 +45,7 @@ const AbilitiesPage = () => {
         fetchAbilities();
     }, []);
 
-    const handleOpen = (ability = { id: '', name: '', description: '', cooldown: 0, activationTime: 0, image: null }) => {
+    const handleOpen = (ability = {id: '', name: '', description: '', cooldown: 0, activationTime: 0, image: null}) => {
         setIsEdit(!!ability.id);
         setFormData(ability);
         setOpen(true);
@@ -54,43 +54,47 @@ const AbilitiesPage = () => {
     const handleClose = () => setOpen(false);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const {name, value} = e.target;
+        setFormData({...formData, [name]: value});
     };
 
     const handleImageChange = (e) => {
-        setFormData({ ...formData, image: e.target.files[0] });
+        setFormData({...formData, image: e.target.files[0]});
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         try {
             if (isEdit) {
-                await AbilityService.updateAbility(formData.id, formData);
+                AbilityService.updateAbility(formData).then(r => {
+                    fetchAbilities();
+                });
             } else {
-                await AbilityService.createAbility(formData);
+                AbilityService.addAbility(formData).then(r => {
+                    fetchAbilities();
+                });
             }
-            fetchAbilities();
             handleClose();
         } catch (err) {
             console.error('Failed to save ability:', err);
         }
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = (id) => {
         try {
-            await AbilityService.deleteAbility(id);
-            fetchAbilities();
+            AbilityService.deleteAbility(id).then(r => {
+                fetchAbilities();
+            });
         } catch (err) {
             console.error('Failed to delete ability:', err);
         }
     };
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 90 },
-        { field: 'name', headerName: 'Name', flex: 1 },
-        { field: 'description', headerName: 'Description', flex: 2 },
-        { field: 'cooldown', headerName: 'Cooldown (s)', flex: 1 },
-        { field: 'activationTime', headerName: 'Activation Time (s)', flex: 1 },
+        {field: 'id', headerName: 'ID', width: 90},
+        {field: 'name', headerName: 'Name', flex: 1},
+        {field: 'description', headerName: 'Description', flex: 2},
+        {field: 'cooldown', headerName: 'Cooldown (s)', flex: 1},
+        {field: 'activationTime', headerName: 'Activation Time (s)', flex: 1},
         {
             field: 'image',
             headerName: 'Image',
@@ -115,10 +119,10 @@ const AbilitiesPage = () => {
             renderCell: (params) => (
                 <>
                     <IconButton onClick={() => handleOpen(params.row)} color="primary">
-                        <Edit />
+                        <Edit/>
                     </IconButton>
                     <IconButton onClick={() => handleDelete(params.row.id)} color="error">
-                        <Delete />
+                        <Delete/>
                     </IconButton>
                 </>
             ),
@@ -126,7 +130,7 @@ const AbilitiesPage = () => {
     ];
 
     return (
-        <Box sx={{ height: 600, width: '100%', mt: 4 }}>
+        <Box sx={{height: 600, width: '100%', mt: 4}}>
             <Fab
                 color="primary"
                 aria-label="add"
@@ -137,10 +141,10 @@ const AbilitiesPage = () => {
                     right: 16,
                 }}
             >
-                <Add />
+                <Add/>
             </Fab>
 
-            <DataGrid rows={abilities} columns={columns} pageSize={10} checkboxSelection={false} />
+            <DataGrid rows={abilities} columns={columns} pageSize={10} checkboxSelection={false}/>
 
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{isEdit ? 'Edit Ability' : 'Add Ability'}</DialogTitle>
@@ -184,7 +188,7 @@ const AbilitiesPage = () => {
                     <Button
                         variant="contained"
                         component="label"
-                        sx={{ mt: 2 }}
+                        sx={{mt: 2}}
                     >
                         Upload Image
                         <input
@@ -194,7 +198,7 @@ const AbilitiesPage = () => {
                         />
                     </Button>
                     {formData.image && (
-                        <Typography sx={{ mt: 1 }} variant="body2">
+                        <Typography sx={{mt: 1}} variant="body2">
                             Selected file: {formData.image.name || 'Existing image'}
                         </Typography>
                     )}

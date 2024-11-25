@@ -1,24 +1,14 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CardMedia,
-    CircularProgress,
-    Container,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Typography,
-} from '@mui/material';
-import {keyframes} from '@emotion/react';
+import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useTheme,} from '@mui/material';
 import PerkService from "@/app/services/PerkService";
+import ListSection from "@/app/components/ListSection";
+import {gradientBackground} from "@/app/styles/gradient";
 
 const PerksPage = () => {
+    const theme = useTheme();
+
     const [perks, setPerks] = useState([]);
     const [filteredPerks, setFilteredPerks] = useState([]);
     const [selectedPerk, setSelectedPerk] = useState(null);
@@ -26,7 +16,7 @@ const PerksPage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        PerkService.getAllPerks()
+        PerkService.getPerks()
             .then((data) => {
                 const sortedPerks = data.sort((a, b) => a.name.localeCompare(b.name));
                 setPerks(sortedPerks);
@@ -46,23 +36,10 @@ const PerksPage = () => {
         setSelectedPerk(filtered[0]);
     };
 
-    const handleSelectPerk = (perk) => {
-        setSelectedPerk(perk);
-    };
-
     const handleCategoryChange = (category) => {
         setSelectedCategory(category);
         filterPerks(category);
     };
-
-    const hoverToGreen = keyframes`
-        0% {
-            background-color: #000000;
-        }
-        100% {
-            background-color: #00ff00;
-        }
-    `;
 
     return (
         <Container
@@ -70,23 +47,14 @@ const PerksPage = () => {
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                backgroundImage: 'url(/background.png)',
+                backgroundImage: 'url(/background.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 padding: 2,
             }}
         >
             {loading ? (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: 'calc(100vh - 85px)',
-                    }}
-                >
-                    <CircularProgress sx={{color: '#00ff00'}}/>
-                </Box>
+                <CircularProgress sx={{color: theme.palette.custom.main}}/>
             ) : (
                 <>
                     <Box sx={{display: 'flex', justifyContent: 'flex-start', gap: 2, alignItems: 'center', marginBottom: 2}}>
@@ -94,16 +62,9 @@ const PerksPage = () => {
                             variant={selectedCategory === 'COMBAT' ? 'contained' : 'outlined'}
                             onClick={() => handleCategoryChange('COMBAT')}
                             sx={{
+                                ...gradientBackground,
+                                background: selectedCategory === 'COMBAT' ? theme.palette.custom.main : gradientBackground.background,
                                 color: selectedCategory === 'COMBAT' ? '#000000' : '#ffffff',
-                                border: '2px solid #00ff00',
-                                boxShadow: '0 0 10px 1px #00ff00',
-                                backgroundColor: selectedCategory === 'COMBAT' ? 'rgba(0,250,0,0.95)' : '#000000',
-                                borderRadius: '5px',
-                                transition: 'background-color 0.5s ease-in-out',
-                                '&:hover': {
-                                    animation: selectedCategory !== 'COMBAT' ? `${hoverToGreen} 0.5s forwards` : 'none',
-                                    color: 'black',
-                                },
                             }}
                         >
                             Combat Perks
@@ -112,16 +73,9 @@ const PerksPage = () => {
                             variant={selectedCategory === 'UTILITY' ? 'contained' : 'outlined'}
                             onClick={() => handleCategoryChange('UTILITY')}
                             sx={{
+                                ...gradientBackground,
+                                background: selectedCategory === 'UTILITY' ? theme.palette.custom.main : gradientBackground.background,
                                 color: selectedCategory === 'UTILITY' ? '#000000' : '#ffffff',
-                                border: '2px solid #00ff00',
-                                boxShadow: '0 0 10px 1px #00ff00',
-                                backgroundColor: selectedCategory === 'UTILITY' ? 'rgba(0,250,0,0.95)' : '#000000',
-                                borderRadius: '5px',
-                                transition: 'background-color 0.5s ease-in-out',
-                                '&:hover': {
-                                    animation: selectedCategory !== 'UTILITY' ? `${hoverToGreen} 0.5s forwards` : 'none',
-                                    color: 'black',
-                                },
                             }}
                         >
                             Utility Perks
@@ -135,78 +89,8 @@ const PerksPage = () => {
                             height: 'calc(100vh - 150px)',
                         }}
                     >
-                        <Box
-                            sx={{
-                                flex: 1,
-                                border: '2px solid #00ff00',
-                                boxShadow: '0 0 10px 1px #00ff00',
-                                borderRadius: 2,
-                                backgroundColor: 'rgba(0,0,0,0.95)',
-                                padding: 2,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                height: '100%',
-                                overflow: 'auto',
-                            }}
-                        >
-                            <List
-                                sx={{
-                                    padding: 0,
-                                    width: '100%',
-                                }}
-                            >
-                                {filteredPerks.map((perk) => (
-                                    <ListItem
-                                        key={perk.id}
-                                        onClick={() => handleSelectPerk(perk)}
-                                        sx={{
-                                            backgroundColor: selectedPerk?.id === perk.id ? '#00ff00' : '#000000',
-                                            border: '1px solid #00ff00',
-                                            boxShadow: '0 0 10px 1px #00ff00',
-                                            borderRadius: '5px',
-                                            marginBottom: 1,
-                                            transition: 'background-color 0.5s ease-in-out, color 0.5s ease-in-out',
-                                            '&:hover': {
-                                                animation: selectedPerk?.id !== perk.id ? `${hoverToGreen} 0.5s forwards` : 'none',
-                                                '& .MuiTypography-root': {
-                                                    color: 'black',
-                                                },
-                                            },
-                                        }}
-                                    >
-                                        <ListItemIcon>
-                                            {perk.image && (
-                                                <CardMedia
-                                                    component="img"
-                                                    image={`data:image/png;base64,${perk.image}`}
-                                                    alt={perk.name}
-                                                    sx={{
-                                                        width: 70,
-                                                        height: 70,
-                                                        backgroundColor: 'rgba(0, 0, 0, 0.95)',
-                                                    }}
-                                                />
-                                            )}
-                                        </ListItemIcon>
-                                        <ListItemText
-                                            primary={
-                                                <Typography
-                                                    variant="body1"
-                                                    sx={{
-                                                        color: selectedPerk?.id === perk.id ? 'rgb(0, 0, 0)' : '#ffffff',
-                                                        fontWeight: 'bold',
-                                                        marginLeft: '10%',
-                                                    }}
-                                                >
-                                                    {perk.name}
-                                                </Typography>
-                                            }
-                                        />
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Box>
+
+                        <ListSection items={filteredPerks} selectedItem={selectedPerk} setSelectedItem={setSelectedPerk}/>
 
                         {selectedPerk && (
                             <Box
@@ -217,9 +101,9 @@ const PerksPage = () => {
                             >
                                 <Card
                                     sx={{
-                                        backgroundColor: 'rgba(0,0,0,0.95)',
-                                        border: '2px solid #00ff00',
-                                        boxShadow: '0 0 10px 1px #00ff00',
+                                        background: 'rgba(0,0,0,0.8)',
+                                        border: `2px solid ${theme.palette.custom.main}`,
+                                        boxShadow: `0 0 10px 1px ${theme.palette.custom.main}`,
                                         textAlign: 'center',
                                         height: '100%',
                                     }}
@@ -229,15 +113,15 @@ const PerksPage = () => {
                                             display: 'flex',
                                             justifySelf: 'flex-start',
                                             alignItems: 'center',
-                                            marginLeft: '5%',
-                                            marginTop: '5%',
+                                            marginLeft: '10px',
+                                            marginTop: '10px',
                                         }}
                                     >
                                         <CardMedia
                                             component="img"
                                             image={`data:image/png;base64,${selectedPerk.image}`}
                                             alt={selectedPerk.name}
-                                            sx={{width: 120, height: 120, margin: 'auto', paddingTop: 2}}
+                                            sx={{width: 200, height: 200, margin: 'auto'}}
                                         />
                                         <CardContent>
                                             <Typography variant="h5" sx={{fontWeight: 'bold', color: '#ffffff'}}>
