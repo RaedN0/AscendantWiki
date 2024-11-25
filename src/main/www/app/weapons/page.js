@@ -70,7 +70,7 @@ const WeaponsPage = () => {
                     padding: 1,
                     border: `2px solid ${theme.palette.custom.main}`,
                     boxShadow: `0 0 10px ${theme.palette.custom.main}`,
-                    backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
                     borderRadius: 2,
                 }}
             >

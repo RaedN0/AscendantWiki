@@ -22,7 +22,7 @@ const ListSection = ({
                 border: `2px solid ${theme.palette.custom.main}`,
                 boxShadow: `0 0 10px 1px ${theme.palette.custom.main}`,
                 borderRadius: 2,
-                backgroundColor: 'rgba(0,0,0,0.95)',
+                backgroundColor: 'rgba(0,0,0,0.8)',
                 padding: 2,
                 display: 'flex',
                 flexDirection: 'column',
@@ -56,7 +56,7 @@ const ListSection = ({
                                     alt={item.name}
                                     sx={{
                                         ...imageStyle,
-                                        backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
                                     }}
                                 />
                             )}

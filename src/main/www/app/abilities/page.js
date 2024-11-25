@@ -60,7 +60,7 @@ const AbilitiesPage = () => {
                         >
                             <Card
                                 sx={{
-                                    background: 'rgba(0,0,0,0.95)',
+                                    background: 'rgba(0,0,0,0.8)',
                                     border: `2px solid ${theme.palette.custom.main}`,
                                     boxShadow: `0 0 10px 1px ${theme.palette.custom.main}`,
                                     textAlign: 'center',
