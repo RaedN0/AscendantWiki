@@ -1,30 +1,41 @@
 'use client';
 
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import React, {useState} from 'react';
+import {AppBar, Box, Button, Menu, MenuItem, Toolbar, Typography, useTheme} from '@mui/material';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import {usePathname} from 'next/navigation';
 
 const Navbar = () => {
+
+    const theme = useTheme();
+
     const pathname = usePathname();
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleMenuClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
 
     const navItems = [
-        { text: 'Home', href: '/' },
-        { text: 'Weapon Calculator', href: '/weapon-calculator' },
-        { text: 'Weapons', href: '/weapons' },
-        { text: 'Perks', href: '/perks' },
-        { text: 'Abilities', href: '/abilities' },
-        { text: 'Leaderboard', href: '/leaderboard' },
+        {text: 'Home', href: '/'},
+        {text: 'Weapon Calculator', href: '/weapon-calculator'},
+        {text: 'Leaderboard', href: '/leaderboard'},
     ];
 
-    const adminItem = { text: 'Admin', href: '/admin' };
+    const adminItem = {text: 'Admin', href: '/admin'};
 
     return (
         <AppBar
             position="sticky"
             sx={{
-                height: '7vh',
-                backgroundColor: '#1E1E1E',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
+                backgroundColor: '#000000',
+                boxShadow: 'none',
+                borderBottom: `2px solid ${theme.palette.custom.main}`,
+                zIndex: 1000,
             }}
         >
             <Toolbar
@@ -32,6 +43,8 @@ const Navbar = () => {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
+                    flexWrap: 'wrap',
+                    padding: '10px 20px',
                 }}
             >
                 <Typography
@@ -40,24 +53,43 @@ const Navbar = () => {
                     sx={{
                         fontWeight: 'bold',
                         color: '#aad1e6',
-                        cursor: 'pointer',
+                        textTransform: 'uppercase',
+                        letterSpacing: '2px',
+                        cursor: 'default',
+                        flex: '1 1 auto',
                     }}
                 >
                     Ascendant Wiki
                 </Typography>
 
-                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 3,
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        flex: '1 1 auto',
+                    }}
+                >
                     {navItems.map((item) => (
                         <Link key={item.href} href={item.href} passHref>
                             <Button
-                                color={pathname === item.href ? 'secondary' : 'inherit'}
                                 sx={{
-                                    color: pathname === item.href ? '#f50057' : '#e0e0e0',
-                                    textTransform: 'none',
-                                    fontWeight: pathname === item.href ? 'bold' : 'normal',
+                                    color: pathname === item.href ? '#000000' : '#e0e0e0',
+                                    backgroundColor:
+                                        pathname === item.href ? theme.palette.custom.main : 'transparent',
+                                    textTransform: 'uppercase',
+                                    fontWeight: 'bold',
+                                    fontSize: '0.9rem',
+                                    letterSpacing: '1.5px',
+                                    padding: '8px 16px',
+                                    border: pathname === item.href ? `1px solid ${theme.palette.custom.main}` : 'none',
+                                    borderRadius: '4px',
                                     '&:hover': {
-                                        color: '#aad1e6',
-                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                        backgroundColor: pathname === item.href
+                                            ? theme.palette.custom.main
+                                            : 'rgba(255, 255, 255, 0.1)',
+                                        color: pathname === item.href ? '#000000' : '#aad1e6',
                                     },
                                 }}
                             >
@@ -65,15 +97,95 @@ const Navbar = () => {
                             </Button>
                         </Link>
                     ))}
+
+                    <Button
+                        onClick={handleMenuClick}
+                        sx={{
+                            color: '#e0e0e0',
+                            textTransform: 'uppercase',
+                            fontWeight: 'bold',
+                            fontSize: '0.9rem',
+                            letterSpacing: '1.5px',
+                            padding: '8px 16px',
+                            borderRadius: '4px',
+                            '&:hover': {
+                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                color: '#aad1e6',
+                            },
+                        }}
+                    >
+                        Loadout
+                    </Button>
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleMenuClose}
+                        sx={{
+                            '& .MuiPaper-root': {
+                                backgroundColor: '#1a1a1a',
+                                color: '#e0e0e0',
+                                border: `1px solid ${theme.palette.custom.main}`,
+                            },
+                        }}
+                    >
+                        <MenuItem
+                            onClick={handleMenuClose}
+                            component={Link}
+                            href="/weapons"
+                            sx={{
+                                '&:hover': {
+                                    background: theme.palette.custom.main,
+                                    color: '#000000',
+                                },
+                            }}
+                        >
+                            Weapons
+                        </MenuItem>
+                        <MenuItem
+                            onClick={handleMenuClose}
+                            component={Link}
+                            href="/perks"
+                            sx={{
+                                '&:hover': {
+                                    background: theme.palette.custom.main,
+                                    color: '#000000',
+                                },
+                            }}
+                        >
+                            Perks
+                        </MenuItem>
+                        <MenuItem
+                            onClick={handleMenuClose}
+                            component={Link}
+                            href="/abilities"
+                            sx={{
+                                '&:hover': {
+                                    background: theme.palette.custom.main,
+                                    color: '#000000',
+                                },
+                            }}
+                        >
+                            Abilities
+                        </MenuItem>
+                    </Menu>
                 </Box>
 
-                <Box sx={{ alignItems: 'center' }}>
+                <Box
+                    sx={{
+                        alignItems: 'center',
+                        flex: '1 1 auto',
+                        textAlign: 'right',
+                    }}
+                >
                     <Link href={adminItem.href} passHref>
                         <Button
-                            color={pathname === adminItem.href ? 'secondary' : 'inherit'}
                             sx={{
-                                color: pathname === adminItem.href ? '#f50057' : '#e0e0e0',
+                                color: pathname === adminItem.href ? '#000000' : '#e0e0e0',
+                                backgroundColor:
+                                    pathname === adminItem.href ? theme.palette.custom.main : 'transparent',
                                 fontWeight: 'bold',
+                                textTransform: 'uppercase',
+                                letterSpacing: '1.5px',
                                 '&:hover': {
                                     color: '#aad1e6',
                                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
