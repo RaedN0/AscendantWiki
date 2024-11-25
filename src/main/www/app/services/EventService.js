@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {fileToByteArray} from "@/app/util/fileToByteArray";
 
 class EventService {
 
@@ -13,6 +14,7 @@ class EventService {
 
     async addEvent(event) {
         try {
+            event.image = await fileToByteArray(event.image)
             const response = await axios.post(`/api/events`, event, {
                 withCredentials: true,
                 headers: {
@@ -27,6 +29,7 @@ class EventService {
 
     async updateEvent(updatedEvent) {
         try {
+            updatedEvent.image = await fileToByteArray(updatedEvent.image)
             const response = await axios.put(`/api/events`, updatedEvent, {
                 withCredentials: true,
                 headers: {
