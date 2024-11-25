@@ -47,7 +47,7 @@ const PerksPage = () => {
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                backgroundImage: 'url(/background.png)',
+                backgroundImage: 'url(/background.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 padding: 2,

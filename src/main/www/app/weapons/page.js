@@ -55,7 +55,7 @@ const WeaponsPage = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 height: '100vh',
-                backgroundImage: 'url(/background.png)',
+                backgroundImage: 'url(/background.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 padding: 2,
