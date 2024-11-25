@@ -2,7 +2,6 @@
 
 import {useEffect, useState} from 'react';
 import {
-    Box,
     CircularProgress,
     Container,
     Paper,
@@ -14,17 +13,20 @@ import {
     TablePagination,
     TableRow,
     TableSortLabel,
-    Typography,
+    useTheme,
 } from '@mui/material';
 import LeaderboardService from '@/app/services/LeaderboardService'; // Mocked service for leaderboard data
 
 const LeaderboardPage = () => {
+
+    const theme = useTheme();
+
     const [players, setPlayers] = useState([]);
     const [order, setOrder] = useState('desc');
     const [orderBy, setOrderBy] = useState('biocores');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [loading, setLoading] = useState(true); // Loading state
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         LeaderboardService.getLeaderboard()
@@ -45,7 +47,7 @@ const LeaderboardPage = () => {
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0); // Reset to the first page
+        setPage(0);
     };
 
     const sortedPlayers = [...players].sort((a, b) => {
@@ -62,60 +64,79 @@ const LeaderboardPage = () => {
     );
 
     return (
-        <Container maxWidth="lg" sx={{marginTop: '20px'}}>
-            <Typography variant="h4" component="h1" gutterBottom sx={{textAlign: 'center', color: '#aad1e6'}}>
-                Leaderboard
-            </Typography>
-
+        <Container maxWidth="lg"
+                   sx={{
+                       display: 'flex',
+                       flexDirection: 'column',
+                       backgroundImage: 'url(/background.jpg)',
+                       backgroundSize: 'cover',
+                       backgroundPosition: 'center',
+                       padding: 2,
+                   }}
+        >
             {loading ? (
-                <CircularProgress sx={{color: '#00ff00'}}/>
+                <CircularProgress sx={{color: theme.palette.custom.main}}/>
             ) : (
-                <TableContainer component={Paper} sx={{backgroundColor: '#2a2a2a'}}>
+                <TableContainer
+                    component={Paper}
+                    sx={{
+                        backgroundColor: '#1a1a1a',
+                        border: `1px solid ${theme.palette.custom.main}`,
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        boxShadow: `0 0 15px ${theme.palette.custom.main}`,
+                    }}
+                >
                     <Table>
                         <TableHead>
-                            <TableRow>
-                                <TableCell sx={{color: '#e0e0e0'}}>#</TableCell>
-                                <TableCell sx={{color: '#e0e0e0'}}>
+                            <TableRow sx={{backgroundColor: '#2b2b2b'}}>
+                                <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>#</TableCell>
+                                <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
                                     <TableSortLabel
                                         active={orderBy === 'name'}
                                         direction={orderBy === 'name' ? order : 'asc'}
                                         onClick={() => handleSort('name')}
+                                        sx={{color: theme.palette.custom.main, '&.Mui-active': {color: theme.palette.custom.main}}}
                                     >
                                         Player Name
                                     </TableSortLabel>
                                 </TableCell>
-                                <TableCell sx={{color: '#e0e0e0'}}>
+                                <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
                                     <TableSortLabel
                                         active={orderBy === 'kills'}
                                         direction={orderBy === 'kills' ? order : 'asc'}
                                         onClick={() => handleSort('kills')}
+                                        sx={{color: theme.palette.custom.main, '&.Mui-active': {color: theme.palette.custom.main}}}
                                     >
                                         Kills
                                     </TableSortLabel>
                                 </TableCell>
-                                <TableCell sx={{color: '#e0e0e0'}}>
+                                <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
                                     <TableSortLabel
                                         active={orderBy === 'deaths'}
                                         direction={orderBy === 'deaths' ? order : 'asc'}
                                         onClick={() => handleSort('deaths')}
+                                        sx={{color: theme.palette.custom.main, '&.Mui-active': {color: theme.palette.custom.main}}}
                                     >
                                         Deaths
                                     </TableSortLabel>
                                 </TableCell>
-                                <TableCell sx={{color: '#e0e0e0'}}>
+                                <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
                                     <TableSortLabel
                                         active={orderBy === 'games'}
                                         direction={orderBy === 'games' ? order : 'asc'}
                                         onClick={() => handleSort('games')}
+                                        sx={{color: theme.palette.custom.main, '&.Mui-active': {color: theme.palette.custom.main}}}
                                     >
                                         Games Played
                                     </TableSortLabel>
                                 </TableCell>
-                                <TableCell sx={{color: '#e0e0e0'}}>
+                                <TableCell sx={{color: theme.palette.custom.main, fontWeight: 'bold'}}>
                                     <TableSortLabel
                                         active={orderBy === 'biocores'}
                                         direction={orderBy === 'biocores' ? order : 'asc'}
                                         onClick={() => handleSort('biocores')}
+                                        sx={{color: theme.palette.custom.main, '&.Mui-active': {color: theme.palette.custom.main}}}
                                     >
                                         Biocores
                                     </TableSortLabel>
@@ -124,18 +145,47 @@ const LeaderboardPage = () => {
                         </TableHead>
                         <TableBody>
                             {paginatedPlayers.map((player, index) => (
-                                <TableRow key={player.id}>
-                                    <TableCell sx={{color: '#e0e0e0'}}>
-                                        {page * rowsPerPage + index + 1}
-                                    </TableCell>
-                                    <TableCell sx={{color: '#e0e0e0'}}>{player.name}</TableCell>
-                                    <TableCell sx={{color: '#e0e0e0'}}>{player.kills}</TableCell>
-                                    <TableCell sx={{color: '#e0e0e0'}}>{player.deaths}</TableCell>
-                                    <TableCell sx={{color: '#e0e0e0'}}>{player.games}</TableCell>
-                                    <TableCell sx={{color: '#e0e0e0'}}>{player.biocores}</TableCell>
-                                </TableRow>
+                                <>
+                                    <TableRow
+                                        key={player.id}
+                                        sx={{
+                                            '&:hover': {
+                                                backgroundColor: '#343434',
+                                            },
+                                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                            borderTop: `2px solid ${theme.palette.custom.main}`,
+                                            borderBottom: `2px solid ${theme.palette.custom.main}`
+                                        }}
+                                    >
+                                        <TableCell
+                                            sx={{
+                                                color: '#ffffff',
+                                                fontSize: '1.5rem',
+                                                fontWeight: 'bold',
+                                                textAlign: 'center',
+                                            }}
+                                        >
+                                            {page * rowsPerPage + index + 1}
+                                        </TableCell>
+                                        <TableCell sx={{color: '#ffffff'}}>{player.name}</TableCell>
+                                        <TableCell sx={{color: '#ffffff'}}>{player.kills}</TableCell>
+                                        <TableCell sx={{color: '#ffffff'}}>{player.deaths}</TableCell>
+                                        <TableCell sx={{color: '#ffffff'}}>{player.games}</TableCell>
+                                        <TableCell sx={{color: '#ffffff'}}>{player.biocores}</TableCell>
+                                    </TableRow>
+
+                                    <TableRow
+                                        sx={{
+                                            height: '10px',
+                                            backgroundColor: '#1a1a1a',
+                                        }}
+                                    >
+                                        <TableCell colSpan={6} sx={{padding: 0, border: 'none'}}/>
+                                    </TableRow>
+                                </>
                             ))}
                         </TableBody>
+
                     </Table>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
@@ -145,7 +195,7 @@ const LeaderboardPage = () => {
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
-                        sx={{color: '#e0e0e0', backgroundColor: '#1f1f1f'}}
+                        sx={{color: theme.palette.custom.main, backgroundColor: '#1a1a1a'}}
                     />
                 </TableContainer>
             )}
