@@ -167,6 +167,19 @@ const Navbar = () => {
                         >
                             Abilities
                         </MenuItem>
+                        <MenuItem
+                            onClick={handleMenuClose}
+                            component={Link}
+                            href="/events"
+                            sx={{
+                                '&:hover': {
+                                    background: theme.palette.custom.main,
+                                    color: '#000000',
+                                },
+                            }}
+                        >
+                            Events
+                        </MenuItem>
                     </Menu>
                 </Box>
 
