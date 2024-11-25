@@ -56,7 +56,7 @@ const ListSection = ({
                                     alt={item.name}
                                     sx={{
                                         ...imageStyle,
-                                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                        backgroundColor: 'rgba(0, 0, 0, 0.95)',
                                     }}
                                 />
                             )}
