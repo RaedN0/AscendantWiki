@@ -13,7 +13,7 @@ const AbilitiesPage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        AbilityService.getAllAbilities()
+        AbilityService.getAbilities()
             .then((data) => {
                 const sortedAbilities = data.sort((a, b) => a.name.localeCompare(b.name));
                 setAbilities(sortedAbilities);

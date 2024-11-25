@@ -35,4 +35,4 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: image
-                  type: BLOB
+                  type: BYTEA
