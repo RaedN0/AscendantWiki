@@ -1,7 +1,7 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {Box, Button, CardMedia, Container, Typography, useTheme,} from '@mui/material';
+import {Box, Button, CardMedia, Container, Typography, useMediaQuery, useTheme,} from '@mui/material';
 import WeaponService from '@/app/services/WeaponService';
 import {keyframes} from "@emotion/react";
 import ListSection from "@/app/components/ListSection";
@@ -9,6 +9,7 @@ import {gradientBackground} from "@/app/styles/gradient";
 
 const WeaponsPage = () => {
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile screens
 
     const [weapons, setWeapons] = useState([]);
     const [filteredWeapons, setFilteredWeapons] = useState([]);
@@ -54,11 +55,11 @@ const WeaponsPage = () => {
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                height: '100vh',
                 backgroundImage: 'url(/background.jpg)',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 padding: 2,
+                height: '100%',
             }}
         >
             <Box
@@ -98,23 +99,34 @@ const WeaponsPage = () => {
             <Box
                 sx={{
                     display: 'flex',
-                    height: 'calc(100vh - 150px)',
+                    flexWrap: 'wrap',
                     gap: 2,
+                    height: '100%',
+                    overflow: 'auto'
                 }}
             >
-                <ListSection
-                    items={filteredWeapons}
-                    selectedItem={selectedWeapon}
-                    setSelectedItem={setSelectedWeapon}
-                    flexDirection={'column'}
-                    imageStyle={{
-                        width: '100%',
-                        paddingX: '20%',
+                <Box
+                    sx={{
+                        flex: isMobile ? '1 1 100%' : '1',
+                        maxWidth: isMobile ? '100%' : '40%',
+                        height: isMobile ? 'auto' : '100%',
+                        overflow: 'auto',
                     }}
-                    textStyle={{
-                        marginBottom: '-10%'
-                    }}
-                />
+                >
+                    <ListSection
+                        items={filteredWeapons}
+                        selectedItem={selectedWeapon}
+                        setSelectedItem={setSelectedWeapon}
+                        flexDirection={'column'}
+                        imageStyle={{
+                            width: '100%',
+                            paddingX: '20%',
+                        }}
+                        textStyle={{
+                            marginBottom: '-10%'
+                        }}
+                    />
+                </Box>
 
                 <Box sx={{
                     flex: 2,

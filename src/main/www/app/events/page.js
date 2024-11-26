@@ -1,12 +1,13 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {Box, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useTheme,} from '@mui/material';
+import {Box, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useMediaQuery, useTheme,} from '@mui/material';
 import EventService from "@/app/services/EventService";
 import ListSection from "@/app/components/ListSection";
 
 const EventsPage = () => {
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile screens
 
     const [events, setEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -37,6 +38,8 @@ const EventsPage = () => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 padding: 2,
+                height: '100%',
+                overflow: 'auto'
             }}
         >
             {loading ? (
@@ -47,18 +50,31 @@ const EventsPage = () => {
                     <Box
                         sx={{
                             display: 'flex',
+                            flexWrap: 'wrap',
                             gap: 2,
-                            height: 'calc(100vh - 150px)',
+                            alignItems: 'flex-start',
+                            height: '100%',
+                            overflow: 'auto'
                         }}
                     >
 
-                        <ListSection items={events} selectedItem={selectedEvent} setSelectedItem={setSelectedEvent}/>
+                        <Box
+                            sx={{
+                                flex: isMobile ? '1 1 100%' : '1',
+                                maxWidth: isMobile ? '100%' : '40%',
+                                height: isMobile ? 'auto' : '100%',
+                                overflow: 'auto',
+                            }}
+                        >
+                            <ListSection items={events} selectedItem={selectedEvent} setSelectedItem={setSelectedEvent}/>
+                        </Box>
 
                         {selectedEvent && (
                             <Box
                                 sx={{
-                                    flex: 2,
-                                    height: '100%',
+                                    flex: isMobile ? '1 1 100%' : '2',
+                                    maxWidth: isMobile ? '100%' : '70%',
+                                    height: isMobile ? 'auto' : '100%',
                                 }}
                             >
                                 <Card

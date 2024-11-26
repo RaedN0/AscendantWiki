@@ -1,13 +1,14 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useTheme,} from '@mui/material';
+import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useMediaQuery, useTheme,} from '@mui/material';
 import PerkService from "@/app/services/PerkService";
 import ListSection from "@/app/components/ListSection";
 import {gradientBackground} from "@/app/styles/gradient";
 
 const PerksPage = () => {
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile screens
 
     const [perks, setPerks] = useState([]);
     const [filteredPerks, setFilteredPerks] = useState([]);
@@ -51,13 +52,22 @@ const PerksPage = () => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 padding: 2,
+                height: '100%',
+                overflow: 'auto'
             }}
         >
             {loading ? (
                 <CircularProgress sx={{color: theme.palette.custom.main}}/>
             ) : (
                 <>
-                    <Box sx={{display: 'flex', justifyContent: 'flex-start', gap: 2, alignItems: 'center', marginBottom: 2}}>
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        flexWrap: 'wrap',
+                        gap: 2,
+                        alignItems: 'center',
+                        marginBottom: 2,
+                    }}>
                         <Button
                             variant={selectedCategory === 'COMBAT' ? 'contained' : 'outlined'}
                             onClick={() => handleCategoryChange('COMBAT')}
@@ -85,18 +95,30 @@ const PerksPage = () => {
                     <Box
                         sx={{
                             display: 'flex',
+                            flexWrap: 'wrap',
                             gap: 2,
-                            height: 'calc(100vh - 150px)',
+                            alignItems: 'flex-start',
+                            height: '100%',
+                            overflow: 'auto'
                         }}
                     >
-
-                        <ListSection items={filteredPerks} selectedItem={selectedPerk} setSelectedItem={setSelectedPerk}/>
+                        <Box
+                            sx={{
+                                flex: isMobile ? '1 1 100%' : '1',
+                                maxWidth: isMobile ? '100%' : '40%',
+                                height: isMobile ? 'auto' : '100%',
+                                overflow: 'auto',
+                            }}
+                        >
+                            <ListSection items={filteredPerks} selectedItem={selectedPerk} setSelectedItem={setSelectedPerk}/>
+                        </Box>
 
                         {selectedPerk && (
                             <Box
                                 sx={{
-                                    flex: 2,
-                                    height: '100%',
+                                    flex: isMobile ? '1 1 100%' : '2',
+                                    maxWidth: isMobile ? '100%' : '70%',
+                                    height: isMobile ? 'auto' : '100%',
                                 }}
                             >
                                 <Card

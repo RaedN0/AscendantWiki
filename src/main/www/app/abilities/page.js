@@ -1,12 +1,13 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {Box, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useTheme,} from '@mui/material';
+import {Box, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useTheme, useMediaQuery} from '@mui/material';
 import AbilityService from "@/app/services/AbilityService";
 import ListSection from "@/app/components/ListSection";
 
 const AbilitiesPage = () => {
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile screens
 
     const [abilities, setAbilities] = useState([]);
     const [selectedAbility, setSelectedAbility] = useState(null);
@@ -37,6 +38,7 @@ const AbilitiesPage = () => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 padding: 2,
+                height: '100%',
             }}
         >
             {loading ? (
@@ -45,17 +47,34 @@ const AbilitiesPage = () => {
                 <Box
                     sx={{
                         display: 'flex',
+                        flexWrap: 'wrap',
                         gap: 2,
-                        height: 'calc(100vh - 85px)',
+                        alignItems: 'flex-start',
+                        height: '100%',
+                        overflow: 'auto'
                     }}
                 >
-
-                    <ListSection items={abilities} selectedItem={selectedAbility} setSelectedItem={setSelectedAbility}/>
+                    <Box
+                        sx={{
+                            flex: isMobile ? '1 1 100%' : '1',
+                            maxWidth: isMobile ? '100%' : '40%',
+                            height: isMobile ? 'auto' : '100%',
+                            overflow: 'auto',
+                        }}
+                    >
+                        <ListSection
+                            items={abilities}
+                            selectedItem={selectedAbility}
+                            setSelectedItem={setSelectedAbility}
+                        />
+                    </Box>
 
                     {selectedAbility && (
                         <Box
                             sx={{
-                                flex: 2,
+                                flex: isMobile ? '1 1 100%' : '2',
+                                maxWidth: isMobile ? '100%' : '70%',
+                                height: isMobile ? 'auto' : '100%',
                             }}
                         >
                             <Card
@@ -70,9 +89,8 @@ const AbilitiesPage = () => {
                                 <Box
                                     sx={{
                                         display: 'flex',
-                                        justifySelf: 'flex-start',
+                                        justifyContent: 'center',
                                         alignItems: 'center',
-                                        marginLeft: '10px',
                                         marginTop: '10px',
                                     }}
                                 >
@@ -80,7 +98,7 @@ const AbilitiesPage = () => {
                                         component="img"
                                         image={`data:image/png;base64,${selectedAbility.image}`}
                                         alt={selectedAbility.name}
-                                        sx={{width: 200, height: 200, margin: 'auto'}}
+                                        sx={{width: 200, height: 200}}
                                     />
                                     <CardContent>
                                         <Typography variant="h5" sx={{fontWeight: 'bold', color: '#ffffff'}}>
@@ -89,12 +107,14 @@ const AbilitiesPage = () => {
                                     </CardContent>
                                 </Box>
                                 <CardContent>
-                                    <Typography variant="body1" sx={{
-                                        color: '#ffffff',
-                                        margin: '5%',
-                                        textAlign: 'left',
-                                        justifySelf: 'flex-start'
-                                    }}>
+                                    <Typography
+                                        variant="body1"
+                                        sx={{
+                                            color: '#ffffff',
+                                            margin: '5%',
+                                            textAlign: 'left',
+                                        }}
+                                    >
                                         {selectedAbility.description}
                                     </Typography>
                                 </CardContent>

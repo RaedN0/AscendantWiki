@@ -13,6 +13,7 @@ const Navbar = () => {
         {text: 'Home', href: '/'},
         {text: 'Weapon Calculator', href: '/weapon-calculator'},
         {text: 'Leaderboard', href: '/leaderboard'},
+        {text: 'Events', href: '/events'},
     ];
 
     const loadoutItems = [
