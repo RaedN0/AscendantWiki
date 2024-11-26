@@ -74,6 +74,7 @@ const ListSection = ({
                             )}
                         </ListItemIcon>
                         <ListItemText
+                            sx={{alignContent: 'center'}}
                             primary={
                                 <Typography
                                     variant="body1"
