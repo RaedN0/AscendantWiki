@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import {AppBar, Toolbar, Typography, useMediaQuery, useTheme,} from '@mui/material';
+import {AppBar, Box, Toolbar, Typography, useMediaQuery, useTheme,} from '@mui/material';
 import MobileNavbar from "@/app/components/navbar/mobile";
 import DesktopNavbar from "@/app/components/navbar/desktop";
 
@@ -40,19 +40,15 @@ const Navbar = () => {
                     padding: '10px 20px',
                 }}
             >
-                <Typography
-                    variant="h6"
-                    component="div"
+                <Box
+                    component="img"
+                    src="logo.jpg"
+                    alt="Ascendant Wiki Logo"
                     sx={{
-                        fontWeight: 'bold',
-                        color: '#aad1e6',
-                        textTransform: 'uppercase',
-                        letterSpacing: '2px',
-                        cursor: 'default',
+                        height: '40px',
+                        cursor: 'pointer',
                     }}
-                >
-                    Ascendant Wiki
-                </Typography>
+                />
 
                 {isMobile ? (
                     <MobileNavbar navItems={navItems} loadoutItems={loadoutItems}/>
