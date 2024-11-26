@@ -65,8 +65,9 @@ const WeaponsPage = () => {
             <Box
                 sx={{
                     display: 'flex',
-                    justifyContent: 'space-around',
+                    justifyContent: 'space-between',
                     gap: 2,
+                    overflow: 'auto',
                     marginBottom: 2,
                     padding: 1,
                     border: `2px solid ${theme.palette.custom.main}`,
@@ -87,7 +88,8 @@ const WeaponsPage = () => {
                                     weaponCategory === category
                                         ? theme.palette.custom.main
                                         : gradientBackground.background,
-                                padding: '5px 15px',
+                                width: '15%',
+                                minWidth: '100px'
                             }}
                         >
                             {category}
