@@ -15,7 +15,6 @@ const Homepage = () => {
                 position: 'relative',
             }}
         >
-            {/* Background */}
             <Box
                 sx={{
                     position: 'fixed',
@@ -40,7 +39,6 @@ const Homepage = () => {
                     alignContent: 'center',
                 }}
             >
-                {/* Header */}
                 <Box sx={{marginBottom: 6}}>
                     <Typography
                         variant="h1"
@@ -49,6 +47,11 @@ const Homepage = () => {
                             color: '#aad1e6',
                             textTransform: 'uppercase',
                             textShadow: '0px 4px 8px rgba(0, 0, 0, 0.6)',
+                            fontSize: {
+                                xs: '3rem',
+                                sm: '4rem',
+                                md: '5rem',
+                            },
                         }}
                     >
                         Ascendant Wiki
@@ -58,7 +61,10 @@ const Homepage = () => {
                         sx={{
                             color: '#e0e0e0',
                             marginTop: 2,
-                            fontSize: '1.5rem',
+                            fontSize: {
+                                xs: '1rem',
+                                md: '1.5rem',
+                            },
                             fontWeight: '300',
                         }}
                     >
@@ -66,7 +72,6 @@ const Homepage = () => {
                     </Typography>
                 </Box>
 
-                {/* Features Section */}
                 <Grid container spacing={4} sx={{marginBottom: 6}}>
                     {[
                         {
@@ -113,7 +118,11 @@ const Homepage = () => {
                                 <CardContent>
                                     <Typography
                                         variant="h5"
-                                        sx={{color: '#00ff00', fontWeight: 'bold', marginBottom: 2}}
+                                        sx={{
+                                            color: '#00ff00',
+                                            fontWeight: 'bold',
+                                            marginBottom: 2,
+                                        }}
                                     >
                                         {feature.title}
                                     </Typography>
