@@ -120,7 +120,6 @@ const WeaponsPage = () => {
                         flexDirection={'column'}
                         imageStyle={{
                             width: '100%',
-                            paddingX: '20%',
                         }}
                         textStyle={{
                             marginBottom: '-10%'

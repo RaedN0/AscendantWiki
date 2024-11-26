@@ -7,8 +7,8 @@ const ListSection = ({
                          setSelectedItem,
                          flexDirection = 'row',
                          imageStyle = {
-                             width: 40,
-                             height: 40,
+                             width: 50,
+                             height: 50,
                          },
                          textStyle = { marginLeft: '8px' }
                      }) => {
@@ -58,6 +58,7 @@ const ListSection = ({
                         <ListItemIcon
                             sx={{
                                 justifyContent: 'center',
+                                paddingX: '10px'
                             }}
                         >
                             {item.image && (
