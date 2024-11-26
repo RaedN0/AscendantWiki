@@ -1,18 +1,6 @@
-import localFont from "next/font/local";
 import "./globals.css";
 import ThemeProviderWrapper from "@/app/components/ThemeProvider";
-import Navbar from "@/app/components/Navbar";
-
-const geistSans = localFont({
-    src: "./fonts/GeistVF.woff",
-    variable: "--font-geist-sans",
-    weight: "100 900",
-});
-const geistMono = localFont({
-    src: "./fonts/GeistMonoVF.woff",
-    variable: "--font-geist-mono",
-    weight: "100 900",
-});
+import Navbar from "@/app/components/navbar/Navbar";
 
 export const metadata = {
     title: "Ascendant Wiki",
@@ -31,11 +19,29 @@ export default function RootLayout({children}) {
     return (
         <html lang="en">
         <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                height: "100vh",
+                margin: 0,
+                padding: 0,
+            }}
         >
         <ThemeProviderWrapper>
-            <Navbar />
-            {children}
+            <Navbar
+                style={{
+                    flex: "0 0 auto",
+                }}
+            />
+
+            <main
+                style={{
+                    flex: "1 1 auto",
+                    overflow: "auto",
+                }}
+            >
+                {children}
+            </main>
         </ThemeProviderWrapper>
         </body>
         </html>

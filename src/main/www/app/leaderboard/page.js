@@ -72,6 +72,7 @@ const LeaderboardPage = () => {
                        backgroundSize: 'cover',
                        backgroundPosition: 'center',
                        padding: 2,
+                       height: '100%',
                    }}
         >
             {loading ? (
@@ -83,13 +84,19 @@ const LeaderboardPage = () => {
                         backgroundColor: '#1a1a1a',
                         border: `1px solid ${theme.palette.custom.main}`,
                         borderRadius: '8px',
-                        overflow: 'hidden',
+                        overflow: 'auto',
                         boxShadow: `0 0 15px ${theme.palette.custom.main}`,
                     }}
                 >
                     <Table>
                         <TableHead>
-                            <TableRow sx={{backgroundColor: '#2b2b2b'}}>
+                            <TableRow sx={{
+                                color: theme.palette.custom.main,
+                                backgroundColor: '#1a1a1a',
+                                position: 'sticky',
+                                top: 0,
+                                zIndex: 1000,
+                            }}>
                                 <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>#</TableCell>
                                 <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
                                     <TableSortLabel
@@ -195,7 +202,13 @@ const LeaderboardPage = () => {
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
-                        sx={{color: theme.palette.custom.main, backgroundColor: '#1a1a1a'}}
+                        sx={{
+                            color: theme.palette.custom.main,
+                            backgroundColor: '#1a1a1a',
+                            position: 'sticky',
+                            bottom: 0,
+                            zIndex: 1000,
+                        }}
                     />
                 </TableContainer>
             )}

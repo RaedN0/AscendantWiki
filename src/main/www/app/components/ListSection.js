@@ -1,5 +1,5 @@
-import {Box, CardMedia, List, ListItem, ListItemIcon, ListItemText, Typography, useTheme} from '@mui/material';
-import {gradientBackground} from "@/app/styles/gradient";
+import { Box, CardMedia, List, ListItem, ListItemIcon, ListItemText, Typography, useTheme, useMediaQuery } from '@mui/material';
+import { gradientBackground } from "@/app/styles/gradient";
 
 const ListSection = ({
                          items,
@@ -7,18 +7,17 @@ const ListSection = ({
                          setSelectedItem,
                          flexDirection = 'row',
                          imageStyle = {
-                             width: 40,
-                             height: 40,
+                             width: 50,
+                             height: 50,
                          },
-                         textStyle = {marginLeft: '8px',}
+                         textStyle = { marginLeft: '8px' }
                      }) => {
-
     const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile screens
 
     return (
         <Box
             sx={{
-                flex: 1,
                 border: `2px solid ${theme.palette.custom.main}`,
                 boxShadow: `0 0 10px 1px ${theme.palette.custom.main}`,
                 borderRadius: 2,
@@ -26,15 +25,15 @@ const ListSection = ({
                 padding: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
                 height: '100%',
-                overflow: 'auto',
             }}
         >
             <List
                 sx={{
-                    padding: 0,
-                    width: '100%',
+                    display: 'flex',
+                    flexDirection: isMobile ? 'row' : 'column',
+                    overflow: 'auto',
+                    gap: '20px'
                 }}
             >
                 {items.map((item) => (
@@ -43,12 +42,25 @@ const ListSection = ({
                         onClick={() => setSelectedItem(item)}
                         sx={{
                             ...gradientBackground,
-                            marginBottom: '15px',
-                            flexDirection: flexDirection,
+                            flexDirection: isMobile ? 'column' : flexDirection,
                             background: selectedItem?.id === item?.id ? theme.palette.custom.main : gradientBackground.background,
+                            minWidth: isMobile ? '150px' : '20px',
+                            borderRadius: '8px',
+                            padding: 0,
+                            paddingTop: '5px',
+                            paddingBottom: '5px',
+                            '&:hover': {
+                                background: theme.palette.custom.hover,
+                                boxShadow: `0 0 10px ${theme.palette.custom.main}`,
+                            },
                         }}
                     >
-                        <ListItemIcon sx={{ minWidth: '10px' }}>
+                        <ListItemIcon
+                            sx={{
+                                justifyContent: 'center',
+                                paddingX: '10px'
+                            }}
+                        >
                             {item.image && (
                                 <CardMedia
                                     component="img"
@@ -57,14 +69,13 @@ const ListSection = ({
                                     sx={{
                                         ...imageStyle,
                                         backgroundColor: 'rgba(0, 0, 0, 0.95)',
+                                        borderRadius: '4px',
                                     }}
                                 />
                             )}
                         </ListItemIcon>
                         <ListItemText
-                            sx={{
-                                alignSelf: flexDirection === 'column' ? 'flex-start' : 'center',
-                            }}
+                            sx={{alignContent: 'center'}}
                             primary={
                                 <Typography
                                     variant="body1"
@@ -72,7 +83,11 @@ const ListSection = ({
                                         ...textStyle,
                                         color: selectedItem?.id === item.id ? 'rgb(0, 0, 0)' : '#ffffff',
                                         fontWeight: 'bold',
+                                        textAlign: isMobile ? 'center': 'flex-start',
                                         width: '100%',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        margin: 0
                                     }}
                                 >
                                     {item.name}
