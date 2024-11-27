@@ -201,6 +201,16 @@ const LeaderboardPage = () => {
                                 position: 'sticky',
                                 bottom: 0,
                                 zIndex: 1000,
+                                '.MuiTablePagination-toolbar': {
+                                    flexWrap: 'wrap', // Allow wrapping if needed on smaller screens
+                                },
+                                '.MuiTablePagination-spacer': {
+                                    display: 'none', // Remove unnecessary spacer to save space
+                                },
+                                '.MuiTablePagination-actions': {
+                                    marginLeft: { xs: '0', sm: '1rem' }, // Reduce left margin on smaller screens
+                                    justifySelf: 'center'
+                                },
                             }}
                         />
                     </TableContainer>
