@@ -2,10 +2,16 @@ import axios from 'axios';
 
 class UnderdogService {
 
-    async getUnderdogs(page = 0, size = 10, sortColumn = 'score') {
+    async getUnderdogs(page, size, sortColumn, sortOrder, searchQuery) {
         try {
             const response = await axios.get('/api/underdogs', {
-                params: { page, size, sortColumn },
+                params: {
+                    page,
+                    size,
+                    sortColumn,
+                    sortOrder,
+                    searchQuery,
+                },
             });
             return response.data;
         } catch (error) {
@@ -13,6 +19,7 @@ class UnderdogService {
             throw error;
         }
     }
+
 
     async saveUnderdogs(file) {
         try {

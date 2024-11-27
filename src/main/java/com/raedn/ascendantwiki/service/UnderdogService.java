@@ -23,10 +23,15 @@ public class UnderdogService {
 
 	private final UnderdogRepository underdogRepository;
 
-	public Page<UnderdogDTO> getUnderdogs(String sortColumn, Pageable pageable) {
-		Page<Object[]> results = underdogRepository.findRankedUnderdogs(sortColumn, pageable);
+	public Page<UnderdogDTO> getUnderdogs(String sortColumn, Pageable pageable, String searchQuery) {
 
-		// Map raw results to DTO
+		Page<Object[]> results;
+		if (searchQuery == null || searchQuery.isEmpty()) {
+			results = underdogRepository.findRankedUnderdogs(sortColumn, pageable);
+		} else {
+			results = underdogRepository.findRankedAndFilteredUnderdogs(searchQuery, pageable);
+		}
+
 		List<UnderdogDTO> dtos = results.stream()
 				.map(row -> new UnderdogDTO(
 						((Number) row[0]).longValue(),

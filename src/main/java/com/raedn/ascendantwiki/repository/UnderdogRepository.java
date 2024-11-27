@@ -32,4 +32,26 @@ public interface UnderdogRepository extends JpaRepository<Underdog, Long> {
 			countQuery = "SELECT COUNT(*) FROM underdogs",
 			nativeQuery = true)
 	Page<Object[]> findRankedUnderdogs(String sortColumn, Pageable pageable);
+
+	@Query(value = """
+			WITH RankedUnderdogs AS (
+			    SELECT
+			        id,
+			        name,
+			        score,
+			        RANK() OVER (ORDER BY score DESC) AS rank
+			    FROM underdogs
+			)
+			SELECT *
+			FROM RankedUnderdogs
+			WHERE LOWER(name) LIKE LOWER(CONCAT('%', :searchQuery, '%'))
+			""",
+			countQuery = """
+					    SELECT COUNT(*)
+					    FROM underdogs
+					    WHERE LOWER(name) LIKE LOWER(CONCAT('%', :searchQuery, '%'))
+					""",
+			nativeQuery = true)
+	Page<Object[]> findRankedAndFilteredUnderdogs(String searchQuery, Pageable pageable);
+
 }

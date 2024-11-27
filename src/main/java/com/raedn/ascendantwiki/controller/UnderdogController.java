@@ -26,10 +26,12 @@ public class UnderdogController {
 	public Page<UnderdogDTO> getUnderdogs(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size,
-			@RequestParam(defaultValue = "score") String sortColumn
+			@RequestParam(defaultValue = "score") String orderBy,
+			@RequestParam(required = false) String searchQuery
 	) {
-		return underdogService.getUnderdogs(sortColumn, PageRequest.of(page, size));
+		return underdogService.getUnderdogs(orderBy, PageRequest.of(page, size), searchQuery);
 	}
+
 
 	@PostMapping
 	@PreAuthorize("hasRole('ADMIN')")

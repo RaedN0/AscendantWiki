@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     CircularProgress,
     Container,
@@ -23,6 +23,8 @@ const LeaderboardPage = () => {
 
     const [players, setPlayers] = useState([]);
     const [totalPlayers, setTotalPlayers] = useState(0);
+
+    const [searchInput, setSearchInput] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
     const [orderBy, setOrderBy] = useState('score');
     const [order, setOrder] = useState('desc');
@@ -30,20 +32,35 @@ const LeaderboardPage = () => {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetchPlayers();
-    }, [page, rowsPerPage, orderBy, order]);
-
-    const fetchPlayers = async () => {
+    const fetchPlayers = useCallback(async () => {
         setLoading(true);
         try {
-            const data = await UnderdogService.getUnderdogs(page, rowsPerPage, orderBy, order);
+            const data = await UnderdogService.getUnderdogs(page, rowsPerPage, orderBy, order, searchQuery);
             setPlayers(data.content);
             setTotalPlayers(data.totalElements);
         } catch (error) {
             console.error('Error fetching players:', error);
         } finally {
             setLoading(false);
+        }
+    }, [page, rowsPerPage, orderBy, order, searchQuery]);
+
+    useEffect(() => {
+        fetchPlayers();
+    }, [fetchPlayers]);
+
+    const triggerSearch = () => {
+        setSearchQuery(searchInput);
+        setPage(0);
+    };
+
+    const handleBlur = () => {
+        triggerSearch();
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            triggerSearch();
         }
     };
 
@@ -97,8 +114,10 @@ const LeaderboardPage = () => {
                         InputProps={{
                             style: {color: '#ffffff'},
                         }}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        onBlur={handleBlur}
+                        onKeyDown={handleKeyDown}
                     />
                     <TableContainer
                         component={Paper}
@@ -163,16 +182,6 @@ const LeaderboardPage = () => {
                                             </TableCell>
                                             <TableCell sx={{color: '#ffffff'}}>{player.name}</TableCell>
                                             <TableCell sx={{color: '#ffffff'}}>{player.score}</TableCell>
-                                        </TableRow>
-
-                                        <TableRow
-                                            sx={{
-                                                height: '10px',
-                                                backgroundColor: '#1a1a1a',
-                                            }}
-                                            key={`${player.id}-spacer`}
-                                        >
-                                            <TableCell colSpan={6} sx={{padding: 0, border: 'none'}}/>
                                         </TableRow>
                                     </React.Fragment>
                                 ))}
