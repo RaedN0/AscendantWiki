@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/5-create-abilities-table.yaml
   - include:
       file: db/changelog/6-create-events-table.yaml
+  - include:
+      file: db/changelog/7-create-underdog-table.yaml
