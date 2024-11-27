@@ -15,7 +15,7 @@ import {
     TableSortLabel,
     useTheme,
 } from '@mui/material';
-import LeaderboardService from '@/app/services/LeaderboardService'; // Mocked service for leaderboard data
+import UnderdogService from "@/app/services/UnderdogService";
 
 const LeaderboardPage = () => {
 
@@ -23,15 +23,15 @@ const LeaderboardPage = () => {
 
     const [players, setPlayers] = useState([]);
     const [order, setOrder] = useState('desc');
-    const [orderBy, setOrderBy] = useState('biocores');
+    const [orderBy, setOrderBy] = useState('score');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        LeaderboardService.getLeaderboard()
+        UnderdogService.getUnderdogs()
             .then((data) => setPlayers(data))
-            .catch((err) => console.error('Failed to fetch leaderboard:', err))
+            .catch((err) => console.log(err))
             .finally(() => setLoading(false));
     }, []);
 
@@ -100,9 +100,6 @@ const LeaderboardPage = () => {
                                 <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>#</TableCell>
                                 <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
                                     <TableSortLabel
-                                        active={orderBy === 'name'}
-                                        direction={orderBy === 'name' ? order : 'asc'}
-                                        onClick={() => handleSort('name')}
                                         sx={{color: theme.palette.custom.main, '&.Mui-active': {color: theme.palette.custom.main}}}
                                     >
                                         Player Name
@@ -110,42 +107,12 @@ const LeaderboardPage = () => {
                                 </TableCell>
                                 <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
                                     <TableSortLabel
-                                        active={orderBy === 'kills'}
-                                        direction={orderBy === 'kills' ? order : 'asc'}
-                                        onClick={() => handleSort('kills')}
+                                        active={orderBy === 'score'}
+                                        direction={orderBy === 'score' ? order : 'asc'}
+                                        onClick={() => handleSort('score')}
                                         sx={{color: theme.palette.custom.main, '&.Mui-active': {color: theme.palette.custom.main}}}
                                     >
-                                        Kills
-                                    </TableSortLabel>
-                                </TableCell>
-                                <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
-                                    <TableSortLabel
-                                        active={orderBy === 'deaths'}
-                                        direction={orderBy === 'deaths' ? order : 'asc'}
-                                        onClick={() => handleSort('deaths')}
-                                        sx={{color: theme.palette.custom.main, '&.Mui-active': {color: theme.palette.custom.main}}}
-                                    >
-                                        Deaths
-                                    </TableSortLabel>
-                                </TableCell>
-                                <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
-                                    <TableSortLabel
-                                        active={orderBy === 'games'}
-                                        direction={orderBy === 'games' ? order : 'asc'}
-                                        onClick={() => handleSort('games')}
-                                        sx={{color: theme.palette.custom.main, '&.Mui-active': {color: theme.palette.custom.main}}}
-                                    >
-                                        Games Played
-                                    </TableSortLabel>
-                                </TableCell>
-                                <TableCell sx={{color: theme.palette.custom.main, fontWeight: 'bold'}}>
-                                    <TableSortLabel
-                                        active={orderBy === 'biocores'}
-                                        direction={orderBy === 'biocores' ? order : 'asc'}
-                                        onClick={() => handleSort('biocores')}
-                                        sx={{color: theme.palette.custom.main, '&.Mui-active': {color: theme.palette.custom.main}}}
-                                    >
-                                        Biocores
+                                        Score
                                     </TableSortLabel>
                                 </TableCell>
                             </TableRow>
@@ -175,10 +142,7 @@ const LeaderboardPage = () => {
                                             {page * rowsPerPage + index + 1}
                                         </TableCell>
                                         <TableCell sx={{color: '#ffffff'}}>{player.name}</TableCell>
-                                        <TableCell sx={{color: '#ffffff'}}>{player.kills}</TableCell>
-                                        <TableCell sx={{color: '#ffffff'}}>{player.deaths}</TableCell>
-                                        <TableCell sx={{color: '#ffffff'}}>{player.games}</TableCell>
-                                        <TableCell sx={{color: '#ffffff'}}>{player.biocores}</TableCell>
+                                        <TableCell sx={{color: '#ffffff'}}>{player.score}</TableCell>
                                     </TableRow>
 
                                     <TableRow

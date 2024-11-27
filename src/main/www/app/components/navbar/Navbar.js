@@ -13,7 +13,7 @@ const Navbar = () => {
     const navItems = [
         {text: 'Home', href: '/'},
         {text: 'Weapon Calculator', href: '/weapon-calculator'},
-        {text: 'Leaderboard', href: '/leaderboard'},
+        {text: 'Underdogs Leaderboard', href: '/leaderboard'},
         {text: 'Events', href: '/events'},
     ];
 
