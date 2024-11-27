@@ -19,7 +19,6 @@ import {
 import UnderdogService from '@/app/services/UnderdogService';
 
 const LeaderboardPage = () => {
-
     const theme = useTheme();
 
     const [players, setPlayers] = useState([]);
@@ -38,7 +37,7 @@ const LeaderboardPage = () => {
     const fetchPlayers = async () => {
         setLoading(true);
         try {
-            const data = await UnderdogService.getUnderdogs(page, rowsPerPage, orderBy);
+            const data = await UnderdogService.getUnderdogs(page, rowsPerPage, orderBy, order);
             setPlayers(data.content);
             setTotalPlayers(data.totalElements);
         } catch (error) {
@@ -49,6 +48,7 @@ const LeaderboardPage = () => {
     };
 
     const handleSort = (property) => {
+        if (property === 'name') return;
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
@@ -121,18 +121,9 @@ const LeaderboardPage = () => {
                                         zIndex: 1000,
                                     }}
                                 >
-                                    <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>Rank</TableCell>
-                                    <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
-                                        <TableSortLabel
-                                            sx={{
-                                                color: theme.palette.custom.main,
-                                                '&.Mui-active': {color: theme.palette.custom.main},
-                                            }}
-                                        >
-                                            Player Name
-                                        </TableSortLabel>
-                                    </TableCell>
-                                    <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
+                                    <TableCell sx={{color: theme.palette.custom.main, fontWeight: 'bold'}}>Rank</TableCell>
+                                    <TableCell sx={{color: theme.palette.custom.main, fontWeight: 'bold'}}>Player Name</TableCell>
+                                    <TableCell sx={{color: theme.palette.custom.main, fontWeight: 'bold'}}>
                                         <TableSortLabel
                                             active={orderBy === 'score'}
                                             direction={orderBy === 'score' ? order : 'asc'}
@@ -157,7 +148,7 @@ const LeaderboardPage = () => {
                                                 },
                                                 backgroundColor: 'rgba(0, 0, 0, 0.8)',
                                                 borderTop: `2px solid ${theme.palette.custom.main}`,
-                                                borderBottom: `2px solid ${theme.palette.custom.main}`
+                                                borderBottom: `2px solid ${theme.palette.custom.main}`,
                                             }}
                                         >
                                             <TableCell
