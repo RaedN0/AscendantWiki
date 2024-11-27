@@ -2,22 +2,23 @@ import axios from 'axios';
 
 class UnderdogService {
 
-    async getUnderdogs() {
+    async getUnderdogs(page = 0, size = 10, sortColumn = 'score') {
         try {
-            const response = await axios.get('/api/underdogs');
+            const response = await axios.get('/api/underdogs', {
+                params: { page, size, sortColumn },
+            });
             return response.data;
         } catch (error) {
-            console.error(error);
+            console.error('Error fetching underdogs:', error);
+            throw error;
         }
     }
 
     async saveUnderdogs(file) {
         try {
-            // Prepare the form data
             const formData = new FormData();
             formData.append("file", file);
 
-            // Send the file as multipart/form-data
             const response = await axios.post(`/api/underdogs`, formData, {
                 withCredentials: true,
                 headers: {

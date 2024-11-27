@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     CircularProgress,
     Container,
@@ -16,38 +16,37 @@ import {
     TextField,
     useTheme,
 } from '@mui/material';
-import React from 'react';
-import UnderdogService from "@/app/services/UnderdogService";
+import UnderdogService from '@/app/services/UnderdogService';
 
 const LeaderboardPage = () => {
 
     const theme = useTheme();
 
     const [players, setPlayers] = useState([]);
-    const [filteredPlayers, setFilteredPlayers] = useState([]);
+    const [totalPlayers, setTotalPlayers] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
-    const [order, setOrder] = useState('desc');
     const [orderBy, setOrderBy] = useState('score');
+    const [order, setOrder] = useState('desc');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        UnderdogService.getUnderdogs()
-            .then((data) => {
-                setPlayers(data);
-                setFilteredPlayers(data);
-            })
-            .catch((err) => console.log(err))
-            .finally(() => setLoading(false));
-    }, []);
+        fetchPlayers();
+    }, [page, rowsPerPage, orderBy, order]);
 
-    useEffect(() => {
-        const filtered = players.filter((player) =>
-            player.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setFilteredPlayers(filtered);
-    }, [searchQuery, players]);
+    const fetchPlayers = async () => {
+        setLoading(true);
+        try {
+            const data = await UnderdogService.getUnderdogs(page, rowsPerPage, orderBy);
+            setPlayers(data.content);
+            setTotalPlayers(data.totalElements);
+        } catch (error) {
+            console.error('Error fetching players:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleSort = (property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -64,46 +63,23 @@ const LeaderboardPage = () => {
         setPage(0);
     };
 
-    // Sort the players based on the selected order and orderBy column
-    const sortedPlayers = [...players].sort((a, b) => {
-        if (order === 'asc') {
-            return a[orderBy] < b[orderBy] ? -1 : 1;
-        } else {
-            return a[orderBy] > b[orderBy] ? -1 : 1;
-        }
-    });
-
-    const rankedPlayers = sortedPlayers.map((player, index) => ({
-        ...player,
-        rank: index + 1,
-    }));
-
-    const filteredAndRankedPlayers = rankedPlayers.filter((player) =>
-        player.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    const paginatedPlayers = filteredAndRankedPlayers.slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-    );
-
     return (
-        <Container maxWidth="lg"
-                   sx={{
-                       display: 'flex',
-                       flexDirection: 'column',
-                       backgroundImage: 'url(/background.jpg)',
-                       backgroundSize: 'cover',
-                       backgroundPosition: 'center',
-                       padding: 2,
-                       height: '100%',
-                   }}
+        <Container
+            maxWidth="lg"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundImage: 'url(/background.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                padding: 2,
+                height: '100%',
+            }}
         >
             {loading ? (
                 <CircularProgress sx={{color: theme.palette.custom.main}}/>
             ) : (
                 <>
-                    {/* Search Bar */}
                     <TextField
                         variant="outlined"
                         placeholder="Search by name"
@@ -136,19 +112,21 @@ const LeaderboardPage = () => {
                     >
                         <Table>
                             <TableHead>
-                                <TableRow sx={{
-                                    color: theme.palette.custom.main,
-                                    backgroundColor: '#1a1a1a',
-                                    position: 'sticky',
-                                    top: 0,
-                                    zIndex: 1000,
-                                }}>
+                                <TableRow
+                                    sx={{
+                                        color: theme.palette.custom.main,
+                                        backgroundColor: '#1a1a1a',
+                                        position: 'sticky',
+                                        top: 0,
+                                        zIndex: 1000,
+                                    }}
+                                >
                                     <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>Rank</TableCell>
                                     <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
                                         <TableSortLabel
                                             sx={{
                                                 color: theme.palette.custom.main,
-                                                '&.Mui-active': {color: theme.palette.custom.main}
+                                                '&.Mui-active': {color: theme.palette.custom.main},
                                             }}
                                         >
                                             Player Name
@@ -161,7 +139,7 @@ const LeaderboardPage = () => {
                                             onClick={() => handleSort('score')}
                                             sx={{
                                                 color: theme.palette.custom.main,
-                                                '&.Mui-active': {color: theme.palette.custom.main}
+                                                '&.Mui-active': {color: theme.palette.custom.main},
                                             }}
                                         >
                                             Score
@@ -170,8 +148,7 @@ const LeaderboardPage = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {paginatedPlayers.map((player) => (
-                                    // Assign a unique key to the TableRow
+                                {players.map((player) => (
                                     <React.Fragment key={player.id}>
                                         <TableRow
                                             sx={{
@@ -197,7 +174,6 @@ const LeaderboardPage = () => {
                                             <TableCell sx={{color: '#ffffff'}}>{player.score}</TableCell>
                                         </TableRow>
 
-                                        {/* Spacing row */}
                                         <TableRow
                                             sx={{
                                                 height: '10px',
@@ -210,12 +186,11 @@ const LeaderboardPage = () => {
                                     </React.Fragment>
                                 ))}
                             </TableBody>
-
                         </Table>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
                             component="div"
-                            count={filteredAndRankedPlayers.length}
+                            count={totalPlayers}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             onPageChange={handleChangePage}
