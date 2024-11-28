@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     CircularProgress,
     Container,
@@ -16,40 +16,56 @@ import {
     TextField,
     useTheme,
 } from '@mui/material';
-import React from 'react';
-import UnderdogService from "@/app/services/UnderdogService";
+import UnderdogService from '@/app/services/UnderdogService';
 
 const LeaderboardPage = () => {
-
     const theme = useTheme();
 
     const [players, setPlayers] = useState([]);
-    const [filteredPlayers, setFilteredPlayers] = useState([]);
+    const [totalPlayers, setTotalPlayers] = useState(0);
+
+    const [searchInput, setSearchInput] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
-    const [order, setOrder] = useState('desc');
     const [orderBy, setOrderBy] = useState('score');
+    const [order, setOrder] = useState('desc');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        UnderdogService.getUnderdogs()
-            .then((data) => {
-                setPlayers(data);
-                setFilteredPlayers(data);
-            })
-            .catch((err) => console.log(err))
-            .finally(() => setLoading(false));
-    }, []);
+    const fetchPlayers = useCallback(async () => {
+        setLoading(true);
+        try {
+            const data = await UnderdogService.getUnderdogs(page, rowsPerPage, orderBy, order, searchQuery);
+            setPlayers(data.content);
+            setTotalPlayers(data.totalElements);
+        } catch (error) {
+            console.error('Error fetching players:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, [page, rowsPerPage, orderBy, order, searchQuery]);
 
     useEffect(() => {
-        const filtered = players.filter((player) =>
-            player.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setFilteredPlayers(filtered);
-    }, [searchQuery, players]);
+        fetchPlayers();
+    }, [fetchPlayers]);
+
+    const triggerSearch = () => {
+        setSearchQuery(searchInput);
+        setPage(0);
+    };
+
+    const handleBlur = () => {
+        triggerSearch();
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            triggerSearch();
+        }
+    };
 
     const handleSort = (property) => {
+        if (property === 'name') return;
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
@@ -64,46 +80,23 @@ const LeaderboardPage = () => {
         setPage(0);
     };
 
-    // Sort the players based on the selected order and orderBy column
-    const sortedPlayers = [...players].sort((a, b) => {
-        if (order === 'asc') {
-            return a[orderBy] < b[orderBy] ? -1 : 1;
-        } else {
-            return a[orderBy] > b[orderBy] ? -1 : 1;
-        }
-    });
-
-    const rankedPlayers = sortedPlayers.map((player, index) => ({
-        ...player,
-        rank: index + 1,
-    }));
-
-    const filteredAndRankedPlayers = rankedPlayers.filter((player) =>
-        player.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    const paginatedPlayers = filteredAndRankedPlayers.slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-    );
-
     return (
-        <Container maxWidth="lg"
-                   sx={{
-                       display: 'flex',
-                       flexDirection: 'column',
-                       backgroundImage: 'url(/background.jpg)',
-                       backgroundSize: 'cover',
-                       backgroundPosition: 'center',
-                       padding: 2,
-                       height: '100%',
-                   }}
+        <Container
+            maxWidth="lg"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundImage: 'url(/background.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                padding: 2,
+                height: '100%',
+            }}
         >
             {loading ? (
                 <CircularProgress sx={{color: theme.palette.custom.main}}/>
             ) : (
                 <>
-                    {/* Search Bar */}
                     <TextField
                         variant="outlined"
                         placeholder="Search by name"
@@ -121,8 +114,10 @@ const LeaderboardPage = () => {
                         InputProps={{
                             style: {color: '#ffffff'},
                         }}
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
+                        onBlur={handleBlur}
+                        onKeyDown={handleKeyDown}
                     />
                     <TableContainer
                         component={Paper}
@@ -136,32 +131,25 @@ const LeaderboardPage = () => {
                     >
                         <Table>
                             <TableHead>
-                                <TableRow sx={{
-                                    color: theme.palette.custom.main,
-                                    backgroundColor: '#1a1a1a',
-                                    position: 'sticky',
-                                    top: 0,
-                                    zIndex: 1000,
-                                }}>
-                                    <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>Rank</TableCell>
-                                    <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
-                                        <TableSortLabel
-                                            sx={{
-                                                color: theme.palette.custom.main,
-                                                '&.Mui-active': {color: theme.palette.custom.main}
-                                            }}
-                                        >
-                                            Player Name
-                                        </TableSortLabel>
-                                    </TableCell>
-                                    <TableCell sx={{color: '#00ff00', fontWeight: 'bold'}}>
+                                <TableRow
+                                    sx={{
+                                        color: theme.palette.custom.main,
+                                        backgroundColor: '#1a1a1a',
+                                        position: 'sticky',
+                                        top: 0,
+                                        zIndex: 1000,
+                                    }}
+                                >
+                                    <TableCell sx={{color: theme.palette.custom.main, fontWeight: 'bold'}}>Rank</TableCell>
+                                    <TableCell sx={{color: theme.palette.custom.main, fontWeight: 'bold'}}>Player Name</TableCell>
+                                    <TableCell sx={{color: theme.palette.custom.main, fontWeight: 'bold'}}>
                                         <TableSortLabel
                                             active={orderBy === 'score'}
                                             direction={orderBy === 'score' ? order : 'asc'}
                                             onClick={() => handleSort('score')}
                                             sx={{
                                                 color: theme.palette.custom.main,
-                                                '&.Mui-active': {color: theme.palette.custom.main}
+                                                '&.Mui-active': {color: theme.palette.custom.main},
                                             }}
                                         >
                                             Score
@@ -170,8 +158,7 @@ const LeaderboardPage = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {paginatedPlayers.map((player) => (
-                                    // Assign a unique key to the TableRow
+                                {players.map((player) => (
                                     <React.Fragment key={player.id}>
                                         <TableRow
                                             sx={{
@@ -180,7 +167,7 @@ const LeaderboardPage = () => {
                                                 },
                                                 backgroundColor: 'rgba(0, 0, 0, 0.8)',
                                                 borderTop: `2px solid ${theme.palette.custom.main}`,
-                                                borderBottom: `2px solid ${theme.palette.custom.main}`
+                                                borderBottom: `2px solid ${theme.palette.custom.main}`,
                                             }}
                                         >
                                             <TableCell
@@ -196,26 +183,14 @@ const LeaderboardPage = () => {
                                             <TableCell sx={{color: '#ffffff'}}>{player.name}</TableCell>
                                             <TableCell sx={{color: '#ffffff'}}>{player.score}</TableCell>
                                         </TableRow>
-
-                                        {/* Spacing row */}
-                                        <TableRow
-                                            sx={{
-                                                height: '10px',
-                                                backgroundColor: '#1a1a1a',
-                                            }}
-                                            key={`${player.id}-spacer`}
-                                        >
-                                            <TableCell colSpan={6} sx={{padding: 0, border: 'none'}}/>
-                                        </TableRow>
                                     </React.Fragment>
                                 ))}
                             </TableBody>
-
                         </Table>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
                             component="div"
-                            count={filteredAndRankedPlayers.length}
+                            count={totalPlayers}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             onPageChange={handleChangePage}
@@ -226,6 +201,16 @@ const LeaderboardPage = () => {
                                 position: 'sticky',
                                 bottom: 0,
                                 zIndex: 1000,
+                                '.MuiTablePagination-toolbar': {
+                                    flexWrap: 'wrap', // Allow wrapping if needed on smaller screens
+                                },
+                                '.MuiTablePagination-spacer': {
+                                    display: 'none', // Remove unnecessary spacer to save space
+                                },
+                                '.MuiTablePagination-actions': {
+                                    marginLeft: { xs: '0', sm: '1rem' }, // Reduce left margin on smaller screens
+                                    justifySelf: 'center'
+                                },
                             }}
                         />
                     </TableContainer>
