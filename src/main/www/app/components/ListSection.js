@@ -26,6 +26,7 @@ import {
 } from '@mui/material';
 import {Add} from '@mui/icons-material';
 import {RoleContext} from '@/app/RoleContext';
+import {gradientBackground} from "@/app/styles/gradient";
 
 const ListSection = ({
                          items,
@@ -117,8 +118,9 @@ const ListSection = ({
                         onClick={() => setSelectedItem(item)}
                         onContextMenu={(e) => handleContextMenu(e, item)}
                         sx={{
+                            ...gradientBackground,
                             flexDirection: isMobile ? 'column' : flexDirection,
-                            background: selectedItem?.id === item?.id ? theme.palette.custom.main : 'rgba(0,0,0,0.5)',
+                            background: selectedItem?.id === item?.id ? theme.palette.custom.main : gradientBackground.background,
                             minWidth: isMobile ? '150px' : '20px',
                             borderRadius: '8px',
                             padding: 0,
@@ -130,7 +132,7 @@ const ListSection = ({
                             },
                         }}
                     >
-                        <ListItemIcon sx={{justifyContent: 'center', paddingX: '10px'}}>
+                        <ListItemIcon sx={{justifyContent: 'center', paddingX: '10px', maxHeight: '10em'}}>
                             {item.image && (
                                 <CardMedia
                                     component="img"
