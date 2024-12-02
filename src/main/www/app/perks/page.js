@@ -3,12 +3,13 @@
 import {useEffect, useState} from 'react';
 import {Box, Button, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useMediaQuery, useTheme,} from '@mui/material';
 import PerkService from "@/app/services/PerkService";
+import perkService from "@/app/services/PerkService";
 import ListSection from "@/app/components/ListSection";
 import {gradientBackground} from "@/app/styles/gradient";
 
 const PerksPage = () => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile screens
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const [perks, setPerks] = useState([]);
     const [filteredPerks, setFilteredPerks] = useState([]);
@@ -16,7 +17,7 @@ const PerksPage = () => {
     const [selectedCategory, setSelectedCategory] = useState('COMBAT');
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+    function fetchPerks() {
         PerkService.getPerks()
             .then((data) => {
                 const sortedPerks = data.sort((a, b) => a.name.localeCompare(b.name));
@@ -29,6 +30,10 @@ const PerksPage = () => {
             .finally(() => {
                 setLoading(false);
             });
+    }
+
+    useEffect(() => {
+        fetchPerks();
     }, []);
 
     const filterPerks = (category, perksList = perks) => {
@@ -40,6 +45,18 @@ const PerksPage = () => {
     const handleCategoryChange = (category) => {
         setSelectedCategory(category);
         filterPerks(category);
+    };
+
+    const handleAdd = (item) => {
+        perkService.addPerk(item).then(() => fetchPerks());
+    };
+
+    const handleEdit = (item) => {
+        perkService.updatePerk(item).then(() => fetchPerks());
+    };
+
+    const handleDelete = (item) => {
+        perkService.deletePerk(item.id).then(() => fetchPerks());
     };
 
     return (
@@ -110,7 +127,25 @@ const PerksPage = () => {
                                 overflow: 'auto',
                             }}
                         >
-                            <ListSection items={filteredPerks} selectedItem={selectedPerk} setSelectedItem={setSelectedPerk}/>
+                            <ListSection
+                                items={filteredPerks}
+                                selectedItem={selectedPerk}
+                                setSelectedItem={setSelectedPerk}
+                                dialogFields={[
+                                    {name: 'name', label: 'Name', type: 'text'},
+                                    {name: 'description', label: 'Description', type: 'text', multiline: true, rows: 4},
+                                    {
+                                        name: 'type', label: 'Category', type: 'select', options: [
+                                            {value: 'COMBAT', label: 'Combat'},
+                                            {value: 'UTILITY', label: 'Utility'},
+                                        ]
+                                    },
+                                    {name: 'image', label: 'Upload Image', type: 'image'},
+                                ]}
+                                onAdd={handleAdd}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                            />
                         </Box>
 
                         {selectedPerk && (

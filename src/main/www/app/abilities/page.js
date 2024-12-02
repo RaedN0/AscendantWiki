@@ -1,8 +1,9 @@
 'use client';
 
 import {useEffect, useState} from 'react';
-import {Box, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useTheme, useMediaQuery} from '@mui/material';
+import {Box, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useMediaQuery, useTheme} from '@mui/material';
 import AbilityService from "@/app/services/AbilityService";
+import abilityService from "@/app/services/AbilityService";
 import ListSection from "@/app/components/ListSection";
 
 const AbilitiesPage = () => {
@@ -13,7 +14,7 @@ const AbilitiesPage = () => {
     const [selectedAbility, setSelectedAbility] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+    function fetchAbilities() {
         AbilityService.getAbilities()
             .then((data) => {
                 const sortedAbilities = data.sort((a, b) => a.name.localeCompare(b.name));
@@ -26,7 +27,23 @@ const AbilitiesPage = () => {
             .finally(() => {
                 setLoading(false);
             });
+    }
+
+    useEffect(() => {
+        fetchAbilities();
     }, []);
+
+    const handleAdd = (item) => {
+        abilityService.addAbility(item).then(() => fetchAbilities());
+    };
+
+    const handleEdit = (item) => {
+        abilityService.updateAbility(item).then(() => fetchAbilities());
+    };
+
+    const handleDelete = (item) => {
+        abilityService.deleteAbility(item.id).then(() => fetchAbilities());
+    };
 
     return (
         <Container
@@ -66,6 +83,16 @@ const AbilitiesPage = () => {
                             items={abilities}
                             selectedItem={selectedAbility}
                             setSelectedItem={setSelectedAbility}
+                            dialogFields={[
+                                {name: 'name', label: 'Name', type: 'text'},
+                                {name: 'description', label: 'Description', type: 'text', multiline: true, rows: 4},
+                                {name: 'cooldown', label: 'Cooldown', type: 'number'},
+                                {name: 'activationTime', label: 'Activation Time', type: 'number'},
+                                {name: 'image', label: 'Upload Image', type: 'image'},
+                            ]}
+                            onAdd={handleAdd}
+                            onEdit={handleEdit}
+                            onDelete={handleDelete}
                         />
                     </Box>
 

@@ -3,7 +3,7 @@
 import {useEffect, useState} from 'react';
 import {Box, Button, CardMedia, Container, Typography, useMediaQuery, useTheme,} from '@mui/material';
 import WeaponService from '@/app/services/WeaponService';
-import {keyframes} from "@emotion/react";
+import weaponService from '@/app/services/WeaponService';
 import ListSection from "@/app/components/ListSection";
 import {gradientBackground} from "@/app/styles/gradient";
 
@@ -16,7 +16,7 @@ const WeaponsPage = () => {
     const [selectedWeapon, setSelectedWeapon] = useState(null);
     const [weaponCategory, setWeaponCategory] = useState('Battle Rifle');
 
-    useEffect(() => {
+    function fetchWeapons() {
         WeaponService.getWeapons()
             .then((data) => {
                 setWeapons(data);
@@ -25,6 +25,10 @@ const WeaponsPage = () => {
             .catch((err) => {
                 console.error('Failed to fetch weapons:', err);
             });
+    }
+
+    useEffect(() => {
+        fetchWeapons();
     }, []);
 
     const filterWeaponsByCategory = (category, weaponsList = weapons) => {
@@ -40,14 +44,17 @@ const WeaponsPage = () => {
         filterWeaponsByCategory(category.toUpperCase().replace(' ', '_'));
     };
 
-    const hoverToGreen = keyframes`
-        0% {
-            background-color: #000000;
-        }
-        100% {
-            background-color: #00ff00;
-        }
-    `;
+    const handleAdd = (item) => {
+        weaponService.addWeapon(item).then(() => fetchWeapons());
+    };
+
+    const handleEdit = (item) => {
+        weaponService.updateWeapon(item).then(() => fetchWeapons());
+    };
+
+    const handleDelete = (item) => {
+        weaponService.deleteWeapon(item.id).then(() => fetchWeapons());
+    };
 
     return (
         <Container
@@ -126,6 +133,42 @@ const WeaponsPage = () => {
                         textStyle={{
                             marginBottom: '-10%'
                         }}
+                        dialogFields={[
+                            {name: 'name', label: 'Name', type: 'text'},
+                            {name: 'baseDamage', label: 'Base Damage', type: 'number'},
+                            {name: 'fireRate', label: 'Fire Rate', type: 'number'},
+                            {name: 'reloadSpeed', label: 'Reload Speed', type: 'number'},
+                            {
+                                name: 'category', label: 'Category', type: 'select', options: [
+                                    {value: 'BATTLE_RIFLE', label: 'Battle Rifle'},
+                                    {value: 'PLASMA_RIFLE', label: 'Plasma Rifle'},
+                                    {value: 'BEAM_GLOVES', label: 'Beam Gloves'},
+                                    {value: 'SHOTGUN', label: 'Shotgun'},
+                                    {value: 'BOMBER', label: 'Bomber'},
+                                    {value: 'SNIPER_RIFLE', label: 'Sniper Rifle'},
+                                ]
+                            },
+                            {
+                                name: 'rarity', label: 'Rarity', type: 'select', options: [
+                                    {value: 'GREY', label: 'Grey'},
+                                    {value: 'BLUE', label: 'Blue'},
+                                    {value: 'PURPLE', label: 'Purple'},
+                                    {value: 'GOLDEN', label: 'Golden'},
+                                ]
+                            },
+                            {
+                                name: 'ammo', label: 'Ammo', type: 'select', options: [
+                                    {value: 'LIGHT', label: 'Light'},
+                                    {value: 'HEAVY', label: 'Heavy'},
+                                    {value: 'ENERGY', label: 'Energy'},
+                                ]
+                            },
+                            {name: 'cost', label: 'Cost', type: 'number'},
+                            {name: 'image', label: 'Upload Image', type: 'image'},
+                        ]}
+                        onAdd={handleAdd}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
                     />
                 </Box>
 

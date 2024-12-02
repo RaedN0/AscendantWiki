@@ -3,17 +3,18 @@
 import {useEffect, useState} from 'react';
 import {Box, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useMediaQuery, useTheme,} from '@mui/material';
 import EventService from "@/app/services/EventService";
+import eventService from "@/app/services/EventService";
 import ListSection from "@/app/components/ListSection";
 
 const EventsPage = () => {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile screens
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const [events, setEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+    function fetchEvents() {
         EventService.getEvents()
             .then((data) => {
                 const sortedEvents = data.sort((a, b) => a.name.localeCompare(b.name));
@@ -26,7 +27,23 @@ const EventsPage = () => {
             .finally(() => {
                 setLoading(false);
             });
+    }
+
+    useEffect(() => {
+        fetchEvents();
     }, []);
+
+    const handleAdd = (item) => {
+        eventService.addEvent(item).then(() => fetchEvents());
+    };
+
+    const handleEdit = (item) => {
+        eventService.updateEvent(item).then(() => fetchEvents());
+    };
+
+    const handleDelete = (item) => {
+        eventService.deleteEvent(item.id).then(() => fetchEvents());
+    };
 
     return (
         <Container
@@ -66,7 +83,19 @@ const EventsPage = () => {
                                 overflow: 'auto',
                             }}
                         >
-                            <ListSection items={events} selectedItem={selectedEvent} setSelectedItem={setSelectedEvent}/>
+                            <ListSection
+                                items={events}
+                                selectedItem={selectedEvent}
+                                setSelectedItem={setSelectedEvent}
+                                dialogFields={[
+                                    {name: 'name', label: 'Name', type: 'text'},
+                                    {name: 'description', label: 'Description', type: 'text', multiline: true, rows: 4},
+                                    {name: 'image', label: 'Upload Image', type: 'image'},
+                                ]}
+                                onAdd={handleAdd}
+                                onEdit={handleEdit}
+                                onDelete={handleDelete}
+                            />
                         </Box>
 
                         {selectedEvent && (
