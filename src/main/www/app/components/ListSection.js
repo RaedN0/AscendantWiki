@@ -132,7 +132,7 @@ const ListSection = ({
                             },
                         }}
                     >
-                        <ListItemIcon sx={{justifyContent: 'center', paddingX: '10px', maxHeight: '10em'}}>
+                        <ListItemIcon sx={{justifyContent: 'center', paddingX: '1em', paddingTop: '1em', maxHeight: '7em', marginTop: '-5px'}}>
                             {item.image && (
                                 <CardMedia
                                     component="img"
@@ -140,6 +140,7 @@ const ListSection = ({
                                     alt={item.name}
                                     sx={{
                                         ...imageStyle,
+                                        objectFit: 'contain',
                                         backgroundColor: 'rgba(0, 0, 0, 0.95)',
                                         borderRadius: '4px',
                                     }}
