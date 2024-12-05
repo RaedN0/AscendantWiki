@@ -1,6 +1,7 @@
 import "./globals.css";
 import ThemeProviderWrapper from "@/app/components/ThemeProvider";
 import Navbar from "@/app/components/navbar/Navbar";
+import {RoleProvider} from "@/app/RoleContext";
 
 export const metadata = {
     title: "Ascendant Wiki",
@@ -28,6 +29,7 @@ export default function RootLayout({children}) {
             }}
         >
         <ThemeProviderWrapper>
+            <RoleProvider>
             <Navbar
                 style={{
                     flex: "0 0 auto",
@@ -42,6 +44,7 @@ export default function RootLayout({children}) {
             >
                 {children}
             </main>
+            </RoleProvider>
         </ThemeProviderWrapper>
         </body>
         </html>
