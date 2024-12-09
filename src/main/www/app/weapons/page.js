@@ -6,6 +6,7 @@ import WeaponService from '@/app/services/WeaponService';
 import weaponService from '@/app/services/WeaponService';
 import ListSection from "@/app/components/ListSection";
 import {gradientBackground} from "@/app/styles/gradient";
+import StatSlider from "@/app/components/StatSlider";
 
 const WeaponsPage = () => {
     const theme = useTheme();
@@ -19,8 +20,9 @@ const WeaponsPage = () => {
     function fetchWeapons() {
         WeaponService.getWeapons()
             .then((data) => {
-                setWeapons(data);
-                filterWeaponsByCategory('Battle Rifle', data);
+                const sortedWeapons = data.sort((a, b) => a.name.localeCompare(b.name));
+                setWeapons(sortedWeapons);
+                filterWeaponsByCategory('Battle Rifle', sortedWeapons);
             })
             .catch((err) => {
                 console.error('Failed to fetch weapons:', err);
@@ -236,30 +238,29 @@ const WeaponsPage = () => {
                                 </Typography>
                             </Box>
 
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    gap: 1,
-                                }}
-                            >
-                                <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: theme.palette.custom.main}}>Base Damage:</strong> {selectedWeapon.baseDamage}
-                                </Typography>
-                                <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: theme.palette.custom.main}}>Fire Rate:</strong> {selectedWeapon.fireRate} RPM
-                                </Typography>
-                                <Typography variant="body1" sx={{color: '#ffffff'}}>
-                                    <strong style={{color: theme.palette.custom.main}}>Reload
-                                        Speed:</strong> {selectedWeapon.reloadSpeed} seconds
-                                </Typography>
+                            <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
+                                <StatSlider
+                                    label="Base Damage"
+                                    value={selectedWeapon.baseDamage}
+                                    max={100}
+                                />
+                                <StatSlider
+                                    label="Fire Rate (RPM)"
+                                    value={selectedWeapon.fireRate}
+                                    max={1000}
+                                />
+                                <StatSlider
+                                    label="Reload Speed (s)"
+                                    value={selectedWeapon.reloadSpeed}
+                                    max={5}
+                                    invert
+                                />
                                 <Typography variant="body1" sx={{color: '#ffffff'}}>
                                     <strong style={{color: theme.palette.custom.main}}>Rarity:</strong> {selectedWeapon.rarity}
                                 </Typography>
                                 <Typography variant="body1" sx={{color: '#ffffff'}}>
                                     <strong style={{color: theme.palette.custom.main}}>Ammo:</strong> {selectedWeapon.ammo}
-                                </Typography>
-                            </Box>
+                                </Typography></Box>
                         </Box>
                     )}
                 </Box>
