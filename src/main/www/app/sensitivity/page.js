@@ -96,7 +96,7 @@ export default function YawConverter() {
     };
 
     function findOverallSens(cm360, dpi) {
-        for (let i = 0.01; i < 2; i += 0.01) {
+        for (let i = 0.01; i < 3; i += 0.01) {
            const newSens = cmPer360ToSens(cm360, dpi, BASE_YAW * i)
 
             if(newSens < 3) {
