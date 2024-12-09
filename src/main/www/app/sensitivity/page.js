@@ -99,9 +99,9 @@ export default function YawConverter() {
         for (let i = 0.01; i < 2; i += 0.01) {
            const newSens = cmPer360ToSens(cm360, dpi, BASE_YAW * i)
 
-            if(newSens < 4) {
+            if(newSens < 3) {
                 const scopeSens = calculateScopedCm360(cm360, dpi, i, fov, scopeSettings[4]);
-                if (scopeSens < 4) {
+                if (scopeSens < 3) {
                     return i;
                 }
             }
