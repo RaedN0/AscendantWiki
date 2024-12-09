@@ -140,7 +140,6 @@ const ListSection = ({
                                     alt={item.name}
                                     sx={{
                                         ...imageStyle,
-                                        objectFit: 'contain',
                                         backgroundColor: 'rgba(0, 0, 0, 0.95)',
                                         borderRadius: '4px',
                                     }}

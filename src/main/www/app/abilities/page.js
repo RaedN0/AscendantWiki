@@ -116,8 +116,9 @@ const AbilitiesPage = () => {
                                 <Box
                                     sx={{
                                         display: 'flex',
-                                        justifyContent: 'center',
+                                        justifySelf: 'flex-start',
                                         alignItems: 'center',
+                                        marginLeft: '10px',
                                         marginTop: '10px',
                                     }}
                                 >
@@ -125,7 +126,7 @@ const AbilitiesPage = () => {
                                         component="img"
                                         image={`data:image/png;base64,${selectedAbility.image}`}
                                         alt={selectedAbility.name}
-                                        sx={{width: 200, height: 200}}
+                                        sx={{width: 200, height: 200, margin: 'auto'}}
                                     />
                                     <CardContent>
                                         <Typography variant="h5" sx={{fontWeight: 'bold', color: '#ffffff'}}>
@@ -139,6 +140,7 @@ const AbilitiesPage = () => {
                                         sx={{
                                             color: '#ffffff',
                                             margin: '5%',
+                                            justifySelf: 'flex-start',
                                             textAlign: 'left',
                                         }}
                                     >
