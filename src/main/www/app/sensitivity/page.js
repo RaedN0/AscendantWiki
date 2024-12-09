@@ -85,7 +85,7 @@ export default function YawConverter() {
 
         setResult({
             originalCmPer360: originalCmPer360.toFixed(5),
-            newSens: newSens.toFixed(5),
+            newSens: newSens.toFixed(2),
             hipfire: hipfireSens.toFixed(5),
             ads: adsSens.toFixed(5),
             zoom2: zoom2.toFixed(5),
