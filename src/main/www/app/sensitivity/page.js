@@ -146,12 +146,6 @@ export default function YawConverter() {
                 Sensitivity Converter
             </Typography>
 
-            <Typography variant="body1" sx={{ marginBottom: 2 }}>
-                Select a known game and enter your current sensitivity and DPI (we'll figure out your cm/360),
-                or choose "Custom cm/360" and directly enter your cm/360 and DPI.
-                We'll give you the equivalent sensitivity at yaw = 0.07.
-            </Typography>
-
             <FormControl fullWidth sx={{ marginBottom: 2 }}>
                 <InputLabel sx={{ color: '#ffffff' }}>Source</InputLabel>
                 <Select
