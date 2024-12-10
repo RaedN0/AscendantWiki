@@ -200,8 +200,6 @@ export default function YawConverter() {
                             color: '#ffffff',
                         },
                     }}
-                    InputProps={{style: {color: '#ffffff'}}}
-                    InputLabelProps={{style: {color: '#ffffff'}}}
                 />
             ) : (
                 <TextField
@@ -225,8 +223,6 @@ export default function YawConverter() {
                             color: '#ffffff',
                         },
                     }}
-                    InputProps={{style: {color: '#ffffff'}}}
-                    InputLabelProps={{style: {color: '#ffffff'}}}
                 />
             )}
 
@@ -241,18 +237,16 @@ export default function YawConverter() {
                     '& .MuiOutlinedInput-root': {
                         color: '#ffffff',
                         '& fieldset': {
-                            borderColor: '#00ff00',
+                            borderColor: theme.palette.custom.main,
                         },
                         '&:hover fieldset': {
-                            borderColor: '#00ff00',
+                            borderColor: theme.palette.custom.main,
                         },
                     },
                     '& .MuiInputLabel-root': {
                         color: '#ffffff',
                     },
                 }}
-                InputProps={{style: {color: '#ffffff'}}}
-                InputLabelProps={{style: {color: '#ffffff'}}}
             />
 
             <TextField
@@ -266,23 +260,21 @@ export default function YawConverter() {
                     '& .MuiOutlinedInput-root': {
                         color: '#ffffff',
                         '& fieldset': {
-                            borderColor: '#00ff00',
+                            borderColor: theme.palette.custom.main,
                         },
                         '&:hover fieldset': {
-                            borderColor: '#00ff00',
+                            borderColor: theme.palette.custom.main,
                         },
                     },
                     '& .MuiInputLabel-root': {
                         color: '#ffffff',
                     },
                 }}
-                InputProps={{style: {color: '#ffffff'}}}
-                InputLabelProps={{style: {color: '#ffffff'}}}
             />
 
             {result && (
                 <Box sx={{marginTop: 3}}>
-                    <Typography variant="h6" sx={{textShadow: '0 0 5px #00ff00'}}>Results</Typography>
+                    <Typography variant="h6" sx={{textShadow: `0 0 5px ${theme.palette.custom.main}`}}>Results</Typography>
 
                     <SensitivityResult name={'cm/360'} result={result.originalCmPer360}/>
                     <SensitivityResult name={'Overall Sensitivity'} result={result.newSens}/>
