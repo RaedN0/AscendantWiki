@@ -1,8 +1,7 @@
 "use client"
 
 import {useEffect, useState} from 'react';
-import {Box, Container, FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Typography, useTheme} from '@mui/material';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import {Box, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography, useTheme} from '@mui/material';
 import SensitivityResult from "@/app/components/SensitivityResult";
 
 const gameYaws = {
@@ -58,7 +57,7 @@ function cmPer360ToSens(cmPer360, dpi, yaw) {
     return 360.0 / (counts * yaw);
 }
 
-export default function YawConverter() {
+export default function SensitivityConverter() {
     const theme = useTheme();
 
     const [selectedGame, setSelectedGame] = useState('cm/360');
@@ -75,26 +74,26 @@ export default function YawConverter() {
     }, [selectedGame, gameSens, cmPer360, dpi, fov]);
 
     const handleCalculate = () => {
-        let originalCmPer360;
+        let cm360;
         if (isCustom) {
-            originalCmPer360 = parseFloat(cmPer360);
+            cm360 = parseFloat(cmPer360);
         } else {
             const sens = parseFloat(gameSens);
-            const originalYaw = gameYaws[selectedGame];
-            originalCmPer360 = sensToCmPer360(sens, dpi, originalYaw);
+            const yaw = gameYaws[selectedGame];
+            cm360 = sensToCmPer360(sens, dpi, yaw);
         }
 
-        const newSens = findOverallSens(originalCmPer360, dpi);
-        const hipfireSens = cmPer360ToSens(originalCmPer360, dpi, BASE_YAW * newSens)
-        const adsSens = calculateScopedCm360(originalCmPer360, dpi, newSens, fov, scopeSettings[0]);
-        const zoom2 = calculateScopedCm360(originalCmPer360, dpi, newSens, fov, scopeSettings[1]);
-        const zoom3 = calculateScopedCm360(originalCmPer360, dpi, newSens, fov, scopeSettings[2]);
-        const zoom4 = calculateScopedCm360(originalCmPer360, dpi, newSens, fov, scopeSettings[3]);
-        const zoom5 = calculateScopedCm360(originalCmPer360, dpi, newSens, fov, scopeSettings[4]);
+        const overallSens = findOverallSens(cm360, dpi);
+        const hipfireSens = cmPer360ToSens(cm360, dpi, BASE_YAW * overallSens)
+        const adsSens = calculateScopedSens(cm360, dpi, overallSens, fov, scopeSettings[0]);
+        const zoom2 = calculateScopedSens(cm360, dpi, overallSens, fov, scopeSettings[1]);
+        const zoom3 = calculateScopedSens(cm360, dpi, overallSens, fov, scopeSettings[2]);
+        const zoom4 = calculateScopedSens(cm360, dpi, overallSens, fov, scopeSettings[3]);
+        const zoom5 = calculateScopedSens(cm360, dpi, overallSens, fov, scopeSettings[4]);
 
         setResult({
-            originalCmPer360: originalCmPer360.toFixed(5),
-            newSens: newSens.toFixed(2),
+            originalCmPer360: cm360.toFixed(5),
+            newSens: overallSens.toFixed(2),
             hipfire: hipfireSens.toFixed(5),
             ads: adsSens.toFixed(5),
             zoom2: zoom2.toFixed(5),
@@ -109,7 +108,7 @@ export default function YawConverter() {
             const newSens = cmPer360ToSens(cm360, dpi, BASE_YAW * i)
 
             if (newSens < 3) {
-                const scopeSens = calculateScopedCm360(cm360, dpi, i, fov, scopeSettings[4]);
+                const scopeSens = calculateScopedSens(cm360, dpi, i, fov, scopeSettings[4]);
                 if (scopeSens < 3) {
                     return i;
                 }
@@ -118,7 +117,7 @@ export default function YawConverter() {
         return 3;
     }
 
-    function calculateScopedCm360(cmPer360, dpi, overallSens, normalFov, scope) {
+    function calculateScopedSens(cmPer360, dpi, overallSens, normalFov, scope) {
         const normalFovRadians = Math.PI * normalFov / 180.0;
         const scopedFovRadians = Math.PI * scope.fov / 180.0;
 
