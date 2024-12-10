@@ -1,7 +1,9 @@
 "use client"
 
 import {useEffect, useState} from 'react';
-import {Box, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography, useTheme} from '@mui/material';
+import {Box, Container, FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Typography, useTheme} from '@mui/material';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import SensitivityResult from "@/app/components/SensitivityResult";
 
 const gameYaws = {
     'CS2': 0.022,
@@ -281,30 +283,15 @@ export default function YawConverter() {
             {result && (
                 <Box sx={{marginTop: 3}}>
                     <Typography variant="h6" sx={{textShadow: '0 0 5px #00ff00'}}>Results</Typography>
-                    <Typography variant="body1" sx={{marginTop: 1}}>
-                        cm/360: {result.originalCmPer360}
-                    </Typography>
-                    <Typography variant="body1">
-                        Overall Sensitivity: {result.newSens}
-                    </Typography>
-                    <Typography variant="body1">
-                        Hipfire: {result.hipfire}
-                    </Typography>
-                    <Typography variant="body1">
-                        1.5x: {result.ads}
-                    </Typography>
-                    <Typography variant="body1">
-                        2x: {result.zoom2}
-                    </Typography>
-                    <Typography variant="body1">
-                        3x: {result.zoom3}
-                    </Typography>
-                    <Typography variant="body1">
-                        4x: {result.zoom4}
-                    </Typography>
-                    <Typography variant="body1">
-                        5x: {result.zoom5}
-                    </Typography>
+
+                    <SensitivityResult name={'cm/360'} result={result.originalCmPer360}/>
+                    <SensitivityResult name={'Overall Sensitivity'} result={result.newSens}/>
+                    <SensitivityResult name={'Hipfire Sensitivity:'} result={result.hipfire}/>
+                    <SensitivityResult name={'1.5x Zoom Sensitivity:'} result={result.ads}/>
+                    <SensitivityResult name={'2x Zoom Sensitivity:'} result={result.zoom2}/>
+                    <SensitivityResult name={'3x Zoom Sensitivity:'} result={result.zoom3}/>
+                    <SensitivityResult name={'4x Zoom Sensitivity:'} result={result.zoom4}/>
+                    <SensitivityResult name={'5x Zoom Sensitivity:'} result={result.zoom5}/>
                 </Box>
             )}
         </Container>
