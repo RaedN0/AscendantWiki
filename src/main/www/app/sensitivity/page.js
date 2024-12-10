@@ -1,7 +1,7 @@
 "use client"
 
-import {useState} from 'react';
-import {Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography, useTheme} from '@mui/material';
+import {useEffect, useState} from 'react';
+import {Box, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography, useTheme} from '@mui/material';
 
 const gameYaws = {
     'CS2': 0.022,
@@ -56,7 +56,7 @@ function cmPer360ToSens(cmPer360, dpi, yaw) {
 export default function YawConverter() {
     const theme = useTheme();
 
-    const [selectedGame, setSelectedGame] = useState('CS2');
+    const [selectedGame, setSelectedGame] = useState('cm/360');
     const [gameSens, setGameSens] = useState(2.5);
     const [cmPer360, setCmPer360] = useState(30);
     const [dpi, setDpi] = useState(800);
@@ -64,6 +64,10 @@ export default function YawConverter() {
     const [result, setResult] = useState(null);
 
     const isCustom = selectedGame === 'cm/360';
+
+    useEffect(() => {
+        handleCalculate();
+    }, [selectedGame, gameSens, cmPer360, dpi, fov]);
 
     const handleCalculate = () => {
         let originalCmPer360;
@@ -97,15 +101,16 @@ export default function YawConverter() {
 
     function findOverallSens(cm360, dpi) {
         for (let i = 0.01; i < 3; i += 0.01) {
-           const newSens = cmPer360ToSens(cm360, dpi, BASE_YAW * i)
+            const newSens = cmPer360ToSens(cm360, dpi, BASE_YAW * i)
 
-            if(newSens < 3) {
+            if (newSens < 3) {
                 const scopeSens = calculateScopedCm360(cm360, dpi, i, fov, scopeSettings[4]);
                 if (scopeSens < 3) {
                     return i;
                 }
             }
         }
+        return 3;
     }
 
     function calculateScopedCm360(cmPer360, dpi, overallSens, normalFov, scope) {
@@ -142,12 +147,12 @@ export default function YawConverter() {
                 marginTop: '50px'
             }}
         >
-            <Typography variant="h5" sx={{ marginBottom: 2, textAlign: 'center', textShadow: `0 0 5px ${theme.palette.custom.main}` }}>
+            <Typography variant="h5" sx={{marginBottom: 2, textAlign: 'center', textShadow: `0 0 5px ${theme.palette.custom.main}`}}>
                 Sensitivity Converter
             </Typography>
 
-            <FormControl fullWidth sx={{ marginBottom: 2 }}>
-                <InputLabel sx={{ color: '#ffffff' }}>Source</InputLabel>
+            <FormControl fullWidth sx={{marginBottom: 2}}>
+                <InputLabel sx={{color: '#ffffff'}}>Source</InputLabel>
                 <Select
                     value={selectedGame}
                     label="Source"
@@ -193,8 +198,8 @@ export default function YawConverter() {
                             color: '#ffffff',
                         },
                     }}
-                    InputProps={{ style: { color: '#ffffff' } }}
-                    InputLabelProps={{ style: { color: '#ffffff' } }}
+                    InputProps={{style: {color: '#ffffff'}}}
+                    InputLabelProps={{style: {color: '#ffffff'}}}
                 />
             ) : (
                 <TextField
@@ -218,8 +223,8 @@ export default function YawConverter() {
                             color: '#ffffff',
                         },
                     }}
-                    InputProps={{ style: { color: '#ffffff' } }}
-                    InputLabelProps={{ style: { color: '#ffffff' } }}
+                    InputProps={{style: {color: '#ffffff'}}}
+                    InputLabelProps={{style: {color: '#ffffff'}}}
                 />
             )}
 
@@ -244,8 +249,8 @@ export default function YawConverter() {
                         color: '#ffffff',
                     },
                 }}
-                InputProps={{ style: { color: '#ffffff' } }}
-                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{style: {color: '#ffffff'}}}
+                InputLabelProps={{style: {color: '#ffffff'}}}
             />
 
             <TextField
@@ -269,31 +274,14 @@ export default function YawConverter() {
                         color: '#ffffff',
                     },
                 }}
-                InputProps={{ style: { color: '#ffffff' } }}
-                InputLabelProps={{ style: { color: '#ffffff' } }}
+                InputProps={{style: {color: '#ffffff'}}}
+                InputLabelProps={{style: {color: '#ffffff'}}}
             />
 
-            <Button
-                variant="contained"
-                onClick={handleCalculate}
-                sx={{
-                    background: '#00ff00',
-                    color: '#000000',
-                    fontWeight: 'bold',
-                    border: '2px solid #00ff00',
-                    boxShadow: '0 0 10px #00ff00',
-                    '&:hover': {
-                        background: '#00cc00',
-                    },
-                }}
-            >
-                Convert
-            </Button>
-
             {result && (
-                <Box sx={{ marginTop: 3 }}>
-                    <Typography variant="h6" sx={{ textShadow: '0 0 5px #00ff00' }}>Results</Typography>
-                    <Typography variant="body1" sx={{ marginTop: 1 }}>
+                <Box sx={{marginTop: 3}}>
+                    <Typography variant="h6" sx={{textShadow: '0 0 5px #00ff00'}}>Results</Typography>
+                    <Typography variant="body1" sx={{marginTop: 1}}>
                         cm/360: {result.originalCmPer360}
                     </Typography>
                     <Typography variant="body1">
