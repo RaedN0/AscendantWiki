@@ -10,6 +10,9 @@ const gameYaws = {
     'Valorant': 0.07,
     'Overwatch': 0.0066,
     'Apex Legends': 0.022,
+    'Call of Duty': 0.0066,
+    'The Finals': 0.001,
+    'Marvel Rivals': 0.0175,
     'cm/360': null
 };
 
