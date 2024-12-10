@@ -275,8 +275,8 @@ export default function YawConverter() {
                 <Box sx={{marginTop: 3}}>
                     <Typography variant="h6" sx={{textShadow: `0 0 5px ${theme.palette.custom.main}`}}>Results</Typography>
 
-                    <SensitivityResult name={'cm/360'} result={result.originalCmPer360}/>
-                    <SensitivityResult name={'Overall Sensitivity'} result={result.newSens}/>
+                    <SensitivityResult name={'cm/360:'} result={result.originalCmPer360}/>
+                    <SensitivityResult name={'Overall Sensitivity:'} result={result.newSens}/>
                     <SensitivityResult name={'Hipfire Sensitivity:'} result={result.hipfire}/>
                     <SensitivityResult name={'1.5x Zoom Sensitivity:'} result={result.ads}/>
                     <SensitivityResult name={'2x Zoom Sensitivity:'} result={result.zoom2}/>
