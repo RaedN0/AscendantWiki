@@ -152,10 +152,6 @@ export default function YawConverter() {
                 marginTop: '50px'
             }}
         >
-            <Typography variant="h5" sx={{marginBottom: 2, textAlign: 'center', textShadow: `0 0 5px ${theme.palette.custom.main}`}}>
-                Sensitivity Converter
-            </Typography>
-
             <FormControl fullWidth sx={{marginBottom: 2}}>
                 <InputLabel sx={{color: '#ffffff'}}>Source</InputLabel>
                 <Select
