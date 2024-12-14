@@ -130,7 +130,7 @@ export default function SensitivityConverter() {
         const inches_per360_scoped = scoped_counts / dpi;
         const cm360 = inches_per360_scoped * 2.54;
 
-        const yaw = (BASE_YAW * (overallSens * 2 / 10)) / scope.multiplier;
+        const yaw = ((BASE_YAW / scope.multiplier) * Math.pow(overallSens, 2));
 
         return cmPer360ToSens(cm360, dpi, yaw);
     }
