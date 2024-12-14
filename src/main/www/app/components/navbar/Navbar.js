@@ -15,6 +15,7 @@ const Navbar = () => {
         {text: 'Weapon Calculator', href: '/weapon-calculator'},
         {text: 'Underdogs Leaderboard', href: '/leaderboard'},
         {text: 'Events', href: '/events'},
+        {text: 'Sensitivity Converter', href: '/sensitivity'},
     ];
 
     const loadoutItems = [
