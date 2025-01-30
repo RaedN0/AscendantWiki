@@ -1,0 +1,48 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: SSH into server and deploy containers
+        uses: appleboy/ssh-action@v0.1.16
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            # Log in to Docker Hub
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+            # Pull the frontend image
+            docker pull ${{ secrets.DOCKER_USERNAME }}/ascendantwiki-fe:latest
+
+            # Pull the backend image
+            docker pull ${{ secrets.DOCKER_USERNAME }}/ascendantwiki-be:latest
+
+            docker stop ascendantwiki-fe || true
+            docker rm ascendantwiki-fe || true
+
+            docker stop ascendantwiki-be || true
+            docker rm ascendantwiki-be || true
+
+            docker run -d \
+              --name ascendantwiki-fe \
+              -p 3000:3000 \
+              -e NEXT_PUBLIC_API_URL="http://172.17.0.1:8181" \
+              ${{ secrets.DOCKER_USERNAME }}/ascendantwiki-fe:latest
+
+            docker run -d \
+              --name ascendantwiki-be \
+              -p 8181:8080 \
+              -e SPRING_DATASOURCE_URL="${{ secrets.DB_URL }}" \
+              -e SPRING_DATASOURCE_USERNAME="${{ secrets.DB_USER }}" \
+              -e SPRING_DATASOURCE_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+              ${{ secrets.DOCKER_USERNAME }}/ascendantwiki-be:latest
