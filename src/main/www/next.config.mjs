@@ -1,6 +1,7 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const nextConfig = {
+    output: 'export',
     async rewrites() {
         return [
             {
