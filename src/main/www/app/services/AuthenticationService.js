@@ -1,21 +1,32 @@
 import axios from 'axios'
 
 class AuthenticationService {
-
-    async isAdmin() {
+    async getUserInfo() {
         try {
             const res = await axios.get(`/api/auth-status`, {
                 withCredentials: true,
             });
             if (res.status === 200) {
-                const {roles} = res.data;
-                return roles?.includes('ROLE_ADMIN') || false;
+                const { username, roles } = res.data;
+                return {
+                    isAuthenticated: true,
+                    isAdmin: roles?.includes('ROLE_ADMIN') || false,
+                    username
+                };
             }
-            return false;
+            return {
+                isAuthenticated: false,
+                isAdmin: false,
+                username: null
+            };
         } catch (error) {
-            return false;
+            return {
+                isAuthenticated: false,
+                isAdmin: false,
+                username: null
+            };
         }
-    };
+    }
 
     async logout() {
         try {
@@ -30,8 +41,7 @@ class AuthenticationService {
         } catch (error) {
             console.error('Logout failed:', error);
         }
-    };
-
+    }
 }
 
 export default new AuthenticationService();

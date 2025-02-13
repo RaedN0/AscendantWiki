@@ -1,14 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import {useState} from 'react';
 import Image from 'next/image';
 import ThemeProviderWrapper from "@/app/components/ThemeProvider";
-import { TextField, Button, Box, Container, Paper, Typography } from '@mui/material';
+import {TextField, Button, Box, Container, Paper, Typography} from '@mui/material';
 import '@fontsource/orbitron';
+import axios from "axios";
 
 export default function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isRegistering, setIsRegistering] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        setError('');
+
+        try {
+            const response = await axios.post('/api/register', {username, password}, {
+                headers: {'Content-Type': 'application/json'},
+            });
+
+            setIsRegistering(false);
+            setUsername('');
+            setPassword('');
+        } catch (err) {
+            setError(err.response.data.error);
+        }
+    };
 
     return (
         <ThemeProviderWrapper>
@@ -19,7 +39,7 @@ export default function LoginPage() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     py: 12,
-                    px: { xs: 2, sm: 3, md: 4 },
+                    px: {xs: 2, sm: 3, md: 4},
                     backgroundImage: 'url(/background.jpg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
@@ -59,14 +79,31 @@ export default function LoginPage() {
                                 textShadow: '0 0 5px rgba(0,255,120,0.9)',
                                 mb: 4
                             }}>
-                            Sign In
+                            {isRegistering ? 'Create Account' : 'Sign In'}
                         </Typography>
 
-                        <Box 
-                            component="form" 
-                            method="POST"
-                            action={`/auth/login`}
-                            sx={{ width: '100%', mt: 1 }}
+                        {error && (
+                            <Typography
+                                color="error"
+                                sx={{
+                                    mb: 2,
+                                    backgroundColor: 'rgba(255,0,0,0.1)',
+                                    padding: 2,
+                                    borderRadius: 1,
+                                    width: '100%',
+                                    textAlign: 'center'
+                                }}
+                            >
+                                {error}
+                            </Typography>
+                        )}
+
+                        <Box
+                            component="form"
+                            method={isRegistering ? undefined : "POST"}
+                            action={isRegistering ? undefined : `/auth/login`}
+                            onSubmit={isRegistering ? handleRegister : undefined}
+                            sx={{width: '100%', mt: 1}}
                         >
                             <TextField
                                 margin="normal"
@@ -107,7 +144,7 @@ export default function LoginPage() {
                                 label="Password"
                                 type="password"
                                 id="password"
-                                autoComplete="current-password"
+                                autoComplete={isRegistering ? 'new-password' : 'current-password'}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 sx={{
@@ -146,8 +183,29 @@ export default function LoginPage() {
                                     },
                                     textTransform: 'none',
                                     fontFamily: 'Orbitron, Arial, sans-serif',
-                                }}>
-                                Sign In
+                                }}
+                            >
+                                {isRegistering ? 'Register' : 'Sign In'}
+                            </Button>
+
+                            <Button
+                                fullWidth
+                                onClick={() => {
+                                    setIsRegistering(!isRegistering);
+                                    setError('');
+                                    setUsername('');
+                                    setPassword('');
+                                }}
+                                sx={{
+                                    color: 'rgba(0,255,120,0.7)',
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(0,255,120,0.1)',
+                                    },
+                                    textTransform: 'none',
+                                    fontFamily: 'Orbitron, Arial, sans-serif',
+                                }}
+                            >
+                                {isRegistering ? 'Back to Sign In' : 'Create New Account'}
                             </Button>
                         </Box>
                     </Paper>

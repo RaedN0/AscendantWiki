@@ -13,3 +13,5 @@ databaseChangeLog:
       file: db/changelog/6-create-events-table.yaml
   - include:
       file: db/changelog/7-create-underdog-table.yaml
+  - include:
+      file: db/changelog/8-add-user-role.yaml

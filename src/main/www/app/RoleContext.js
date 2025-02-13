@@ -1,29 +1,32 @@
 "use client";
 
 import React, { createContext, useEffect, useState } from 'react';
-import AuthenticationService from "@/app/services/AuthenticationService";
+import authenticationService from "@/app/services/AuthenticationService";
 
-export const RoleContext = createContext();
+export const RoleContext = createContext({
+    isAdmin: false,
+    isAuthenticated: false,
+    username: null
+});
 
-export const RoleProvider = ({ children }) => {
+export function RoleProvider({ children }) {
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [username, setUsername] = useState(null);
 
     useEffect(() => {
-        const fetchRoles = async () => {
-            try {
-                const response = await AuthenticationService.isAdmin();
-                setIsAdmin(response);
-            } catch (error) {
-                console.error('Error fetching roles:', error);
-            }
+        const checkAuthentication = async () => {
+            const userInfo = await authenticationService.getUserInfo();
+            setIsAuthenticated(userInfo.isAuthenticated);
+            setIsAdmin(userInfo.isAdmin);
+            setUsername(userInfo.username);
         };
-
-        fetchRoles();
+        checkAuthentication();
     }, []);
 
     return (
-        <RoleContext.Provider value={{ isAdmin }}>
+        <RoleContext.Provider value={{ isAdmin, isAuthenticated, username }}>
             {children}
         </RoleContext.Provider>
     );
-};
+}

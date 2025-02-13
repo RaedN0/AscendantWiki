@@ -1,7 +1,7 @@
 'use client';
 
 import React, {useContext} from 'react';
-import {AppBar, Box, Button, Toolbar, useMediaQuery, useTheme} from '@mui/material';
+import {AppBar, Box, Button, Toolbar, useMediaQuery, useTheme, Typography} from '@mui/material';
 import Link from 'next/link';
 import MobileNavbar from "@/app/components/navbar/mobile";
 import DesktopNavbar from "@/app/components/navbar/desktop";
@@ -11,26 +11,35 @@ import authenticationService from "@/app/services/AuthenticationService";
 const Navbar = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const {isAdmin} = useContext(RoleContext);
+    const {isAuthenticated, username} = useContext(RoleContext);
 
     const LoginButtons = () => {
-        if (isAdmin) {
+        if (isAuthenticated) {
             return (
-                <Button
-                    variant="outlined"
-                    size={isMobile ? "small" : "medium"}
-                    onClick={() => authenticationService.logout()}
-                    sx={{
-                        borderColor: theme.palette.custom.main,
-                        color: theme.palette.custom.main,
-                        '&:hover': {
-                            backgroundColor: 'rgba(0,255,120,0.1)',
-                        }
-                    }
-                    }
-                >
-                    Logout
-                </Button>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Typography 
+                        sx={{ 
+                            color: theme.palette.custom.main,
+                            display: { xs: 'none', sm: 'block' }
+                        }}
+                    >
+                        {username}
+                    </Typography>
+                    <Button
+                        variant="outlined"
+                        size={isMobile ? "small" : "medium"}
+                        onClick={() => authenticationService.logout()}
+                        sx={{
+                            borderColor: theme.palette.custom.main,
+                            color: theme.palette.custom.main,
+                            '&:hover': {
+                                backgroundColor: 'rgba(0,255,120,0.1)',
+                            }
+                        }}
+                    >
+                        Logout
+                    </Button>
+                </Box>
             );
         }
         return (
@@ -44,8 +53,7 @@ const Navbar = () => {
                         '&:hover': {
                             backgroundColor: 'rgba(0,255,120,0.1)',
                         }
-                    }
-                    }
+                    }}
                 >
                     Login
                 </Button>
