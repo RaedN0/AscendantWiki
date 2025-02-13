@@ -8,8 +8,12 @@ const nextConfig = {
                 destination: `${API_URL}/api/:path*`,
             },
             {
-                source: '/login',
+                source: '/auth/login',
                 destination: `${API_URL}/login`,
+            },
+            {
+                source: '/auth/logout',
+                destination: `${API_URL}/logout`,
             },
         ];
     },

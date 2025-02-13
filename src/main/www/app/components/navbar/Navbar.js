@@ -1,14 +1,57 @@
 'use client';
 
-import React from 'react';
-import {AppBar, Box, Toolbar, useMediaQuery, useTheme} from '@mui/material';
+import React, {useContext} from 'react';
+import {AppBar, Box, Button, Toolbar, useMediaQuery, useTheme} from '@mui/material';
 import Link from 'next/link';
 import MobileNavbar from "@/app/components/navbar/mobile";
 import DesktopNavbar from "@/app/components/navbar/desktop";
+import {RoleContext} from "@/app/RoleContext";
+import authenticationService from "@/app/services/AuthenticationService";
 
 const Navbar = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const {isAdmin} = useContext(RoleContext);
+
+    const LoginButtons = () => {
+        if (isAdmin) {
+            return (
+                <Button
+                    variant="outlined"
+                    size={isMobile ? "small" : "medium"}
+                    onClick={() => authenticationService.logout()}
+                    sx={{
+                        borderColor: theme.palette.custom.main,
+                        color: theme.palette.custom.main,
+                        '&:hover': {
+                            backgroundColor: 'rgba(0,255,120,0.1)',
+                        }
+                    }
+                    }
+                >
+                    Logout
+                </Button>
+            );
+        }
+        return (
+            <Link href="/login" passHref>
+                <Button
+                    variant="outlined"
+                    size={isMobile ? "small" : "medium"}
+                    sx={{
+                        borderColor: theme.palette.custom.main,
+                        color: theme.palette.custom.main,
+                        '&:hover': {
+                            backgroundColor: 'rgba(0,255,120,0.1)',
+                        }
+                    }
+                    }
+                >
+                    Login
+                </Button>
+            </Link>
+        );
+    };
 
     const navItems = [
         {text: 'Home', href: '/'},
@@ -42,22 +85,16 @@ const Navbar = () => {
                     padding: '10px 20px',
                 }}
             >
-                <Link href="/" passHref>
-                    <Box
-                        component="img"
-                        src="logo.jpg"
-                        alt="Ascendant Wiki Logo"
-                        sx={{
-                            height: '40px',
-                            cursor: 'pointer',
-                        }}
-                    />
-                </Link>
-
                 {isMobile ? (
-                    <MobileNavbar navItems={navItems} loadoutItems={loadoutItems}/>
+                    <Box sx={{display: 'flex', alignItems: 'center', justifyItems: 'center', gap: 2}}>
+                        <LoginButtons/>
+                        <MobileNavbar navItems={navItems} loadoutItems={loadoutItems}/>
+                    </Box>
                 ) : (
-                    <DesktopNavbar navItems={navItems} loadoutItems={loadoutItems}/>
+                    <Box sx={{display: 'flex', alignItems: 'center', gap: 2}}>
+                        <DesktopNavbar navItems={navItems} loadoutItems={loadoutItems}/>
+                        <LoginButtons/>
+                    </Box>
                 )}
             </Toolbar>
         </AppBar>

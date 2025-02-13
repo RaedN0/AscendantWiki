@@ -17,20 +17,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-	private final ObjectMapper objectMapper;
 	private final FrontendConfigurationProperties configurationProperties;
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-		var userDetails = (User) authentication.getPrincipal();
-
-		var userInfo = Map.of(
-				"username", userDetails.getUsername(),
-				"roles", userDetails.getAuthorities().toString()
-		);
-
-		response.setContentType("application/json");
-		response.getWriter().write(objectMapper.writeValueAsString(userInfo));
 		response.sendRedirect(configurationProperties.baseUrl());
 		response.setStatus(HttpServletResponse.SC_OK);
 	}

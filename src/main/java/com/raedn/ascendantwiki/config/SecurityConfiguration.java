@@ -45,9 +45,8 @@ public class SecurityConfiguration {
 				)
 				.logout(
 						logout -> logout
-								.logoutUrl("/api/logout")
+								.logoutUrl("/logout")
 								.deleteCookies("JSESSIONID")
-								.logoutSuccessUrl("/login")
 				);
 		http.cors(Customizer.withDefaults());
 
