@@ -60,7 +60,7 @@ const WeaponsPage = () => {
 
     return (
         <Container
-            maxWidth="xl"
+            maxWidth={false}
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -69,9 +69,11 @@ const WeaponsPage = () => {
                 backgroundPosition: 'center',
                 padding: 2,
                 height: '100%',
+                alignItems: 'center',
             }}
         >
             <Box
+                maxWidth="lg"
                 sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -83,6 +85,7 @@ const WeaponsPage = () => {
                     boxShadow: `0 0 10px ${theme.palette.custom.main}`,
                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
                     borderRadius: 2,
+                    width: '100%',
                 }}
             >
                 {['Battle Rifle', 'Beam Gloves', 'Plasma Rifle', 'Shotgun', 'Sniper Rifle'].map(
@@ -108,11 +111,13 @@ const WeaponsPage = () => {
             </Box>
 
             <Box
+                maxWidth="lg"
                 sx={{
                     display: 'flex',
                     flexWrap: 'wrap',
                     gap: 2,
                     height: '100%',
+                    width: '100%',
                     overflow: 'auto'
                 }}
             >

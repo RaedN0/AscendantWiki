@@ -61,7 +61,7 @@ const PerksPage = () => {
 
     return (
         <Container
-            maxWidth="lg"
+            maxWidth={false}
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -70,14 +70,28 @@ const PerksPage = () => {
                 backgroundPosition: 'center',
                 padding: 2,
                 height: '100%',
+                alignItems: 'center',
                 overflow: 'auto'
             }}
         >
             {loading ? (
                 <CircularProgress sx={{color: theme.palette.custom.main}}/>
             ) : (
-                <>
-                    <Box sx={{
+                <Box
+                    maxWidth="lg"
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexWrap: 'wrap',
+                        gap: 2,
+                        alignItems: 'flex-start',
+                        height: '100%',
+                        width: '100%',
+                        overflow: 'auto'
+                    }}
+                >
+                    <Box
+                        sx={{
                         display: 'flex',
                         justifyContent: 'flex-start',
                         flexWrap: 'wrap',
@@ -115,8 +129,9 @@ const PerksPage = () => {
                             flexWrap: 'wrap',
                             gap: 2,
                             alignItems: 'flex-start',
-                            height: '100%',
-                            overflow: 'auto'
+                            height: '90%',
+                            overflow: 'auto',
+                            width: '100%',
                         }}
                     >
                         <Box
@@ -200,7 +215,7 @@ const PerksPage = () => {
                             </Box>
                         )}
                     </Box>
-                </>
+                </Box>
             )}
         </Container>
     );

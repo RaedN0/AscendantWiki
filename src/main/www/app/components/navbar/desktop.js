@@ -3,10 +3,11 @@ import Link from "next/link";
 import React, {useState} from "react";
 import {usePathname} from "next/navigation";
 
-export default function DesktopNavbar({navItems, loadoutItems}) {
+export default function DesktopNavbar({navItems, loadoutItems, buildsItems}) {
     const theme = useTheme();
     const pathname = usePathname();
     const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl2, setAnchorEl2] = useState(null);
 
     const handleMenuClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -14,6 +15,14 @@ export default function DesktopNavbar({navItems, loadoutItems}) {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleMenuClickBuilds = (event) => {
+        setAnchorEl2(event.currentTarget);
+    };
+
+    const handleMenuCloseBuilds = () => {
+        setAnchorEl2(null);
     };
 
     return (
@@ -113,6 +122,77 @@ export default function DesktopNavbar({navItems, loadoutItems}) {
                 }}
             >
                 {loadoutItems.map((item) => (
+                    <MenuItem
+                        key={item.href}
+                        onClick={handleMenuClose}
+                        component={Link}
+                        href={item.href}
+                        sx={{
+                            "&:hover": {
+                                background: theme.palette.custom.main,
+                                color: "#000000",
+                            },
+                            padding: "10px 16px",
+                            fontSize: "0.9rem",
+                            fontWeight: "bold",
+                            textTransform: "capitalize",
+                        }}
+                    >
+                        {item.text}
+                    </MenuItem>
+                ))}
+            </Menu>
+            <Button
+                onClick={handleMenuClickBuilds}
+                sx={{
+                    color: "#e0e0e0",
+                    textTransform: "uppercase",
+                    fontWeight: "bold",
+                    fontSize: "0.9rem",
+                    letterSpacing: "1.5px",
+                    padding: "8px 16px",
+                    borderRadius: "4px",
+                    "&:hover": {
+                        backgroundColor: "rgba(255, 255, 255, 0.1)",
+                        color: "#aad1e6",
+                    },
+                }}
+            >
+                Builds
+            </Button>
+            <Menu
+                anchorEl={anchorEl2}
+                open={Boolean(anchorEl2)}
+                onClose={handleMenuCloseBuilds}
+                sx={{
+                    "& .MuiPaper-root": {
+                        backgroundColor: "#1a1a1a",
+                        color: "#e0e0e0",
+                        border: `1px solid ${theme.palette.custom.main}`,
+                        borderRadius: "8px",
+                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)",
+                        minWidth: "200px",
+                        padding: "8px 0",
+                    },
+                }}
+                TransitionProps={{
+                    onEnter: (node) => {
+                        node.style.opacity = 0;
+                        node.style.transform = "scale(0.9)";
+                        node.style.transition =
+                            "opacity 200ms ease-in-out, transform 200ms ease-in-out";
+                    },
+                    onEntered: (node) => {
+                        node.style.opacity = 1;
+                        node.style.transform = "scale(1)";
+                    },
+                    onExit: (node) => {
+                        node.style.opacity = 0;
+                        node.style.transform = "scale(0.9)";
+                    },
+                }}
+            >
+                {buildsItems.map((item) => (
                     <MenuItem
                         key={item.href}
                         onClick={handleMenuClose}

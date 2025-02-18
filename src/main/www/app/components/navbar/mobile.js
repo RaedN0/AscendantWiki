@@ -4,7 +4,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
 
-export default function MobileNavbar({navItems, loadoutItems}) {
+export default function MobileNavbar({navItems, loadoutItems, buildsItems}) {
     const theme = useTheme();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -130,6 +130,43 @@ export default function MobileNavbar({navItems, loadoutItems}) {
                         Loadout
                     </Typography>
                     {loadoutItems.map((item) => (
+                        <ListItem
+                            key={item.href}
+                            onClick={handleDrawerClose}
+                            component={Link}
+                            href={item.href}
+                            sx={{
+                                "&:hover": {
+                                    backgroundColor: theme.palette.custom.main,
+                                    color: "#000000",
+                                },
+                                padding: "10px 0",
+                                marginBottom: "5px",
+                            }}
+                        >
+                            <ListItemText
+                                primary={item.text}
+                                primaryTypographyProps={{
+                                    fontSize: "1.1rem",
+                                    fontWeight: "medium",
+                                    color: "#e0e0e0",
+                                }}
+                            />
+                        </ListItem>
+                    ))}
+                    <Typography
+                        variant="subtitle2"
+                        sx={{
+                            color: "#aad1e6",
+                            fontWeight: "bold",
+                            textTransform: "uppercase",
+                            fontSize: "0.9rem",
+                            marginBottom: 1,
+                        }}
+                    >
+                        Builds
+                    </Typography>
+                    {buildsItems.map((item) => (
                         <ListItem
                             key={item.href}
                             onClick={handleDrawerClose}

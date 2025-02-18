@@ -47,7 +47,7 @@ const AbilitiesPage = () => {
 
     return (
         <Container
-            maxWidth="lg"
+            maxWidth={false}
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -56,13 +56,16 @@ const AbilitiesPage = () => {
                 backgroundPosition: 'center',
                 padding: 2,
                 height: '100%',
+                alignItems: 'center',
             }}
         >
             {loading ? (
                 <CircularProgress sx={{color: theme.palette.custom.main}}/>
             ) : (
                 <Box
+                    maxWidth="lg"
                     sx={{
+                        width: '100%',
                         display: 'flex',
                         flexWrap: 'wrap',
                         gap: 2,

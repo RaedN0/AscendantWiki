@@ -2,6 +2,7 @@
 
 import React, {useCallback, useContext, useEffect, useState} from 'react';
 import {
+    Box,
     Button,
     CircularProgress,
     Container, Dialog, DialogActions, DialogContent, DialogTitle, Fab,
@@ -116,7 +117,7 @@ const LeaderboardPage = () => {
 
     return (
         <Container
-            maxWidth="lg"
+            maxWidth={false}
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -125,12 +126,16 @@ const LeaderboardPage = () => {
                 backgroundPosition: 'center',
                 padding: 2,
                 height: '100%',
+                alignItems: 'center',
             }}
         >
             {loading ? (
                 <CircularProgress sx={{color: theme.palette.custom.main}}/>
             ) : (
-                <>
+                <Box
+                    maxWidth="lg"
+                    width="100%"
+                >
                     <TextField
                         variant="outlined"
                         placeholder="Search by name"
@@ -248,7 +253,7 @@ const LeaderboardPage = () => {
                             }}
                         />
                     </TableContainer>
-                </>
+                </Box>
             )}
 
             {roleContext.isAdmin && (

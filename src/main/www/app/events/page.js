@@ -47,7 +47,7 @@ const EventsPage = () => {
 
     return (
         <Container
-            maxWidth="lg"
+            maxWidth={false}
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -56,6 +56,7 @@ const EventsPage = () => {
                 backgroundPosition: 'center',
                 padding: 2,
                 height: '100%',
+                alignItems: 'center',
                 overflow: 'auto'
             }}
         >
@@ -65,12 +66,14 @@ const EventsPage = () => {
                 <>
 
                     <Box
+                        maxWidth="lg"
                         sx={{
                             display: 'flex',
                             flexWrap: 'wrap',
                             gap: 2,
                             alignItems: 'flex-start',
                             height: '100%',
+                            width: '100%',
                             overflow: 'auto'
                         }}
                     >

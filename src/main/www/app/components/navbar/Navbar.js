@@ -63,7 +63,7 @@ const Navbar = () => {
 
     const navItems = [
         {text: 'Home', href: '/'},
-        {text: 'Weapon Calculator', href: '/weapon-calculator'},
+        // {text: 'Weapon Calculator', href: '/weapon-calculator'},
         {text: 'Underdogs Leaderboard', href: '/leaderboard'},
         {text: 'Events', href: '/events'},
         {text: 'Sensitivity Converter', href: '/sensitivity'},
@@ -74,6 +74,10 @@ const Navbar = () => {
         {text: 'Perks', href: '/perks'},
         {text: 'Abilities', href: '/abilities'},
     ];
+
+    const buildsItems = [
+        {text: 'Loadouts', href: '/loadouts'},
+    ]
 
     return (
         <AppBar
@@ -96,11 +100,11 @@ const Navbar = () => {
                 {isMobile ? (
                     <Box sx={{display: 'flex', alignItems: 'center', justifyItems: 'center', gap: 2}}>
                         <LoginButtons/>
-                        <MobileNavbar navItems={navItems} loadoutItems={loadoutItems}/>
+                        <MobileNavbar navItems={navItems} loadoutItems={loadoutItems} buildsItems={buildsItems}/>
                     </Box>
                 ) : (
                     <Box sx={{display: 'flex', alignItems: 'center', gap: 2}}>
-                        <DesktopNavbar navItems={navItems} loadoutItems={loadoutItems}/>
+                        <DesktopNavbar navItems={navItems} loadoutItems={loadoutItems} buildsItems={buildsItems}/>
                         <LoginButtons/>
                     </Box>
                 )}
