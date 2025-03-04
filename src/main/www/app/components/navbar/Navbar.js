@@ -17,8 +17,8 @@ const Navbar = () => {
         if (isAuthenticated) {
             return (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Typography 
-                        sx={{ 
+                    <Typography
+                        sx={{
                             color: theme.palette.custom.main,
                             display: { xs: 'none', sm: 'block' }
                         }}
@@ -73,6 +73,7 @@ const Navbar = () => {
         {text: 'Weapons', href: '/weapons'},
         {text: 'Perks', href: '/perks'},
         {text: 'Abilities', href: '/abilities'},
+        {text: 'Vehicles', href: '/vehicles'}, // ADDED VEHICLES HERE
     ];
 
     const buildsItems = [
