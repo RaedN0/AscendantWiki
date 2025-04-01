@@ -70,6 +70,24 @@ const Homepage = () => {
                     >
                         Your go-to resource for stats, guides, and everything Ascendant.
                     </Typography>
+                    <Button
+                        variant="outlined"
+                        href="https://store.steampowered.com/app/1803110/ASCENDANT/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{
+                            marginTop: '10px',
+                            color: '#aad1e6',
+                            borderColor: '#aad1e6',
+                            fontSize: '1rem',
+                            '&:hover': {
+                                borderColor: '#ffffff',
+                                color: '#ffffff',
+                            },
+                        }}
+                    >
+                        VIEW ON STEAM
+                    </Button>
                 </Box>
 
                 <Grid2 container spacing={4} sx={{marginBottom: 6}}>
