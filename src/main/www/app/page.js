@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import {Box, Button, Card, CardContent, Container, Grid, Typography} from '@mui/material';
+import {Box, Button, Card, CardContent, Container, Grid2, Typography} from '@mui/material';
 
 const Homepage = () => {
 
@@ -72,7 +72,7 @@ const Homepage = () => {
                     </Typography>
                 </Box>
 
-                <Grid container spacing={4} sx={{marginBottom: 6}}>
+                <Grid2 container spacing={4} sx={{marginBottom: 6}}>
                     {[
                         {
                             title: 'Weapon Calculator',
@@ -105,7 +105,7 @@ const Homepage = () => {
                             description: 'Stay updated on in-game events.',
                         },
                     ].map((feature) => (
-                        <Grid item xs={12} md={6} lg={4} key={feature.title}>
+                        <Grid2 item xs={12} md={6} lg={4} key={feature.title}>
                             <Card
                                 sx={{
                                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -148,9 +148,9 @@ const Homepage = () => {
                                     </Button>
                                 </CardContent>
                             </Card>
-                        </Grid>
+                        </Grid2>
                     ))}
-                </Grid>
+                </Grid2>
             </Container>
         </Box>
     );
