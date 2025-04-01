@@ -81,7 +81,7 @@ const PerksPage = () => {
                     maxWidth="lg"
                     sx={{
                         display: 'flex',
-                        flexDirection: 'column',
+                        flexDirection: 'row',
                         flexWrap: 'wrap',
                         gap: 2,
                         alignItems: 'flex-start',
@@ -92,13 +92,13 @@ const PerksPage = () => {
                 >
                     <Box
                         sx={{
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        flexWrap: 'wrap',
-                        gap: 2,
-                        alignItems: 'center',
-                        marginBottom: 2,
-                    }}>
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            flexWrap: 'wrap',
+                            gap: 2,
+                            alignItems: 'center',
+                            marginBottom: 2,
+                        }}>
                         <Button
                             variant={selectedCategory === 'COMBAT' ? 'contained' : 'outlined'}
                             onClick={() => handleCategoryChange('COMBAT')}
