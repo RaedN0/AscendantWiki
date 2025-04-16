@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import InfoModal from '../components/InfoModal';
-import Sidebar from '../components/Sidebar';
-import WeaponSelection from '../components/WeaponSelection';
-import Comparison from '../components/Comparison';
-import AttachmentSelection from '../components/AttachmentSelection';
-import ShieldSelection from '../components/ShieldSelection';
+import InfoModal from '../components/calculator/InfoModal';
+import Sidebar from '../components/calculator/Sidebar';
+import WeaponSelection from '../components/calculator/WeaponSelection';
+import Comparison from '../components/calculator/Comparison';
+import AttachmentSelection from '../components/calculator/AttachmentSelection';
+import ShieldSelection from '../components/calculator/ShieldSelection';
 import { Box } from '@mui/material';
 import '../styles/weapon-calculator.css';
 

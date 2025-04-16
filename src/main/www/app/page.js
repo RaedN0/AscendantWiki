@@ -6,15 +6,7 @@ import {Box, Button, Card, CardContent, Container, Grid2, Typography} from '@mui
 const Homepage = () => {
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                overflow: 'hidden',
-                position: 'relative',
-            }}
-        >
+        <Box>
             <Box
                 sx={{
                     position: 'fixed',

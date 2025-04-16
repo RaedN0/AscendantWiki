@@ -1,53 +1,54 @@
 'use client';
 
 import React, {useEffect, useState} from 'react';
-import {Box, Container, useMediaQuery, useTheme} from '@mui/material';
-import EventService from "@/app/services/EventService";
+import {Box, Card, CardContent, CardMedia, CircularProgress, Container, Typography, useMediaQuery, useTheme} from '@mui/material';
+import AbilityService from "@/app/services/AbilityService";
+import abilityService from "@/app/services/AbilityService";
 import ListSection from "@/app/components/ListSection";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import SelectedItem from "@/app/components/SelectedItem";
 
-const EventsPage = () => {
+const AbilitiesPage = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const [events, setEvents] = useState([]);
-    const [selectedEvent, setSelectedEvent] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [abilities, setAbilities] = useState([]);
+    const [selectedAbility, setSelectedAbility] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-    function fetchEvents() {
-        setLoading(true);
-        EventService.getEvents()
+    function fetchAbilities() {
+        setIsLoading(true);
+        AbilityService.getAbilities()
             .then((data) => {
-                const sortedEvents = data.sort((a, b) => a.name.localeCompare(b.name));
-                setEvents(sortedEvents);
-                setSelectedEvent(sortedEvents[0])
+                const sortedAbilities = data.sort((a, b) => a.name.localeCompare(b.name));
+                setAbilities(sortedAbilities);
+                setSelectedAbility(sortedAbilities[0]);
             })
             .catch((err) => {
-                console.error('Failed to fetch events:', err);
+                console.error('Failed to fetch abilities:', err);
             })
             .finally(() => {
-                setLoading(false);
+                setIsLoading(false);
             });
     }
 
     useEffect(() => {
-        fetchEvents();
+        fetchAbilities();
     }, []);
 
     const handleAdd = (item) => {
-        EventService.addEvent(item).then(() => fetchEvents());
+        abilityService.addAbility(item).then(() => fetchAbilities());
     };
 
     const handleEdit = (item) => {
-        EventService.updateEvent(item).then(() => fetchEvents());
+        abilityService.updateAbility(item).then(() => fetchAbilities());
     };
 
     const handleDelete = (item) => {
-        EventService.deleteEvent(item.id).then(() => fetchEvents());
+        abilityService.deleteAbility(item.id).then(() => fetchAbilities());
     };
 
-    if (loading) {
+    if (isLoading) {
         return (
             <LoadingSpinner/>
         )
@@ -83,7 +84,6 @@ const EventsPage = () => {
                     width: '100vw',
                 }}
             >
-
                 <Box
                     sx={{
                         flex: isMobile ? '1 1 100%' : '1',
@@ -93,12 +93,14 @@ const EventsPage = () => {
                     }}
                 >
                     <ListSection
-                        items={events}
-                        selectedItem={selectedEvent}
-                        setSelectedItem={setSelectedEvent}
+                        items={abilities}
+                        selectedItem={selectedAbility}
+                        setSelectedItem={setSelectedAbility}
                         dialogFields={[
                             {name: 'name', label: 'Name', type: 'text'},
                             {name: 'description', label: 'Description', type: 'text', multiline: true, rows: 4},
+                            {name: 'cooldown', label: 'Cooldown', type: 'number'},
+                            {name: 'activationTime', label: 'Activation Time', type: 'number'},
                             {name: 'image', label: 'Upload Image', type: 'image'},
                         ]}
                         onAdd={handleAdd}
@@ -106,6 +108,7 @@ const EventsPage = () => {
                         onDelete={handleDelete}
                     />
                 </Box>
+
                 <Box
                     sx={{
                         flex: isMobile ? '1 1 100%' : '2',
@@ -113,8 +116,8 @@ const EventsPage = () => {
                         height: isMobile ? 'auto' : '100%',
                     }}
                 >
-                    {selectedEvent && (
-                        <SelectedItem item={selectedEvent}/>
+                    {selectedAbility && (
+                        <SelectedItem item={selectedAbility}/>
                     )}
                 </Box>
             </Box>
@@ -122,4 +125,4 @@ const EventsPage = () => {
     );
 };
 
-export default EventsPage;
+export default AbilitiesPage;

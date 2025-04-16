@@ -14,5 +14,4 @@ public interface LoadoutRepository extends JpaRepository<Loadout, Long> {
     @Query("SELECT l FROM Loadout l LEFT JOIN FETCH l.ability LEFT JOIN FETCH l.combatPerk1 LEFT JOIN FETCH l.combatPerk2 LEFT JOIN FETCH l.utilityPerk1 LEFT JOIN FETCH l.utilityPerk2 LEFT JOIN FETCH l.user WHERE l.user.username = :username")
     List<Loadout> findByUserUsernameWithRelations(@Param("username") String username);
 
-    List<Loadout> findByUserUsername(String username);
 }

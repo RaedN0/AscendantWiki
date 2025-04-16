@@ -163,7 +163,6 @@ export default function LoadoutsPage() {
         }
     };
 
-    // Define a card item without the title inside
     const ItemCard = ({ item, size = { xs: 40, sm: 50 } }) => (
         <Box
             sx={{

@@ -1,4 +1,3 @@
-import "./globals.css";
 import ThemeProviderWrapper from "@/app/components/ThemeProvider";
 import Navbar from "@/app/components/navbar/Navbar";
 import {RoleProvider} from "@/app/RoleContext";
@@ -40,6 +39,7 @@ export default function RootLayout({children}) {
                 style={{
                     flex: "1 1 auto",
                     overflow: "auto",
+                    alignSelf: 'center'
                 }}
             >
                 {children}

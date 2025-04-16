@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
 
-	public List<Attachment> findAttachmentByType(AttachmentTypes type);
+	List<Attachment> findAttachmentByType(AttachmentTypes type);
 }
