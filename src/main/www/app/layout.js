@@ -1,6 +1,7 @@
 import ThemeProviderWrapper from "@/app/components/ThemeProvider";
 import Navbar from "@/app/components/navbar/Navbar";
 import {RoleProvider} from "@/app/RoleContext";
+import { Auth0Provider } from '@auth0/nextjs-auth0';
 
 export const metadata = {
     title: "Ascendant Wiki",
@@ -27,25 +28,27 @@ export default function RootLayout({children}) {
                 padding: 0,
             }}
         >
-        <ThemeProviderWrapper>
-            <RoleProvider>
-            <Navbar
-                style={{
-                    flex: "0 0 auto",
-                }}
-            />
+        <Auth0Provider>
+            <ThemeProviderWrapper>
+                <RoleProvider>
+                <Navbar
+                    style={{
+                        flex: "0 0 auto",
+                    }}
+                />
 
-            <main
-                style={{
-                    flex: "1 1 auto",
-                    overflow: "auto",
-                    alignSelf: 'center'
-                }}
-            >
-                {children}
-            </main>
-            </RoleProvider>
-        </ThemeProviderWrapper>
+                <main
+                    style={{
+                        flex: "1 1 auto",
+                        overflow: "auto",
+                        alignSelf: 'center'
+                    }}
+                >
+                    {children}
+                </main>
+                </RoleProvider>
+            </ThemeProviderWrapper>
+        </Auth0Provider>
         </body>
         </html>
     );

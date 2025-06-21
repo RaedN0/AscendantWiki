@@ -1,31 +1,45 @@
 "use client";
 
 import React, { createContext, useEffect, useState } from 'react';
-import authenticationService from "@/app/services/AuthenticationService";
 
 export const RoleContext = createContext({
     isAdmin: false,
     isAuthenticated: false,
-    username: null
+    username: null,
+    isLoading: true
 });
 
 export function RoleProvider({ children }) {
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [username, setUsername] = useState(null);
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const checkAuthentication = async () => {
-            const userInfo = await authenticationService.getUserInfo();
-            setIsAuthenticated(userInfo.isAuthenticated);
-            setIsAdmin(userInfo.isAdmin);
-            setUsername(userInfo.username);
+        // Check for our custom auth cookie
+        const getCookie = (name) => {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
         };
-        checkAuthentication();
+
+        const authUserCookie = getCookie('auth_user');
+        if (authUserCookie) {
+            try {
+                const userData = JSON.parse(decodeURIComponent(authUserCookie));
+                setUser(userData);
+            } catch (error) {
+                console.error('Error parsing auth cookie:', error);
+            }
+        }
+        setIsLoading(false);
     }, []);
+    
+    const isAuthenticated = !!user;
+    const isAdmin = user?.roles?.includes('admin') || false; // Adjust based on your user structure
+    const username = user?.name || user?.email || null;
 
     return (
-        <RoleContext.Provider value={{ isAdmin, isAuthenticated, username }}>
+        <RoleContext.Provider value={{ isAdmin, isAuthenticated, username, isLoading, user }}>
             {children}
         </RoleContext.Provider>
     );

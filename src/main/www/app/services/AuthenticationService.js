@@ -1,45 +1,54 @@
 import axios from 'axios'
 
 class AuthenticationService {
-    async getUserInfo() {
+    getAccessToken() {
+        // Get token from our custom cookie
+        const getCookie = (name) => {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        };
+        
+        return getCookie('auth_token');
+    }
+
+    async getAuthenticatedAxios() {
         try {
-            const res = await axios.get(`/api/auth-status`, {
-                withCredentials: true,
-            });
-            if (res.status === 200) {
-                const { username, roles } = res.data;
-                return {
-                    isAuthenticated: true,
-                    isAdmin: roles?.includes('ROLE_ADMIN') || false,
-                    username
-                };
+            const accessToken = this.getAccessToken();
+            if (accessToken) {
+                return axios.create({
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
             }
-            return {
-                isAuthenticated: false,
-                isAdmin: false,
-                username: null
-            };
+            console.log('No access token available, using unauthenticated axios');
+            return axios;
         } catch (error) {
-            return {
-                isAuthenticated: false,
-                isAdmin: false,
-                username: null
-            };
+            console.log('No access token available, using unauthenticated axios');
+            return axios;
         }
     }
 
-    async logout() {
+    async makeAuthenticatedRequest(url, options = {}) {
         try {
-            await axios.post(`/auth/logout`, {
-                credentials: 'include',
-            }).then(
-                response => {
-                    console.log('Logout successful');
-                    window.location.reload();
-                },
-            );
+            const accessToken = this.getAccessToken();
+            if (accessToken) {
+                return axios({
+                    ...options,
+                    url,
+                    headers: {
+                        ...options.headers,
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
+            }
+            console.log('Making unauthenticated request');
+            return axios({ ...options, url });
         } catch (error) {
-            console.error('Logout failed:', error);
+            console.log('Making unauthenticated request');
+            return axios({ ...options, url });
         }
     }
 }

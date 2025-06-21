@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: ascendantwiki
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AUTH0_ISSUER_URI:https://YOUR_DOMAIN.auth0.com/}
+
+app:
+  frontend:
+    base-url: https://ascendant.raedn.net
+
+auth0:
+  audience: ${AUTH0_AUDIENCE:http://localhost:8080/api}

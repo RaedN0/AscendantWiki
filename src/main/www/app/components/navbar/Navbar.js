@@ -6,13 +6,11 @@ import Link from 'next/link';
 import MobileNavbar from "@/app/components/navbar/mobile";
 import DesktopNavbar from "@/app/components/navbar/desktop";
 import { RoleContext } from "@/app/RoleContext";
-import authenticationService from "@/app/services/AuthenticationService";
 import LoginButtons from "@/app/components/navbar/LoginButtons";
 
 const Navbar = () => {
 	const theme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-	const { isAuthenticated, username } = useContext(RoleContext);
 
 	const navItems = [
 		{ text: 'Home', href: '/' },
@@ -52,13 +50,13 @@ const Navbar = () => {
 			>
 				{isMobile ? (
 					<Box sx={{ display: 'flex', alignItems: 'center', justifyItems: 'flex-end', gap: 2 }}>
-						<LoginButtons isAuthenticated={isAuthenticated} username={username} />
+						<LoginButtons />
 						<MobileNavbar navItems={navItems} loadoutItems={loadoutItems} buildsItems={buildsItems} />
 					</Box>
 				) : (
 					<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
 						<DesktopNavbar navItems={navItems} loadoutItems={loadoutItems} buildsItems={buildsItems} />
-						<LoginButtons isAuthenticated={isAuthenticated} username={username} />
+						<LoginButtons />
 					</Box>
 				)}
 			</Toolbar>
