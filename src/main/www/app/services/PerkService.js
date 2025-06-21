@@ -1,10 +1,12 @@
 import axios from 'axios';
 import {fileToByteArray} from "@/app/util/fileToByteArray";
+import authenticationService from "@/app/services/AuthenticationService";
 
 class PerkService {
 
     async getPerks() {
         try {
+            // Use regular axios for public read access
             const response = await axios.get(`/api/perks`);
             return response.data;
         } catch (error) {
@@ -16,8 +18,8 @@ class PerkService {
         try {
             perk.image = await fileToByteArray(perk.image);
 
-            const response = await axios.post(`/api/perks`, perk, {
-                withCredentials: true,
+            const authenticatedAxios = await authenticationService.getAuthenticatedAxios();
+            const response = await authenticatedAxios.post(`/api/perks`, perk, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -32,8 +34,8 @@ class PerkService {
         try {
             perk.image = await fileToByteArray(perk.image);
 
-            const response = await axios.put(`/api/perks`, perk, {
-                withCredentials: true,
+            const authenticatedAxios = await authenticationService.getAuthenticatedAxios();
+            const response = await authenticatedAxios.put(`/api/perks`, perk, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -46,9 +48,8 @@ class PerkService {
 
     async deletePerk(id) {
         try {
-            await axios.delete(`/api/perks/${id}`, {
-                withCredentials: true,
-            });
+            const authenticatedAxios = await authenticationService.getAuthenticatedAxios();
+            await authenticatedAxios.delete(`/api/perks/${id}`);
         } catch (error) {
             console.error('Error deleting perk:', error);
         }

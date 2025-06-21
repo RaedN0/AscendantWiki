@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: ascendantwiki
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ascendant
+    username: username
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://ascendant.eu.auth0.com/
+
+server:
+  port: 8080
+
+app:
+  frontend:
+    base-url: http://localhost:3000
+
+auth0:
+  audience: http://localhost:8080/api
+
